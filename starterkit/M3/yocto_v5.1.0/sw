@@ -1,0 +1,28 @@
+#!/usr/bin/expect
+#====================================
+#
+# Renesas M3 StarterKit ROM Writer
+#
+# https://elinux.org/R-Car/Boards/M3SK#Quick_Start_How_To
+#====================================
+set dir [file dirname [file normalize [info script]]]
+source $dir/lib
+
+#
+# check before run
+#
+argv_check
+file_check $lists
+
+#
+# Power, SW, settings
+# and start minicom
+#
+sw_change_mode
+spawn minicom -D [lindex $argv 0]
+sw_change_back
+
+#
+# Run Main
+#
+run_main $lists

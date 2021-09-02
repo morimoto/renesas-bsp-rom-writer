@@ -1,0 +1,29 @@
+#!/usr/bin/expect
+#====================================
+#
+# Renesas M3N StarterKit ROM Writer
+#
+# https://elinux.org/R-Car/Boards/M3NSK#Quick_Start_How_To
+#====================================
+set dir [file dirname [file normalize [info script]]]
+source $dir/lib
+
+#
+# check before run
+#
+argv_check
+file_check $lists
+mot_check $dir/../..
+
+#
+# run minicom,
+# move to CPLD mode
+#
+power_check
+spawn minicom -D [lindex $argv 0]
+cpld_mode $dir/../..
+
+#
+# Run Main
+#
+run_main $lists

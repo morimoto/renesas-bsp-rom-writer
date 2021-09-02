@@ -16,6 +16,13 @@ proc ask_yes_no {msg} {
     }
 }
 
+proc power_check {} {
+    puts "********************"
+    puts "Power ON the board"
+    puts "********************"
+    ask_yes_no "OK ?"
+}
+
 proc sw_change_mode {} {
     puts "********************"
     puts "Stop board Power"
@@ -28,10 +35,7 @@ proc sw_change_mode {} {
     puts "********************"
     ask_yes_no "Are you ready ?"
 
-    puts "********************"
-    puts "Power ON the board"
-    puts "********************"
-    ask_yes_no "OK ?"
+    power_check
 }
 
 proc sw_change_back {} {
@@ -91,6 +95,39 @@ proc file_check {lists} {
 
     if {$err != 0} {
 	exit 0
+    }
+}
+
+proc mot {top} {
+    return $top/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+}
+
+proc mot_check {top} {
+    set mot [mot $top]
+
+    if { [ file exists $mot ] != 1 } {
+	puts "You don't have mot"
+	puts "run make first"
+	exit 0
+    }
+}
+
+proc cpld_mode {top} {
+    set mot [mot $top]
+
+    send "\r"
+    expect {
+	"=>" { send "cpld write 0x00 0x802181fe\r" }
+    }
+    expect {
+	"=>" { send "cpld write 0x80 0x01\r" }
+    }
+    expect {
+	"please send !"
+    }
+    upload_file $mot
+    expect {
+	">"
     }
 }
 
