@@ -35,7 +35,6 @@
 			> git clone https://github.com/morimoto/renesas-yocto-maker
 			         or https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
 			> cd renesas-yocto-maker
-			> git checkout for-yocto-v5.1.0
 			> bin/yocto-make-v5.1.0 -b h3ulcb
 			> tar -jxf yocto-v5.1.0-h3ulcb-xxxx-bin.tar.bz2
 
@@ -51,14 +50,13 @@
 * How to use it ?
 
 	Prepare necessary ROMs. see above "How to get ROM".
-	When you have ROMs, you can do below (ex "Yocto v5.1.0")
+	When you have ROMs, you can do below.
 
 	- Clone renesas-bsp-rom-writer and checkout necessary Yocto version
 
 		> git clone https://github.com/morimoto/renesas-bsp-rom-writer
 		         or https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer
 		> cd renesas-bsp-rom-writer
-		> git checkout for-yocto-v5.1.0
 
 	- Connect your PC and StarterKit by USB cable, and check it by
 
@@ -71,8 +69,8 @@
 
 	   ex) In case of H3
 		> cd ${rom-dir}
-		> ${renesas-bsp-rom-writer}/starterkit/h3_rom_writer /dev/ttyUSBx
-		                                       ^^^^^^^^^^^^^ ^^^^^^^^^^^^
+		> ${renesas-bsp-rom-writer}/starterkit/h3_yocto_v5.1.0 /dev/ttyUSBx
+		                                       ^^^^^^^^^^^^^^^ ^^^^^^^^^^^^
 	- Follow the script
 
 	  You need to exchange the DipSwitch settings on board.
