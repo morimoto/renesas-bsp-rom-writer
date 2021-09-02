@@ -6,7 +6,6 @@
 # https://elinux.org/R-Car/Boards/H3SK#Quick_Start_How_To
 #====================================
 source [file dirname [file normalize [info script]]]/lib
-argv_check
 
 #====================================
 # for Yocto v5.1.0
@@ -86,10 +85,11 @@ proc message_sw_to_normal_mode {} {
 }
 
 #
-# check Serial Number and Files
+# check before run
 #
-serial_number_check
+argv_check
 file_check $lists
+serial_number_check
 
 #
 # Power, SW, settings

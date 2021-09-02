@@ -6,7 +6,6 @@
 # https://elinux.org/R-Car/Boards/M3NSK#Quick_Start_How_To
 #====================================
 source [file dirname [file normalize [info script]]]/lib
-argv_check
 
 #====================================
 # for Yocto v5.1.0
@@ -31,8 +30,9 @@ proc message_sw_to_normal_mode {} {
 }
 
 #
-# check Files
+# check before run
 #
+argv_check
 file_check $lists
 
 #
