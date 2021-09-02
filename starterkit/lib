@@ -122,9 +122,15 @@ proc run_main {lists} {
 	expect {
 	    ">" { send "xls2\r" }
 	}
-
-	xls2_talk_before_upload
-
+	expect {
+	    "Select \(1-3\)>" { send "3\r" }
+	}
+	expect {
+	    "(Push Y key)"    { send "Y" }
+	}
+	expect {
+	    "(Push Y key)"    { send "Y" }
+	}
 	expect {
 	    "Please Input : H'"    { send "$top\r" }
 	}
