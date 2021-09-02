@@ -1,0 +1,79 @@
+============== -*- outline -*- ==============
+
+   Renesas StarterKit (H3/M3/M3N) BSP ROM Writer
+
+2021/09/02	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+* What is this ?
+
+	When you get Renesas StarterKit, it is difficult to understand
+	what you need to do to use it. This is one of helper for it.
+	This helps you to write ROM to your StarterKit board.
+
+* What is Renesas StarterKit ?
+
+	See here, and search "R-Car Starter Kit"
+
+		https://elinux.org/R-Car
+
+* How to get ROM ?
+
+	You have some informations / helpers
+
+	Quick Start
+		https://elinux.org/R-Car/Boards/H3SK#Quick_Start_How_To
+		https://elinux.org/R-Car/Boards/M3SK#Quick_Start_How_To
+		https://elinux.org/R-Car/Boards/M3NSK#Quick_Start_How_To
+
+	Yocto Maker
+		https://github.com/morimoto/renesas-yocto-maker
+		https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
+
+		ex) In case of "H3" with "Yocto v5.1.0"
+
+			> git clone https://github.com/morimoto/renesas-yocto-maker
+			         or https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
+			> cd renesas-yocto-maker
+			> git checkout for-yocto-v5.1.0
+			> bin/yocto-make-v5.1.0 -b h3ulcb
+			> tar -jxf yocto-v5.1.0-h3ulcb-xxxx-bin.tar.bz2
+
+	Required ROM are almost like these
+
+		bootparam_sa0.srec
+		bl2-h3ulcb.srec
+		cert_header_sa6.srec
+		bl31-h3ulcb.srec
+		tee-h3ulcb.srec
+		u-boot-elf-h3ulcb.srec
+
+* How to use it ?
+
+	Prepare necessary ROMs. see above "How to get ROM".
+	When you have ROMs, you can do below (ex "Yocto v5.1.0")
+
+	- Clone renesas-bsp-rom-writer and checkout necessary Yocto version
+
+		> git clone https://github.com/morimoto/renesas-bsp-rom-writer
+		         or https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer
+		> cd renesas-bsp-rom-writer
+		> git checkout for-yocto-v5.1.0
+
+	- Connect your PC and StarterKit by USB cable, and check it by
+
+		> dmesg | grep ttyUSB | tail
+	   or
+		> ls -l /dev/serial/by-id/*
+
+	- goto ROM dir, and call
+	  writer with ttyUSB. You can see H3/M3/M3N there
+
+	   ex) In case of H3
+		> cd ${rom-dir}
+		> ${renesas-bsp-rom-writer}/starterkit/h3_rom_writer /dev/ttyUSBx
+		                                       ^^^^^^^^^^^^^ ^^^^^^^^^^^^
+	- Follow the script
+
+	  You need to exchange the DipSwitch settings on board.
+	  Follow the script's order about DipSwitch settings and Power ON/OFF timing.

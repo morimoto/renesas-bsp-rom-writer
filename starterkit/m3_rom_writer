@@ -1,0 +1,63 @@
+#!/usr/bin/expect
+#====================================
+#
+# Renesas M3 StarterKit ROM Writer
+#
+# https://elinux.org/R-Car/Boards/M3SK#Quick_Start_How_To
+#====================================
+source [file dirname [file normalize [info script]]]/lib
+argv_check
+
+#====================================
+# for Yocto v5.1.0
+#====================================
+set lists {
+    E6320000,000000,bootparam_sa0.srec
+    E6304000,040000,bl2-m3ulcb.srec
+    E6320000,180000,cert_header_sa6.srec
+    44000000,1C0000,bl31-m3ulcb.srec
+    44100000,200000,tee-m3ulcb.srec
+    50000000,640000,u-boot-elf-m3ulcb.srec
+}
+
+proc message_sw_to_update_mode {} {
+    puts "SW1    : OFF"
+    puts "SW6\[1\] : OFF"
+    puts "SW6\[2\] : OFF"
+    puts "SW6\[3\] : OFF"
+}
+
+proc message_sw_to_normal_mode {} {
+    puts "SW1      : ON"
+    puts "SW6\[all\] : ON"
+}
+
+proc xls2_talk_before_upload {} {
+    expect {
+	"Select \(1-3\)>" { send "3\r" }
+    }
+    expect {
+	"(Push Y key)"    { send "Y" }
+    }
+    expect {
+	"(Push Y key)"    { send "Y" }
+    }
+}
+
+#
+# check Files
+#
+file_check $lists
+
+#
+# Power, SW, settings
+# and start minicom
+#
+sw_change_mode
+spawn minicom -D [lindex $argv 0]
+sw_change_back
+
+#
+# Run Main
+#
+run_main $lists

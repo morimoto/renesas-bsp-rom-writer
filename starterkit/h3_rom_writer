@@ -1,0 +1,117 @@
+#!/usr/bin/expect
+#====================================
+#
+# Renesas H3 StarterKit ROM Writer
+#
+# https://elinux.org/R-Car/Boards/H3SK#Quick_Start_How_To
+#====================================
+source [file dirname [file normalize [info script]]]/lib
+argv_check
+
+#====================================
+# for Yocto v5.1.0
+#====================================
+set lists ""
+set lists_4g {
+    E6320000,000000,bootparam_sa0.srec
+    E6304000,040000,bl2-h3ulcb.srec
+    E6320000,180000,cert_header_sa6.srec
+    44000000,1C0000,bl31-h3ulcb.srec
+    44100000,200000,tee-h3ulcb.srec
+    50000000,640000,u-boot-elf-h3ulcb.srec
+}
+
+set lists_8g {
+    E6320000,000000,bootparam_sa0-4x2g.srec
+    E6304000,040000,bl2-h3ulcb-4x2g.srec
+    E6320000,180000,cert_header_sa6-4x2g.srec
+    44000000,1C0000,bl31-h3ulcb-4x2g.srec
+    44100000,200000,tee-h3ulcb.srec
+    50000000,640000,u-boot-elf-h3ulcb.srec
+}
+
+proc serial_number_check {} {
+    global lists
+    global lists_4g
+    global lists_8g
+
+    set ws  0
+    set mem 0
+
+    puts "**************************************"
+    puts "Pleasse input your board Serial Number"
+    puts "**************************************"
+    puts "S/N is"
+    set ans [gets stdin]
+
+    if {$ans < 2000} {
+	# WS1.1
+	puts "WS1.1 is not supported"
+	exit 0
+    } elseif {$ans <= 4500} {
+	# WS2.0 4G
+	set ws  2.0
+	set mem 4
+	set lists $lists_4g
+    } elseif {$ans <= 20400} {
+	# WS2.0 8G
+	set ws  2.0
+	set mem 8
+	set lists $lists_8g
+    } elseif {$ans < 25999} {
+	# WS3.0 8G
+	set ws  3.0
+	set mem 8
+	set lists $lists_8g
+    } else {
+	puts "Unknow and/or not supported board"
+	exit 0
+    }
+
+    puts "**************************************"
+    puts "Is Your Board this ?"
+    puts "	H3 WS${ws}, ${mem}Gbyte"
+    puts "**************************************"
+    ask_yes_no "correct ?"
+}
+
+proc message_sw_to_update_mode {} {
+    puts "SW1    : OFF"
+    puts "SW6\[3\] : OFF"
+}
+
+proc message_sw_to_normal_mode {} {
+    puts "SW1    : ON"
+    puts "SW6\[3\] : ON"
+}
+
+proc xls2_talk_before_upload {} {
+    expect {
+	"Select \(1-3\)>" { send "3\r" }
+    }
+    expect {
+	"(Push Y key)"    { send "Y" }
+    }
+    expect {
+	"(Push Y key)"    { send "Y" }
+    }
+}
+
+#
+# check Serial Number and Files
+#
+serial_number_check
+file_check $lists
+
+#
+# Power, SW, settings
+# and start minicom
+#
+sw_change_mode
+spawn minicom -D [lindex $argv 0]
+sw_change_back
+
+#
+# Run Main
+#
+run_main $lists
