@@ -1,4 +1,4 @@
-#!/usr/bin/expect
+# SPDX-License-Identifier: GPL-2.0
 #====================================
 #
 # Renesas M3N StarterKit ROM Writer
