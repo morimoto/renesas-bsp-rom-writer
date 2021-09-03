@@ -81,8 +81,8 @@
 * How to use it (Full-Auto) ?
 -------------------------------
 
-	You can to use "Full-Auto" if your board have U-boot.
-	                              ^^^^^^^^^^^^^^^^^^^^^^
+	You can use "Full-Auto" if your board have U-boot.
+	                           ^^^^^^^^^^^^^^^^^^^^^^
 
 	You need to have "Renesas flash_writer".
 	goto to ${renesas-bsp-rom-writer}/starterkit, and run "make"
