@@ -63,6 +63,15 @@
 		> ls -l /dev/serial/by-id/*
 
 -------------------------------
+* WS1.x Boards on H3/M3 are not supported
+-------------------------------
+
+	Please check your board at
+
+		https://elinux.org/R-Car/Boards/H3SK#Hardware
+		https://elinux.org/R-Car/Boards/M3SK#Hardware
+
+-------------------------------
 * How to use it (Half-Auto) ?
 -------------------------------
 
