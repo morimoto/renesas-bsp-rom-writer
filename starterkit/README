@@ -5,12 +5,6 @@
 2021/09/02	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 =============================================
 
-* What is this ?
-
-	When you get Renesas StarterKit, it is difficult to understand
-	what you need to do to use it. This is one of helper for it.
-	This helps you to write ROM to your StarterKit board.
-
 * What is Renesas StarterKit ?
 
 	See here, and search "R-Car Starter Kit"

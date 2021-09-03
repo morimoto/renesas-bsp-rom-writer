@@ -1,0 +1,16 @@
+============== -*- outline -*- ==============
+
+            Renesas BSP ROM Writer
+
+2021/09/03	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+* What is this ?
+
+	When you get Renesas BSP, it is difficult to understand
+	what you need to do to use it. This is one of helper for it.
+	This helps you to write ROM to your Renesas board.
+
+* Where is it ?
+
+	Please check each board name folder and README in it.
