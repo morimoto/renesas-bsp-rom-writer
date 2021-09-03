@@ -5,13 +5,17 @@
 2021/09/02	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 =============================================
 
+-------------------------------
 * What is Renesas StarterKit ?
+-------------------------------
 
 	See here, and search "R-Car Starter Kit"
 
 		https://elinux.org/R-Car
 
+-------------------------------
 * How to get ROM ?
+-------------------------------
 
 	You have some informations / helpers
 
@@ -41,12 +45,16 @@
 		tee-h3ulcb.srec
 		u-boot-elf-h3ulcb.srec
 
+-------------------------------
 * Where to get renesas-bsp-rom-writer ?
+-------------------------------
 
 	https://github.com/morimoto/renesas-bsp-rom-writer
 	https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer
 
+-------------------------------
 * How to know the connected tty ?
+-------------------------------
 
 	Connect your PC and StarterKit by USB cable, and check it by
 
@@ -54,7 +62,9 @@
 	   or
 		> ls -l /dev/serial/by-id/*
 
+-------------------------------
 * How to use it (Half-Auto) ?
+-------------------------------
 
 	You need to use "Half-Auto" if your board doesn't have U-boot yet.
 	                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -67,7 +77,9 @@
 		> ${renesas-bsp-rom-writer}/starterkit/H3/yocto_v5.1.0/sw  /dev/ttyUSBx
 		                                                      ^^^^
 
+-------------------------------
 * How to use it (Full-Auto) ?
+-------------------------------
 
 	You can to use "Full-Auto" if your board have U-boot.
 	                              ^^^^^^^^^^^^^^^^^^^^^^
@@ -86,3 +98,9 @@
 		> cd ${rom-dir}
 		> ${renesas-bsp-rom-writer}/starterkit/H3/yocto_v5.1.0/cpld  /dev/ttyUSBx
 		                                                      ^^^^^^
+
+**  It doesn't work for me ?
+
+	Does your Renesas StarterKit U-boot indicate prompt ("=>") and is waiting command ?
+	renesas-bsp-rom-writer is waiting prompt, and will send the command.
+	Your U-Boot need to wait the command by prompt ("=>").
