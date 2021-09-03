@@ -20,7 +20,7 @@ file_check $lists
 # and start minicom
 #
 sw_change_mode
-spawn minicom -D [lindex $argv 0]
+spawn env LANG=C minicom -D [lindex $argv 0] -b115200
 sw_change_back
 
 #

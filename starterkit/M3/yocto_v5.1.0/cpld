@@ -21,7 +21,7 @@ mot_check $dir/../..
 # move to CPLD mode
 #
 power_check
-spawn minicom -D [lindex $argv 0]
+spawn env LANG=C minicom -D [lindex $argv 0] -b115200
 cpld_mode $dir/../..
 
 #
