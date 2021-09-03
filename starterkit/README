@@ -104,3 +104,9 @@
 	Does your Renesas StarterKit U-boot indicate prompt ("=>") and is waiting command ?
 	renesas-bsp-rom-writer is waiting prompt, and will send the command.
 	Your U-Boot need to wait the command by prompt ("=>").
+
+**  It stops after "please send !" ?
+
+	No worry !
+	It is sending "flash writer" to the board, and it takes a time.
+	You need to is just "waiting patiently" :)
