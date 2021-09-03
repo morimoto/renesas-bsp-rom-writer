@@ -72,6 +72,15 @@
 		https://elinux.org/R-Car/Boards/M3SK#Hardware
 
 -------------------------------
+* Preparation
+-------------------------------
+
+	You need "expect" and "minicom" command
+	If you are using Ubuntu, you can install these by
+
+		> sudo apt install expect minicom
+
+-------------------------------
 * How to use it (Half-Auto) ?
 -------------------------------
 
