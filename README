@@ -23,3 +23,8 @@
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License version 2 as
 	published by the Free Software Foundation.
+
+* Where to get renesas-bsp-rom-writer ?
+
+	https://github.com/morimoto/renesas-bsp-rom-writer
+	https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer

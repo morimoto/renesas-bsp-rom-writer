@@ -46,13 +46,6 @@
 		u-boot-elf-h3ulcb.srec
 
 -------------------------------
-* Where to get renesas-bsp-rom-writer ?
--------------------------------
-
-	https://github.com/morimoto/renesas-bsp-rom-writer
-	https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer
-
--------------------------------
 * How to know the connected tty ?
 -------------------------------
 
