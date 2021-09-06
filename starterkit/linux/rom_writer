@@ -1,10 +1,42 @@
 #!/usr/bin/expect
+# SPDX-License-Identifier: GPL-2.0
+#====================================
+#
+# Renesas StarterKit ROM Writer
+#
+#====================================
+set top [file dirname [file dirname [file normalize [info script]]]]
+set soc   ""
+set ver   ""
+set mode  ""
+set tty   ""
 
 proc argv_check {} {
     global argv
-    if {[llength $argv] != 1} {
-	puts "needs ttyUSBx"
+    global top
+    global soc
+    global ver
+    global mode
+    global tty
+
+    if {[llength $argv] != 4} {
+	puts "rom_writer {h3/m3/m3n} {yocto_ver} {sw/cpld} {tty}"
 	exit 0
+    }
+    set soc  [lindex $argv 0]
+    set ver  [lindex $argv 1]
+    set mode [lindex $argv 2]
+    set tty  [lindex $argv 3]
+
+    set files [glob -nocomplain "${top}/linux/${soc}_*${ver}"]
+    if { $files == "" } {
+	puts "run make first"
+	exit
+    }
+
+    if { $mode != "sw" && $mode != "cpld" } {
+	puts "select sw or cpld"
+	exit
     }
 }
 
@@ -18,30 +50,28 @@ proc ask_yes_no {msg} {
 
 proc power_check {} {
     puts "********************"
-    puts "Power ON the board"
+    puts "Board Power ON"
     puts "********************"
     ask_yes_no "OK ?"
 }
 
 proc sw_change_mode {} {
     puts "********************"
-    puts "Stop board Power"
+    puts "Board Power OFF"
     puts "********************"
     ask_yes_no "OK ?"
 
     puts "********************"
     puts "Change the Mode"
-    message_sw_to_update_mode
+    dipswitch_update
     puts "********************"
     ask_yes_no "Are you ready ?"
-
-    power_check
 }
 
 proc sw_change_back {} {
     puts "********************"
     puts "Change back the Mode"
-    message_sw_to_normal_mode
+    dipswitch_normal
     puts "********************"
     ask_yes_no "Are you ready ?"
 }
@@ -98,12 +128,13 @@ proc file_check {lists} {
     }
 }
 
-proc mot {top} {
-    return $top/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+proc mot {} {
+    global top
+    return $top/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
 }
 
-proc mot_check {top} {
-    set mot [mot $top]
+proc mot_check {} {
+    set mot [mot]
 
     if { [ file exists $mot ] != 1 } {
 	puts "You don't have mot"
@@ -112,8 +143,8 @@ proc mot_check {top} {
     }
 }
 
-proc cpld_mode {top} {
-    set mot [mot $top]
+proc cpld_mode {} {
+    set mot [mot]
 
     send "\r"
     expect {
@@ -131,26 +162,45 @@ proc cpld_mode {top} {
     }
 }
 
+proc before_minicom {} {
+    global mode
+
+    if {$mode == "sw"} {
+	sw_change_mode
+    }
+    power_check
+}
+
+proc after_minicom {} {
+    global mode
+
+    if {$mode == "sw"} {
+	sw_change_back
+    } else {
+	cpld_mode
+    }
+}
+
 proc run_main {lists} {
     #
     # it expects lists are
     #
-    #	top,save,file
-    #	top,save,file
-    #	top,save,file
+    #	addr,save,file
+    #	addr,save,file
+    #	addr,save,file
     #	...
     #
     foreach list $lists {
 
 	#
 	# list is
-	#	top,save,file
+	#	addr,save,file
 	#
 	set data [split $list ","]
 	if {[llength $data] != 3} {
 	    return
 	}
-	set top  [lindex $data 0]
+	set addr [lindex $data 0]
 	set save [lindex $data 1]
 	set file [lindex $data 2]
 
@@ -169,7 +219,7 @@ proc run_main {lists} {
 	    "(Push Y key)"    { send "Y" }
 	}
 	expect {
-	    "Please Input : H'"    { send "$top\r" }
+	    "Please Input : H'"    { send "$addr\r" }
 	}
 	expect {
 	    "Please Input : H'"    { send "$save\r" }
@@ -186,3 +236,6 @@ proc run_main {lists} {
 	expect { ">" }
     }
 }
+
+argv_check
+source $top/linux/$soc

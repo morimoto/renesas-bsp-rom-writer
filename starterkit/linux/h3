@@ -1,0 +1,73 @@
+#!/usr/bin/expect
+# SPDX-License-Identifier: GPL-2.0
+#====================================
+#
+# Renesas H3 StarterKit ROM Writer
+#
+# https://elinux.org/R-Car/Boards/H3SK#Quick_Start_How_To
+#====================================
+
+proc serial_number_check_and_get_load_file {} {
+    global ver
+    global top
+    set ws  0
+    set mem 0
+
+    puts "**************************************"
+    puts "Pleasse input your board Serial Number"
+    puts "**************************************"
+    puts "S/N is"
+    set ans [gets stdin]
+
+    if {$ans < 2000} {
+	# WS1.1
+	puts "WS1.1 is not supported"
+	exit 0
+    } elseif {$ans <= 4500} {
+	# WS2.0 4G
+	set ws  2.0
+	set mem 4
+    } elseif {$ans <= 20400} {
+	# WS2.0 8G
+	set ws  2.0
+	set mem 8
+    } elseif {$ans < 25999} {
+	# WS3.0 8G
+	set ws  3.0
+	set mem 8
+    } else {
+	puts "Unknow and/or not supported board"
+	exit 0
+    }
+
+    puts "**************************************"
+    puts "Is Your Board this ?"
+    puts "	H3 WS${ws}, ${mem}Gbyte"
+    puts "**************************************"
+    ask_yes_no "correct ?"
+
+    return ${top}/linux/h3_${mem}g_${ver}
+}
+
+#
+# load 4g or 8g settings
+#
+source [serial_number_check_and_get_load_file]
+
+#
+# check
+#
+file_check $lists
+mot_check
+
+#
+# run minicom
+#
+before_minicom
+spawn env LANG=C minicom -D $tty -b115200
+after_minicom
+
+#
+# run main
+#
+run_main $lists

@@ -14,6 +14,12 @@
 		https://elinux.org/R-Car
 
 -------------------------------
+* Which OS are supported as Host ?
+-------------------------------
+
+	Linux
+
+-------------------------------
 * How to get ROM ?
 -------------------------------
 
@@ -63,60 +69,67 @@
 		> ls -l /dev/serial/by-id/*
 
 -------------------------------
-* WS1.x Boards on H3/M3 are not supported
+* WS1.x Boards on H3 is not supported
 -------------------------------
 
 	Please check your board at
 
 		https://elinux.org/R-Car/Boards/H3SK#Hardware
-		https://elinux.org/R-Car/Boards/M3SK#Hardware
 
 -------------------------------
-* Preparation
+* How to use it on Linux ?
 -------------------------------
 
-	You need "expect" and "minicom" command
+**  Preparation
+
+	You need "expect", "minicom", "git" command.
 	If you are using Ubuntu, you can install these by
 
-		> sudo apt install expect minicom
+		> sudo apt install expect minicom git
 
--------------------------------
-* How to use it (Half-Auto) ?
--------------------------------
-
-	You need to use "Half-Auto" if your board doesn't have U-boot yet.
-	                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	goto ROM dir, and call "sw" with ttyUSB.
-	You can see H3/M3/M3N there
-
-	ex) In case of H3, and Yocto v5.1.0 case
-
-		> cd ${rom-dir}
-		> ${renesas-bsp-rom-writer}/starterkit/H3/yocto_v5.1.0/sw  /dev/ttyUSBx
-		                                                      ^^^^
-
--------------------------------
-* How to use it (Full-Auto) ?
--------------------------------
-
-	You can use "Full-Auto" if your board have U-boot.
-	                           ^^^^^^^^^^^^^^^^^^^^^^
-
-	You need to have "Renesas flash_writer".
-	goto to ${renesas-bsp-rom-writer}/starterkit, and run "make"
+	You need make first.
 
 		> cd ${renesas-bsp-rom-writer}/starterkit
 		> make
 
-	goto ROM dir, and call "cpld" with ttyUSB.
-	You can see H3/M3/M3N there
+**  rom_writer
+
+	rom_writer soc ver mode tty
+
+	soc:	h3/m3/m3n
+	ver:	Yocto version
+			v5.1.0
+	mode:	sw/cpld
+		sw   : see below Half-Auto
+		cpld : see below Full-Auto
+	tty:	/dev/ttyUSBx
+		see above "How to know the connected tty ?"
+
+**  Half-Auto
+
+	You need to use "Half-Auto" if your board doesn't have U-boot yet.
+	                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	goto ROM dir, and call rom_writer with "sw" option from there.
 
 	ex) In case of H3, and Yocto v5.1.0 case
 
 		> cd ${rom-dir}
-		> ${renesas-bsp-rom-writer}/starterkit/H3/yocto_v5.1.0/cpld  /dev/ttyUSBx
-		                                                      ^^^^^^
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 v5.1.0 sw /dev/ttyUSBx
 
+**  Full-Auto
+
+	You can use "Full-Auto" if your board have U-boot.
+	                           ^^^^^^^^^^^^^^^^^^^^^^
+	goto ROM dir, and call rom_writer with "cpld" option from there.
+
+	ex) In case of H3, and Yocto v5.1.0 case
+
+		> cd ${rom-dir}
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 v5.1.0 cpld /dev/ttyUSBx
+
+-------------------------------
+* FAQ
+-------------------------------
 **  It doesn't work for me ?
 
 	Does your Renesas StarterKit U-boot indicate prompt ("=>") and is waiting command ?
