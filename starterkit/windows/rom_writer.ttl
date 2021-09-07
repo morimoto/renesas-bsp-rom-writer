@@ -13,11 +13,11 @@ dirname top top
 ;
 ;=============================
 strdim soc 5
-soc[0] = "H3  (S/N     0 - 2000)" ; WS1.1 is not supported
-soc[1] = "H3  (S/N  2001 - 4500)" ; 4G
-soc[2] = "H3  (S/N 20001 - )"     ; 8G
-soc[3] = "M3  (S/N all)"
-soc[4] = "M3N (S/N all)"
+soc[0] = "H3    (S/N     0 - 2000)" ; WS1.1 is not supported
+soc[1] = "H3 4G (S/N  2001 - 4500)"
+soc[2] = "H3 8G (S/N 20001 - )"
+soc[3] = "M3    (S/N all)"
+soc[4] = "M3N   (S/N all)"
 
 strdim soc_file 5
 soc_file[0] = ""
