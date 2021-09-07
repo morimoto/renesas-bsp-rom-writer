@@ -6,25 +6,25 @@
 #
 # https://elinux.org/R-Car/Boards/M3NSK#Quick_Start_How_To
 #====================================
-set dir [file dirname [file normalize [info script]]]
-source $dir/lib
+#
+# load settings
+#
+source ${top}/linux/m3n_${ver}
 
 #
-# check before run
+# check
 #
-argv_check
 file_check $lists
-mot_check $dir/../..
+mot_check
 
 #
-# run minicom,
-# move to CPLD mode
+# run minicom
 #
-power_check
-spawn env LANG=C minicom -D [lindex $argv 0] -b115200
-cpld_mode $dir/../..
+before_minicom
+spawn env LANG=C minicom -D $tty -b115200
+after_minicom
 
 #
-# Run Main
+# run main
 #
 run_main $lists
