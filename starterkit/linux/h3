@@ -10,41 +10,27 @@
 proc serial_number_check_and_get_load_file {} {
     global ver
     global top
-    set ws  0
     set mem 0
 
     puts "**************************************"
-    puts "Pleasse input your board Serial Number"
+    puts "Pleasse Select Your Board"
+    puts ""
+    puts "1. H3    (S/N     0 - 2000)"
+    puts "2. H3 4G (S/N  2001 - 4500)"
+    puts "3. H3 8G (S/N 20001 - )"
     puts "**************************************"
-    puts "S/N is"
+    puts "No ?"
     set ans [gets stdin]
 
-    if {$ans < 2000} {
-	# WS1.1
-	puts "WS1.1 is not supported"
-	exit 0
-    } elseif {$ans <= 4500} {
-	# WS2.0 4G
-	set ws  2.0
-	set mem 4
-    } elseif {$ans <= 20400} {
-	# WS2.0 8G
-	set ws  2.0
-	set mem 8
-    } elseif {$ans < 25999} {
-	# WS3.0 8G
-	set ws  3.0
-	set mem 8
-    } else {
-	puts "Unknow and/or not supported board"
-	exit 0
+    switch $ans {
+	"1"     {
+	    puts "WS1.1 is not supported"
+	    exit 0
+	}
+	"2"     { set mem 4 }
+	"3"     { set mem 8 }
+	default { exit 0 }
     }
-
-    puts "**************************************"
-    puts "Is Your Board this ?"
-    puts "	H3 WS${ws}, ${mem}Gbyte"
-    puts "**************************************"
-    ask_yes_no "correct ?"
 
     return ${top}/linux/h3_${mem}g_${ver}
 }
