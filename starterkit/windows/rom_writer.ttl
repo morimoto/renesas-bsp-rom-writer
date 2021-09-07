@@ -4,6 +4,14 @@
 ; Renesas StarterKit ROM Writer
 ;
 ;====================================
+;=============================
+; set 1 if you want to be asked
+;=============================
+ask_in_main_loop = 0
+
+;=============================
+; top dir
+;=============================
 getdir top
 dirname top top
 
@@ -207,6 +215,11 @@ return
 
 for i 0 num_list-1
    strsplit list[i] ","
+
+   if ask_in_main_loop=1 then
+     yesnobox groupmatchstr3 "Run ?"
+     if result!=1 continue
+   endif
 
    sendln ""
 
