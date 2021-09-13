@@ -11,6 +11,13 @@
 	what you need to do to use it. This is one of helper for it.
 	This helps you to write ROM to your Renesas board.
 
+* Note
+
+	This is *Un Official* Tool.
+	        ^^^^^^^^^^^^^^^^^^^
+	Contributor never take responsibility even though some issue happen.
+	            ^^^^^^^^^^^^^^^^^^^^^^^^^
+
 * Where is it ?
 
 	Please check each board name folder and README in it.
