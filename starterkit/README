@@ -102,7 +102,7 @@
 
 	soc:	h3/m3/m3n
 	ver:	Yocto version
-			v5.1.0
+			5.1.0
 	mode:	sw/cpld
 		sw   : see below Half-Auto
 		cpld : see below Full-Auto
@@ -118,7 +118,7 @@
 	ex) In case of H3, and Yocto v5.1.0 case
 
 		> cd ${rom-dir}
-		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 v5.1.0 sw /dev/ttyUSBx
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 5.1.0 sw /dev/ttyUSBx
 
 **  Full-Auto
 
@@ -129,7 +129,7 @@
 	ex) In case of H3, and Yocto v5.1.0 case
 
 		> cd ${rom-dir}
-		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 v5.1.0 cpld /dev/ttyUSBx
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 5.1.0 cpld /dev/ttyUSBx
 
 -------------------------------
 * How to use it on Windows ?
