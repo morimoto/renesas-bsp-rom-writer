@@ -50,8 +50,8 @@
 			> git clone https://github.com/morimoto/renesas-yocto-maker
 			         or https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
 			> cd renesas-yocto-maker
-			> bin/yocto-make-v5.1.0 -b h3ulcb
-			> tar -jxf yocto-v5.1.0-h3ulcb-xxxx-bin.tar.bz2
+			> yocto-make -b 5.1.0 h3ulcb
+			> tar -jxf yocto-5.1.0-h3ulcb-xxxx-bin.tar.bz2
 
 	Required ROM are almost like these
 
