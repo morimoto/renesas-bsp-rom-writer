@@ -109,12 +109,14 @@
 
 **  rom_writer
 
-	rom_writer soc ver mode tty
+	rom_writer soc target ver mode tty
 
 	soc:	h3/m3/m3n
+	target: yocto
 	ver:	Yocto version
 			5.5.0
 			5.1.0
+			4.1.0
 	mode:	sw/cpld
 		sw   : see below Half-Auto
 		cpld : see below Full-Auto

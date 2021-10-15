@@ -20,28 +20,31 @@ dirname top top
 ; SoC type and Files
 ;
 ;=============================
-strdim soc 5
+strdim soc 6
 soc[0] = "H3    (S/N     0 - 2000)" ; WS1.1 is not supported
 soc[1] = "H3 4G (S/N  2001 - 4500)"
 soc[2] = "H3 8G (S/N 20001 - )"
-soc[3] = "M3    (S/N all)"
-soc[4] = "M3N   (S/N all)"
+soc[3] = "M3 v1 (S/N     0 - 2000)" ; v1.0 is not supported
+soc[4] = "M3 v3 (S/N  2001 - )"
+soc[5] = "M3N   (S/N all)"
 
-strdim soc_file 5
+strdim soc_file 6
 soc_file[0] = ""
 soc_file[1] = "h3_4g"
 soc_file[2] = "h3_8g"
-soc_file[3] = "m3"
-soc_file[4] = "m3n"
+soc_file[3] = ""
+soc_file[4] = "m3"
+soc_file[5] = "m3n"
 
 ;=============================
 ;
-; Yocto Versions
+; Versions
 ;
 ;=============================
-strdim yocto 2
-yocto[0] = "5.5.0"
-yocto[1] = "5.1.0"
+strdim versions 3
+versions[0] = "yocto/5.5.0"
+versions[1] = "yocto/5.1.0"
+versions[2] = "yocto/4.1.0"
 
 ;=============================
 ;
@@ -73,25 +76,28 @@ endif
 ; Ask SoC
 ;
 ;=============================
-listbox "SoC Select" "Which SoC ?" soc 1
+listbox "SoC Select" "Which SoC ?" soc
 
 if result<0 then
-  end
-elseif result=0 then
-  messagebox "H3 WS1.1 is not supported" "error"
   end
 endif
 
 load_soc = soc_file[result]
+
+strlen load_soc
+if result<=0 then
+  messagebox "not supported board" "error"
+  end
+endif
 
 ;=============================
 ;
 ; Ask Yocto
 ;
 ;=============================
-listbox "Yocto Select" "Which Yocto ?" yocto
+listbox "Yocto Select" "Which Version ?" versions
 
-load_yocto = yocto[result]
+load_versions = versions[result]
 
 ;=============================
 ;
@@ -107,7 +113,7 @@ dir = inputstr
 ;=============================
 ; Load settings
 ;=============================
-sprintf2 setting "%s\yocto\%s\%s" top load_yocto load_soc
+sprintf2 setting "%s\%s\%s" top load_versions load_soc
 
 ;--------
 ; create array

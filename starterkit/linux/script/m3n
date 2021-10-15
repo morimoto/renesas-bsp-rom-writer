@@ -9,7 +9,7 @@
 #
 # load settings
 #
-source ${top}/linux/script/yocto/${ver}/m3n
+source ${top}/linux/script/${tgt}/${ver}/m3n
 
 #
 # check

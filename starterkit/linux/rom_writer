@@ -7,6 +7,7 @@
 #====================================
 set top [file dirname [file dirname [file normalize [info script]]]]
 set soc   ""
+set tgt   ""
 set ver   ""
 set mode  ""
 set tty   ""
@@ -15,20 +16,22 @@ proc argv_check {} {
     global argv
     global top
     global soc
+    global tgt
     global ver
     global mode
     global tty
 
-    if {[llength $argv] != 4} {
-	puts "rom_writer {h3/m3/m3n} {yocto_ver} {sw/cpld} {tty}"
+    if {[llength $argv] != 5} {
+	puts "rom_writer {h3/m3/m3n} {yocto/android} {ver} {sw/cpld} {tty}"
 	exit 0
     }
     set soc  [lindex $argv 0]
-    set ver  [lindex $argv 1]
-    set mode [lindex $argv 2]
-    set tty  [lindex $argv 3]
+    set tgt  [lindex $argv 1]
+    set ver  [lindex $argv 2]
+    set mode [lindex $argv 3]
+    set tty  [lindex $argv 4]
 
-    set files [glob -nocomplain "${top}/linux/script/yocto/${ver}/${soc}*"]
+    set files [glob -nocomplain "${top}/linux/script/${tgt}/${ver}/${soc}*"]
     if { $files == "" } {
 	puts "run make first"
 	exit

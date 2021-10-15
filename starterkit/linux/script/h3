@@ -10,6 +10,7 @@
 proc serial_number_check_and_get_load_file {} {
     global ver
     global top
+    global tgt
     set mem 0
 
     puts "**************************************"
@@ -32,7 +33,7 @@ proc serial_number_check_and_get_load_file {} {
 	default { exit 0 }
     }
 
-    return ${top}/linux/script/yocto/${ver}/h3_${mem}g
+    return ${top}/linux/script/${tgt}/${ver}/h3_${mem}g
 }
 
 #

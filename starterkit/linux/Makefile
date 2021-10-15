@@ -15,14 +15,14 @@ loop:
 #
 #--------------------------
 loop_yocto:
-	@CMD=loop_soc LIST="$(shell ls ../yocto)" make -s loop
+	@CMD=loop_soc target=yocto LIST="$(shell ls ../yocto)" make -s loop
 loop_soc:
-	@ver=${param} CMD=convert_cmd  LIST="$(shell ls ../yocto/${param})" make -s loop
+	@ver=${param} CMD=convert_cmd  LIST="$(shell ls ../${target}/${param})" make -s loop
 convert_cmd:
-	ver=${ver} soc=${param} make -s script/yocto/${ver}/${param}
-script/yocto/${ver}/${soc}: ../yocto/${ver}/${soc}
+	ver=${ver} soc=${param} make -s script/${target}/${ver}/${param}
+script/${target}/${ver}/${soc}: ../${target}/${ver}/${soc}
 	@echo "create $@"
-	mkdir -p script/yocto/${ver}
+	mkdir -p script/${target}/${ver}
 	script/converter $^ > $@
 
 #--------------------------
