@@ -1,0 +1,12 @@
+list[0] = "E6320000,000000,bootparam_sa0-4x2g.srec"
+list[1] = "E6304000,040000,bl2-h3ulcb-4x2g.srec"
+list[2] = "E6320000,180000,cert_header_sa6-4x2g.srec"
+list[3] = "44000000,1C0000,bl31-h3ulcb-4x2g.srec"
+list[4] = "44100000,200000,tee-h3ulcb.srec"
+list[5] = "50000000,640000,u-boot-elf-h3ulcb-4x2g.srec"
+
+dipswitch_update[0] = "SW1    : OFF"
+dipswitch_update[1] = "SW6[3] : OFF"
+
+dipswitch_normal[0] = "SW1    : ON"
+dipswitch_normal[1] = "SW6[3] : ON"
