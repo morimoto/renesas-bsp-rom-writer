@@ -112,11 +112,14 @@
 	rom_writer soc target ver mode tty
 
 	soc:	h3/m3/m3n
-	target: yocto
+	target: yocto/android
 	ver:	Yocto version
 			5.5.0
 			5.1.0
 			4.1.0
+		Android version
+			11_1.1
+			11_1.0
 	mode:	sw/cpld
 		sw   : see below Half-Auto
 		cpld : see below Full-Auto

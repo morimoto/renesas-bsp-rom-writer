@@ -1,4 +1,4 @@
-all: script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot loop_yocto
+all: script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot loop_yocto loop_android
 
 #--------------------------
 # common loop
@@ -14,6 +14,8 @@ loop:
 # for convert TeraTarm settings to Tcl
 #
 #--------------------------
+loop_android:
+	@CMD=loop_soc target=android LIST="$(shell ls ../android)" make -s loop
 loop_yocto:
 	@CMD=loop_soc target=yocto LIST="$(shell ls ../yocto)" make -s loop
 loop_soc:

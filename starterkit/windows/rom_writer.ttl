@@ -41,10 +41,12 @@ soc_file[5] = "m3n"
 ; Versions
 ;
 ;=============================
-strdim versions 3
+strdim versions 5
 versions[0] = "yocto/5.5.0"
 versions[1] = "yocto/5.1.0"
 versions[2] = "yocto/4.1.0"
+versions[3] = "android/11_1.1"
+versions[4] = "android/11_1.0"
 
 ;=============================
 ;
@@ -92,10 +94,10 @@ endif
 
 ;=============================
 ;
-; Ask Yocto
+; Ask Version
 ;
 ;=============================
-listbox "Yocto Select" "Which Version ?" versions
+listbox "Version Select" "Which Version ?" versions
 
 load_versions = versions[result]
 
@@ -104,7 +106,7 @@ load_versions = versions[result]
 ; Ask srec dir
 ;
 ;=============================
-dirnamebox "Yocto dir ?"
+dirnamebox "binary dir ?"
 
 if result!=1 end
 
