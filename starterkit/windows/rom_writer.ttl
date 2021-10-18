@@ -41,13 +41,15 @@ soc_file[5] = "m3n"
 ; Versions
 ;
 ;=============================
-strdim versions 6
+strdim versions 8
 versions[0] = "yocto/5.5.0"
 versions[1] = "yocto/5.1.0"
 versions[2] = "yocto/4.1.0"
 versions[3] = "yocto/3.21.0"
 versions[4] = "android/11_1.1"
 versions[5] = "android/11_1.0"
+versions[6] = "android/10_2.0"
+versions[7] = "android/10_1.2"
 
 ;=============================
 ;

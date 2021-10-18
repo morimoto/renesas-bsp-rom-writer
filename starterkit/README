@@ -121,6 +121,8 @@
 		Android version
 			11_1.1
 			11_1.0
+			10_2.0
+			10_1.2
 	mode:	sw/cpld
 		sw   : see below Half-Auto
 		cpld : see below Full-Auto
