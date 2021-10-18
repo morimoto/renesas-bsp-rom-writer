@@ -196,9 +196,17 @@ return
 ;=============================
 : run_mode_cpld
 
+yesnobox "Board Power OFF ?" "Power Check"
+if result!=1 end
+
 yesnobox "Board Power ON ?" "Power Check"
 if result!=1 end
 
+; Ctrl-C
+pause 1
+sendln #3
+
+wait "=>"
 sendln ""
 
 wait "=>"

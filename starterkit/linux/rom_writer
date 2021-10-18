@@ -48,19 +48,14 @@ proc ask_yes_no {msg} {
     }
 }
 
-proc power_check {} {
+proc power_check {onoff} {
     puts "********************"
-    puts "Board Power ON"
+    puts "Board Power ${onoff}"
     puts "********************"
     ask_yes_no "OK ?"
 }
 
 proc sw_change_mode {} {
-    puts "********************"
-    puts "Board Power OFF"
-    puts "********************"
-    ask_yes_no "OK ?"
-
     puts "********************"
     puts "Change the Mode"
     dipswitch_update
@@ -146,7 +141,11 @@ proc mot_check {} {
 proc cpld_mode {} {
     set mot [mot]
 
-    send "\r"
+    sleep 1
+    send "\003";	# Ctrl-C
+    expect {
+	"=>" { send "\r" }
+    }
     expect {
 	"=>" { send "cpld write 0x00 0x802181fe\r" }
     }
@@ -165,10 +164,11 @@ proc cpld_mode {} {
 proc before_minicom {} {
     global mode
 
+    power_check "OFF"
     if {$mode == "sw"} {
 	sw_change_mode
     }
-    power_check
+    power_check "ON"
 }
 
 proc after_minicom {} {
