@@ -32,7 +32,7 @@ proc serial_number_check_and_get_load_file {} {
 	default { exit 0 }
     }
 
-    return ${top}/linux/h3_${mem}g_${ver}
+    return ${top}/linux/script/yocto/${ver}/h3_${mem}g
 }
 
 #

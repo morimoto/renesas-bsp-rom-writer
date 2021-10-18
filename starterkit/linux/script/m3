@@ -9,7 +9,7 @@
 #
 # load settings
 #
-source ${top}/linux/m3_${ver}
+source ${top}/linux/script/yocto/${ver}/m3
 
 #
 # check

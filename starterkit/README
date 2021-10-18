@@ -104,7 +104,7 @@
 
 	You need make first.
 
-		> cd ${renesas-bsp-rom-writer}/starterkit
+		> cd ${renesas-bsp-rom-writer}/starterkit/linux
 		> make
 
 **  rom_writer
@@ -154,10 +154,13 @@
 		https://ttssh2.osdn.jp/index.html.ja
 		https://ttssh2.osdn.jp/index.html.en
 
-	You need mot file if use "Full-Auto" mode, but Windows user can't create it by yours.
-	Please get it from Linux user and set it below. Linux user can find it at same place.
+	You need mot file if use "Full-Auto" mode, but Windows user can't create it by yourself.
+	Please get it from Linux user, and set it below.
 
-		${renesas-bsp-rom-writer}/starterkit/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+	Linux:
+		${renesas-bsp-rom-writer}/starterkit/linux/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+	Windows:
+		${renesas-bsp-rom-writer}/starterkit/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
 
 **  Usage
 

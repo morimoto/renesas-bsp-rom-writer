@@ -28,7 +28,7 @@ proc argv_check {} {
     set mode [lindex $argv 2]
     set tty  [lindex $argv 3]
 
-    set files [glob -nocomplain "${top}/linux/${soc}_*${ver}"]
+    set files [glob -nocomplain "${top}/linux/script/yocto/${ver}/${soc}*"]
     if { $files == "" } {
 	puts "run make first"
 	exit
@@ -125,7 +125,7 @@ proc file_check {lists} {
 
 proc mot {} {
     global top
-    return $top/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+    return $top/linux/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
 }
 
 proc mot_check {} {
@@ -240,4 +240,4 @@ proc run_main {lists} {
 }
 
 argv_check
-source $top/linux/$soc
+source $top/linux/script/$soc
