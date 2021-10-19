@@ -233,7 +233,9 @@ proc run_main {lists} {
 	expect {
 	    "Clear OK?(y/n)" { send "y" }
 	}
-	expect { ">" }
+	expect {
+	    ">"
+	}
     }
 }
 
