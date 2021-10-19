@@ -1,0 +1,12 @@
+# We can't use symbolic link here, because it will be used both Windows/Linux
+# use table style.
+#
+#  These informations are came from
+# "Android 11 Board Support Package Specification Release Note: Software"
+# - 3. Flashing binaries
+#  - 3.1. Flashing IPL
+#
+11_1.1:map01
+11_1.0:map01
+10_2.0:map01
+10_1.2:map01

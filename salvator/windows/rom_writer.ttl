@@ -1,0 +1,84 @@
+; SPDX-License-Identifier: GPL-2.0
+;====================================
+;
+; Renesas StarterKit ROM Writer
+;
+;====================================
+;=============================
+; set 1 if you want to be asked
+;=============================
+ask_in_main_loop = 0
+
+;=============================
+; top dir
+;=============================
+getdir top
+dirname top top
+
+;=============================
+;
+; SoC type and Files
+;
+;=============================
+num_soc = 5
+strdim soc	num_soc
+strdim soc_file	num_soc
+
+soc[0] = "H3 4G"
+soc[1] = "H3 8G"
+soc[2] = "M3 4G"
+soc[3] = "M3 8G"
+soc[4] = "M3N"
+
+soc_file[0] = "h3_4g"
+soc_file[1] = "h3_8g"
+soc_file[2] = "m3_4g"
+soc_file[3] = "m3_8g"
+soc_file[4] = "m3n"
+
+;=============================
+;
+; Versions
+;
+;=============================
+strdim versions 8
+versions[0] = "yocto/5.5.0"
+versions[1] = "yocto/5.1.0"
+versions[2] = "yocto/4.1.0"
+versions[3] = "yocto/3.21.0"
+versions[4] = "android/11_1.1"
+versions[5] = "android/11_1.0"
+versions[6] = "android/10_2.0"
+versions[7] = "android/10_1.2"
+
+;=============================
+;
+; has CPLD mode
+;
+;=============================
+has_cpld = 0
+
+;=============================
+;
+; Max list number
+; Max DipSwitch setting message number
+;
+; see below settings on each soc settings file
+;
+;	list
+;	dipswitch_update
+;	dipswitch_normal
+;
+;=============================
+num_list = 6
+num_sw   = 5
+
+;=============================
+;
+; run main loop
+; reuse Starterkit's lib
+;
+;=============================
+sprintf2 lib "%s\..\starterkit\windows\rom_writer.lib" top
+include lib
+end
