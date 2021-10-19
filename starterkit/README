@@ -157,6 +157,31 @@
 		> cd ${rom-dir}
 		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 5.1.0 cpld /dev/ttyUSBx
 
+**  android_setup
+
+	android_setup <mac> <tty>
+
+	mac:	Ether Mac address
+		Renesas board has it on Ether socket.
+		ex)
+			12:34:56:78:9a:bc
+	tty:	/dev/ttyUSBx
+		see above "How to know the connected tty ?"
+
+	[Note]
+	This command should be called from ROM dir which has Android binarys.
+	This command uses "sudo". you need belong to sudo group.
+	During this command, Ubuntu might has below message box. But you can ignore it.
+
+		-----------------------------------
+		Unable to mount USB download gadget
+		can't open MTP device xxx
+		-----------------------------------
+
+	ex)
+		> cd ${android-rom-dir}
+		> ${renesas-bsp-rom-writer}/starterkit/linux/android_setup 12:34:56:78:9a:bc /dev/ttyUSBx
+
 -------------------------------
 * How to use it on Windows ?
 -------------------------------
