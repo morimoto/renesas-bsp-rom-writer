@@ -92,10 +92,8 @@
 		OK: Host PC <---------------> StarterKit
 
 -------------------------------
-* How to use it on Linux ?
+* Preparation
 -------------------------------
-
-**  Preparation
 
 	You need "expect", "minicom", "git" command.
 	If you are using Ubuntu, you can install these by
@@ -107,12 +105,19 @@
 		> cd ${renesas-bsp-rom-writer}/starterkit/linux
 		> make
 
+-------------------------------
+* How to use it on Linux ?
+-------------------------------
+
 **  rom_writer
 
-	rom_writer soc target ver mode tty
+	rom_writer <soc> <target> <ver> <mode> <tty>
 
-	soc:	h3/m3/m3n
-	target: yocto/android
+	soc:	h3
+		m3
+		m3n
+	target: yocto
+		android
 	ver:	Yocto version
 			5.5.0
 			5.1.0
@@ -123,30 +128,31 @@
 			11_1.0
 			10_2.0
 			10_1.2
-	mode:	sw/cpld
-		sw   : see below Half-Auto
+	mode:	sw   : see below Half-Auto
 		cpld : see below Full-Auto
 	tty:	/dev/ttyUSBx
 		see above "How to know the connected tty ?"
 
-**  Half-Auto
 
+	[Half-Auto]
 	You need to use "Half-Auto" if your board doesn't have U-boot yet.
 	                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	goto ROM dir, and call rom_writer with "sw" option from there.
 
-	ex) In case of H3, and Yocto v5.1.0 case
+	ex)
+	In case of H3, and Yocto v5.1.0 case
 
 		> cd ${rom-dir}
 		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 5.1.0 sw /dev/ttyUSBx
 
-**  Full-Auto
 
+	[Full-Auto]
 	You can use "Full-Auto" if your board have U-boot.
 	                           ^^^^^^^^^^^^^^^^^^^^^^
 	goto ROM dir, and call rom_writer with "cpld" option from there.
 
-	ex) In case of H3, and Yocto v5.1.0 case
+	ex)
+	In case of H3, and Yocto v5.1.0 case
 
 		> cd ${rom-dir}
 		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 5.1.0 cpld /dev/ttyUSBx
