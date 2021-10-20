@@ -9,4 +9,4 @@
 #
 # load settings
 #
-source ${top}/linux/script/${tgt}/${ver}/m3n
+source ${top}/linux/script/${tgt}/${map}/m3n

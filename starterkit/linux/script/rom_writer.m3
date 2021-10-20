@@ -34,4 +34,4 @@ serial_number_check
 #
 # load settings
 #
-source ${top}/linux/script/${tgt}/${ver}/m3
+source ${top}/linux/script/${tgt}/${map}/m3

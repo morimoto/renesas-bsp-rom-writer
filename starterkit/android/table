@@ -1,0 +1,6 @@
+# We can't use symbolic link here, because it will be used both Windows/Linux
+# use table style.
+11_1.1:map01
+11_1.0:map01
+10_2.0:map01
+10_1.2:map01

@@ -10,7 +10,7 @@ source $top/linux/script/rom_writer.lib
 
 set soc  [lindex $argv 0]
 set tgt  [lindex $argv 1]
-set ver  [lindex $argv 2]
+set map  [lindex $argv 2]
 set mode [lindex $argv 3]
 set tty  [lindex $argv 4]
 
@@ -18,10 +18,10 @@ proc argv_check {} {
     global top
     global soc
     global tgt
-    global ver
+    global map
     global mode
 
-    set files [glob -nocomplain "${top}/linux/script/${tgt}/${ver}/${soc}*"]
+    set files [glob -nocomplain "${top}/linux/script/${tgt}/${map}/${soc}*"]
     if { $files == "" } {
 	puts "run make first"
 	exit

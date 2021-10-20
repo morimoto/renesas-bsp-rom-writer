@@ -15,16 +15,16 @@ loop:
 #
 #--------------------------
 loop_android:
-	@CMD=loop_soc target=android LIST="$(shell ls ../android)" make -s loop
+	@CMD=loop_soc target=android LIST="$(shell ls ../android | grep map)" make -s loop
 loop_yocto:
-	@CMD=loop_soc target=yocto LIST="$(shell ls ../yocto)" make -s loop
+	@CMD=loop_soc target=yocto LIST="$(shell ls ../yocto | grep map)" make -s loop
 loop_soc:
-	@ver=${param} CMD=convert_cmd  LIST="$(shell ls ../${target}/${param})" make -s loop
+	@map=${param} CMD=convert_cmd  LIST="$(shell ls ../${target}/${param})" make -s loop
 convert_cmd:
-	ver=${ver} soc=${param} make -s script/${target}/${ver}/${param}
-script/${target}/${ver}/${soc}: ../${target}/${ver}/${soc}
+	soc=${param} make -s script/${target}/${map}/${param}
+script/${target}/${map}/${soc}: ../${target}/${map}/${soc}
 	@echo "create $@"
-	mkdir -p script/${target}/${ver}
+	mkdir -p script/${target}/${map}
 	script/converter $^ > $@
 
 #--------------------------

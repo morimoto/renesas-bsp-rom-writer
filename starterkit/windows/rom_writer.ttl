@@ -102,7 +102,31 @@ endif
 ;=============================
 listbox "Version Select" "Which Version ?" versions
 
-load_versions = versions[result]
+strsplit versions[result] "/"
+
+;=============================
+;
+; search map table
+;
+;=============================
+target = groupmatchstr1
+sprintf2 ver  "%s:" groupmatchstr2
+sprintf2 file "%s\%s\table" top target
+
+fileopen fh file 0
+while 1
+  filereadln fh map
+  if result break
+
+  strscan map ver
+  pos = result
+  if pos!=0 then
+    strlen ver
+    strremove map 1 result
+    break
+  endif
+endwhile
+fileclose fh
 
 ;=============================
 ;
@@ -118,7 +142,7 @@ dir = inputstr
 ;=============================
 ; Load settings
 ;=============================
-sprintf2 setting "%s\%s\%s" top load_versions load_soc
+sprintf2 setting "%s\%s\%s\%s" top target map load_soc
 
 ;--------
 ; create array
