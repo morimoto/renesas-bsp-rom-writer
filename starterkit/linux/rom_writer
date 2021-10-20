@@ -6,6 +6,8 @@
 #
 #====================================
 set top [file dirname [file dirname [file normalize [info script]]]]
+source $top/linux/script/rom_writer.lib
+
 set soc   ""
 set tgt   ""
 set ver   ""
@@ -40,89 +42,6 @@ proc argv_check {} {
     if { $mode != "sw" && $mode != "cpld" } {
 	puts "select sw or cpld"
 	exit
-    }
-}
-
-proc ask_yes_no {msg} {
-    puts "$msg (y/n) ?"
-    set ans [gets stdin]
-    if {$ans != "y"} {
-	exit 0
-    }
-}
-
-proc power_check {onoff} {
-    puts "********************"
-    puts "Board Power ${onoff}"
-    puts "********************"
-    ask_yes_no "OK ?"
-}
-
-proc sw_change_mode {} {
-    puts "********************"
-    puts "Change the Mode"
-    dipswitch_update
-    puts "********************"
-    ask_yes_no "Are you ready ?"
-}
-
-proc sw_change_back {} {
-    puts "********************"
-    puts "Change back the Mode"
-    dipswitch_normal
-    puts "********************"
-    ask_yes_no "Are you ready ?"
-}
-
-proc upload_file {file} {
-    #
-    # read srec file
-    #
-    set f [open $file]
-    set srec [split [read $f] "\n"]
-    close $f
-
-    #
-    # send srec as ascii
-    #
-    set send_slow {10 .001}
-    foreach s $srec {
-	send -s "$s\n"
-    }
-}
-
-proc file_check {lists} {
-    set err 0
-
-    #
-    # it expects lists are
-    #
-    #	top,save,file
-    #	top,save,file
-    #	top,save,file
-    #	...
-    #
-    foreach list $lists {
-	set data [split $list ","]
-	if {[llength $data] != 3} {
-	    return
-	}
-
-	#
-	# It assumes files are
-	# located at pwd
-	#
-	set pwd  [format "%s" [pwd] ]
-	set file [lindex $data 2]
-
-	if { [ file exists "${pwd}/${file}" ] != 1 } {
-	    puts "file not found at pwd: ${pwd}/${file}"
-	    set err 1
-	}
-    }
-
-    if {$err != 0} {
-	exit 0
     }
 }
 
@@ -184,63 +103,23 @@ proc after_minicom {} {
     }
 }
 
-proc run_main {lists} {
-    #
-    # it expects lists are
-    #
-    #	addr,save,file
-    #	addr,save,file
-    #	addr,save,file
-    #	...
-    #
-    foreach list $lists {
-
-	#
-	# list is
-	#	addr,save,file
-	#
-	set data [split $list ","]
-	if {[llength $data] != 3} {
-	    return
-	}
-	set addr [lindex $data 0]
-	set save [lindex $data 1]
-	set file [lindex $data 2]
-
-	send "\r"
-
-	expect {
-	    ">" { send "xls2\r" }
-	}
-	expect {
-	    "Select \(1-3\)>" { send "3\r" }
-	}
-	expect {
-	    "(Push Y key)"    { send "Y" }
-	}
-	expect {
-	    "(Push Y key)"    { send "Y" }
-	}
-	expect {
-	    "Please Input : H'"    { send "$addr\r" }
-	}
-	expect {
-	    "Please Input : H'"    { send "$save\r" }
-	}
-	expect {
-	    "please send !"
-	}
-
-	upload_file $file
-
-	expect {
-	    "Clear OK?(y/n)" { send "y" }
-	}
-	expect {
-	    ">"
-	}
-    }
-}
-
 argv_check
 source $top/linux/script/$soc
+
+#
+# check
+#
+file_check $lists
+mot_check
+
+#
+# run minicom
+#
+before_minicom
+spawn env LANG=C minicom -D $tty -b115200
+after_minicom
+
+#
+# run main
+#
+run_main $lists

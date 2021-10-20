@@ -10,21 +10,3 @@
 # load settings
 #
 source ${top}/linux/script/${tgt}/${ver}/m3n
-
-#
-# check
-#
-file_check $lists
-mot_check
-
-#
-# run minicom
-#
-before_minicom
-spawn env LANG=C minicom -D $tty -b115200
-after_minicom
-
-#
-# run main
-#
-run_main $lists

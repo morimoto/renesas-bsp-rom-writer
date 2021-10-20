@@ -40,21 +40,3 @@ proc serial_number_check_and_get_load_file {} {
 # load 4g or 8g settings
 #
 source [serial_number_check_and_get_load_file]
-
-#
-# check
-#
-file_check $lists
-mot_check
-
-#
-# run minicom
-#
-before_minicom
-spawn env LANG=C minicom -D $tty -b115200
-after_minicom
-
-#
-# run main
-#
-run_main $lists
