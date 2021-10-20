@@ -92,7 +92,7 @@ proc after_minicom {} {
 }
 
 argv_check
-source $top/linux/script/$soc
+source $top/linux/script/rom_writer.$soc
 
 #
 # check
