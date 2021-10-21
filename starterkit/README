@@ -81,6 +81,17 @@
 		https://elinux.org/R-Car/Boards/H3SK#Hardware
 
 -------------------------------
+* Known Issue
+-------------------------------
+
+	renesas-bsp-rom-writer doesn't work correctly
+	if USB cable is connected through USB Hub.
+	We don't know why...
+
+		NG: Host PC <--> USB Hub <--> StarterKit
+		OK: Host PC <---------------> StarterKit
+
+-------------------------------
 * How to use it on Linux ?
 -------------------------------
 
