@@ -5,6 +5,13 @@
 # Renesas ROM Writer lib
 #
 #====================================
+expect_before {
+    timeout {
+	puts "Timeout. Please retry.\r"
+	exit 1
+    }
+}
+
 proc ask_yes_no {msg} {
     puts "$msg (y/n) ?"
     set ans [gets stdin]
