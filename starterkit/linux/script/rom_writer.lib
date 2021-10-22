@@ -5,11 +5,34 @@
 # Renesas ROM Writer lib
 #
 #====================================
-expect_before {
+expect_after {
     timeout {
 	puts "Timeout. Please retry.\r"
 	exit 1
     }
+}
+
+proc ctrl_c {until} {
+    set timeout 1
+    set i 0
+
+    #
+    # some case, you need "sleep" before ctrl_c
+    #
+    while {$i < 10} {
+	send "\003"
+	expect {
+	    $until {
+		set timeout 10
+		return
+	    }
+	    timeout {}
+	}
+	incr i
+    }
+
+    puts "Auto Run couldn't stop"
+    exit 1
 }
 
 proc ask_yes_no {msg} {

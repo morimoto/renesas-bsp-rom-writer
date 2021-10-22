@@ -52,10 +52,8 @@ proc cpld_mode {} {
     set mot [mot]
 
     sleep 1
-    send "\003";	# Ctrl-C
-    expect {
-	"=>" { send "\r" }
-    }
+    ctrl_c "=>"
+    send "\r"
     expect {
 	"=>" { send "cpld write 0x00 0x802181fe\r" }
     }

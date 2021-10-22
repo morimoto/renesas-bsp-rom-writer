@@ -14,10 +14,8 @@ set tty   [lindex $argv 2]
 
 proc erase_bootloader {} {
     sleep 1
-    send "\003";	# Ctrl-C
-    expect {
-	"=>" { send "\r" }
-    }
+    ctrl_c "=>"
+    send "\r"
     expect {
 	"=>" { send "mmc dev 1 1\r" }
     }
@@ -40,13 +38,14 @@ proc erase_bootloader {} {
 	"=>" { send "reset\r" }
     }
     sleep 1
-    send "\003";	# Ctrl-C
+    ctrl_c "=>"
 }
 
 proc setenv {} {
     global addr
     global time
 
+    send "\r"
     expect {
 	"=>" { send "env default -a\r" }
     }
@@ -67,10 +66,11 @@ proc setenv {} {
 	"=>" { send "reset\r" }
     }
     sleep 1
-    send "\003";	# Ctrl-C
+    ctrl_c "=>"
 }
 
 proc start_fastboot {} {
+    send "\r"
     expect {
 	"=>" { send "fastboot\r" }
     }
