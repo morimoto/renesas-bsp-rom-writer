@@ -104,6 +104,7 @@ mot_check
 before_minicom
 spawn env LANG=C minicom -D $tty -b115200
 after_minicom
+speed_up
 
 #
 # run main

@@ -67,19 +67,38 @@ proc sw_change_back {} {
 }
 
 proc upload_file {file} {
-    #
-    # read srec file
-    #
-    set f [open $file]
-    set srec [split [read $f] "\n"]
-    close $f
+    global tty
 
     #
     # send srec as ascii
     #
-    set send_slow {10 .001}
-    foreach s $srec {
-	send -s "$s\n"
+    exec cat $file > $tty
+    send "\n"
+}
+
+proc speed_up {} {
+    global tty
+
+    set baudrate "115200"
+
+    send "\r"
+    expect {
+	">" { send "sup\r" }
+    }
+    expect {
+	"460.8Kbps" { set baudrate "460800" }
+	"921.6Kbps" { set baudrate "921600" }
+    }
+
+    # close current minicom and re-open minicom
+    close; wait
+    spawn env LANG=C minicom -D $tty -b $baudrate
+
+    expect {
+	"Press CTRL-A Z for help on special keys" { send "\r" }
+    }
+    expect {
+	">"
     }
 }
 
