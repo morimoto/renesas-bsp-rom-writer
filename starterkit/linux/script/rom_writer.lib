@@ -119,6 +119,10 @@ proc file_check {lists} {
 }
 
 proc run_main {lists} {
+    # Some board needs much time to write data
+    # Let's set enough long timeout
+    set timeout 600
+
     #
     # it expects lists are
     #
