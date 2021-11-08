@@ -19,7 +19,8 @@ if [ $# != 5  ]; then
 fi
 
 MAP=`grep "^${VER}:" ${TOP}/../${TGT}/table 2>/dev/null | awk -F ":" '{print $2}'`
-if [ x${MAP} = x ]; then
+if [ x${MAP} = x -o \
+     ! -f ${TOP}/script/rom_writer.${SOC} ]; then
 	${TOP}/script/help ${TOP} rom_writer
 	exit
 fi
