@@ -1,5 +1,11 @@
 # We can't use symbolic link here, because it will be used both Windows/Linux
 # use table style.
+#
+# These informations are came from
+#	https://elinux.org/R-Car/Boards/H3SK#Flashing_firmware
+#	https://elinux.org/R-Car/Boards/M3SK#Flashing_firmware
+#	https://elinux.org/R-Car/Boards/M3NSK#Flashing_firmware
+#
 5.5.0:map02
 5.1.0:map02
 4.1.0:map01

@@ -1,5 +1,9 @@
 # We can't use symbolic link here, because it will be used both Windows/Linux
 # use table style.
+#
+# These informations are came from
+#	https://elinux.org/R-Car/Boards/Kingfisher/Android/Android_10#Building_the_Android_BSP_for_Kingfisher_board
+#
 11_1.1:map01
 11_1.0:map01
 10_2.0:map01
