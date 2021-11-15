@@ -14,38 +14,9 @@ set map  [lindex $argv 2]
 set mode [lindex $argv 3]
 set tty  [lindex $argv 4]
 
-proc argv_check {} {
-    global top
-    global soc
-    global tgt
-    global map
-    global mode
-
-    set files [glob -nocomplain "${top}/linux/script/${tgt}/${map}/${soc}*"]
-    if { $files == "" } {
-	puts "run make first"
-	exit
-    }
-
-    if { $mode != "sw" && $mode != "cpld" } {
-	puts "select sw or cpld"
-	exit
-    }
-}
-
 proc mot {} {
     global top
     return $top/linux/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
-}
-
-proc mot_check {} {
-    set mot [mot]
-
-    if { [ file exists $mot ] != 1 } {
-	puts "You don't have mot"
-	puts "run make first"
-	exit 0
-    }
 }
 
 proc cpld_mode {} {
@@ -89,14 +60,12 @@ proc after_minicom {} {
     }
 }
 
-argv_check
 source $top/linux/script/rom_writer.$soc
 
 #
 # check
 #
 file_check $lists
-mot_check
 
 #
 # run minicom

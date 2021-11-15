@@ -111,51 +111,58 @@
 
 **  rom_writer
 
-	rom_writer <soc> <target> <ver> <mode> <tty>
+	rom_writer [a:y:h] <soc> <tty>
 
+	goto ROM dir, and call rom_writer command from there.
+
+	-y:	write Yocto
+		5.5.0
+		5.1.0
+		4.1.0
+		3.21.0
+	-a:	write Android
+		11_1.1
+		11_1.0
+		10_2.0
+		10_1.2
+	-h:	[Half-Auto] mode.
+		[Full-Auto] is default.
 	soc:	h3
 		m3
 		m3n
-	target: yocto
-		android
-	ver:	Yocto version
-			5.5.0
-			5.1.0
-			4.1.0
-			3.21.0
-		Android version
-			11_1.1
-			11_1.0
-			10_2.0
-			10_1.2
-	mode:	sw   : see below Half-Auto
-		cpld : see below Full-Auto
 	tty:	/dev/ttyUSBx
 		see above "How to know the connected tty ?"
 
-
 	[Half-Auto]
+	Need manual Dip-Switch setup.
 	You need to use "Half-Auto" if your board doesn't have U-boot yet.
 	                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	goto ROM dir, and call rom_writer with "sw" option from there.
-
-	ex)
-	In case of H3, and Yocto v5.1.0 case
-
-		> cd ${rom-dir}
-		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 5.1.0 sw /dev/ttyUSBx
-
-
 	[Full-Auto]
-	You can use "Full-Auto" if your board have U-boot.
-	                           ^^^^^^^^^^^^^^^^^^^^^^
-	goto ROM dir, and call rom_writer with "cpld" option from there.
+	No manual Dip-Switch setup is needed.
+	You need run "make" at starterkit/linux once.
+	You can use "Full-Auto" if your board already have U-boot.
+	                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	One note is that it looks stop after "please send !", but it is sending
+	Mot to board. No worry. You need is just waiting.
 
-	ex)
-	In case of H3, and Yocto v5.1.0 case
+	[Note]
+	This command should be called from ROM dir which has Yocto/Android binarys.
+
+	ex1)
+	Write Yocto v5.1.0 to H3 Starterkit by Half-Auto mode.
+	      ^^^^^^^^^^^^    ^^               ^^^^^^^^^
 
 		> cd ${rom-dir}
-		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer h3 5.1.0 cpld /dev/ttyUSBx
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer -y 5.1.0 -h h3 /dev/ttyUSBx
+
+	ex2)
+	Write Android 10_2.0 to M3N Starterkit by Full-Auto mode.
+	      ^^^^^^^^^^^^^^    ^^^               ^^^^^^^^^
+
+		> cd ${renesas-bsp-rom-writer}/starterkit/linux/
+		> make
+		> cd ${rom-dir}
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer -a 10_2.0 m3n /dev/ttyUSBx
 
 **  android_setup
 

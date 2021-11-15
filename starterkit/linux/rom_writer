@@ -7,19 +7,44 @@
 #===============================
 TOP=`readlink -f "$0" | xargs dirname`
 
-SOC=$1
-TGT=$2
-VER=$3
-MOD=$4
-TTY=$5
+#
+# parse params
+#
+CHK=""
+MOD=cpld # default
+while getopts a:y:h OPT
+do
+	case $OPT in
+		a) TGT=android
+		   VER=$OPTARG
+		   CHK="${CHK}1";;
+		y) TGT=yocto
+		   VER=$OPTARG
+		   CHK="${CHK}1";;
+		h) MOD=sw;;
+		*) ${TOP}/scripts/help.sh && exit 1;;
+	esac
+done
+shift $(expr $OPTIND - 1)
 
-if [ $# != 5  ]; then
-	${TOP}/script/help ${TOP} rom_writer
+SOC=$1
+TTY=$2
+MAP=`grep "^${VER}:" ${TOP}/../${TGT}/table 2>/dev/null | awk -F ":" '{print $2}'`
+
+if [ ! -d ${TOP}/script/${TGT}/${MAP} ]; then
+	echo "run make first"
 	exit
 fi
 
-MAP=`grep "^${VER}:" ${TOP}/../${TGT}/table 2>/dev/null | awk -F ":" '{print $2}'`
-if [ x${MAP} = x -o \
+if [ ! -e ${TTY} ]; then
+	echo "no ${TTY} found"
+	exit
+fi
+
+if [ x${SOC} = x -o \
+     x${TTY} = x -o \
+     x${MAP} = x -o \
+     x${CHK} != x1 -o\
      ! -f ${TOP}/script/rom_writer.${SOC} ]; then
 	${TOP}/script/help ${TOP} rom_writer
 	exit
