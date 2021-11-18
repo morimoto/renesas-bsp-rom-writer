@@ -1,0 +1,113 @@
+#!/usr/bin/expect
+# SPDX-License-Identifier: GPL-2.0
+#====================================
+#
+# Renesas StarterKit ROM Writer
+#
+#====================================
+set top [file dirname [file dirname [file dirname [file normalize [info script]]]]]
+source $top/linux/script/rom_writer.lib
+
+set soc  [lindex $argv 0]
+set tgt  [lindex $argv 1]
+set ver  [lindex $argv 2]
+set mode [lindex $argv 3]
+set tty  [lindex $argv 4]
+
+proc argv_check {} {
+    global top
+    global soc
+    global tgt
+    global ver
+    global mode
+
+    set files [glob -nocomplain "${top}/linux/script/${tgt}/${ver}/${soc}*"]
+    if { $files == "" } {
+	puts "run make first"
+	exit
+    }
+
+    if { $mode != "sw" && $mode != "cpld" } {
+	puts "select sw or cpld"
+	exit
+    }
+}
+
+proc mot {} {
+    global top
+    return $top/linux/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+}
+
+proc mot_check {} {
+    set mot [mot]
+
+    if { [ file exists $mot ] != 1 } {
+	puts "You don't have mot"
+	puts "run make first"
+	exit 0
+    }
+}
+
+proc cpld_mode {} {
+    set mot [mot]
+
+    sleep 1
+    send "\003";	# Ctrl-C
+    expect {
+	"=>" { send "\r" }
+    }
+    expect {
+	"=>" { send "cpld write 0x00 0x802181fe\r" }
+    }
+    expect {
+	"=>" { send "cpld write 0x80 0x01\r" }
+    }
+    expect {
+	"please send !"
+    }
+    upload_file $mot
+    expect {
+	">"
+    }
+}
+
+proc before_minicom {} {
+    global mode
+
+    power_check "OFF"
+    if {$mode == "sw"} {
+	sw_change_mode
+    }
+    power_check "ON"
+}
+
+proc after_minicom {} {
+    global mode
+
+    if {$mode == "sw"} {
+	sw_change_back
+    } else {
+	cpld_mode
+    }
+}
+
+argv_check
+source $top/linux/script/$soc
+
+#
+# check
+#
+file_check $lists
+mot_check
+
+#
+# run minicom
+#
+before_minicom
+spawn env LANG=C minicom -D $tty -b115200
+after_minicom
+
+#
+# run main
+#
+run_main $lists

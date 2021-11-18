@@ -1,125 +1,15 @@
-#!/usr/bin/expect
-# SPDX-License-Identifier: GPL-2.0
-#====================================
+#! /bin/bash
+#===============================
 #
-# Renesas StarterKit ROM Writer
+# rom_writer
 #
-#====================================
-set top [file dirname [file dirname [file normalize [info script]]]]
-source $top/linux/script/rom_writer.lib
+# 2021/10/20 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+TOP=`readlink -f "$0" | xargs dirname`
 
-set soc   ""
-set tgt   ""
-set ver   ""
-set mode  ""
-set tty   ""
-
-proc argv_check {} {
-    global argv
-    global top
-    global soc
-    global tgt
-    global ver
-    global mode
-    global tty
-
-    if {[llength $argv] != 5} {
-	puts "rom_writer {h3/m3/m3n} {yocto/android} {ver} {sw/cpld} {tty}"
-	exit 0
-    }
-    set soc  [lindex $argv 0]
-    set tgt  [lindex $argv 1]
-    set ver  [lindex $argv 2]
-    set mode [lindex $argv 3]
-    set tty  [lindex $argv 4]
-
-    set files [glob -nocomplain "${top}/linux/script/${tgt}/${ver}/${soc}*"]
-    if { $files == "" } {
-	puts "run make first"
+if [ $# != 5  ]; then
+	${TOP}/script/help ${TOP} rom_writer
 	exit
-    }
+fi
 
-    if { $mode != "sw" && $mode != "cpld" } {
-	puts "select sw or cpld"
-	exit
-    }
-}
-
-proc mot {} {
-    global top
-    return $top/linux/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
-}
-
-proc mot_check {} {
-    set mot [mot]
-
-    if { [ file exists $mot ] != 1 } {
-	puts "You don't have mot"
-	puts "run make first"
-	exit 0
-    }
-}
-
-proc cpld_mode {} {
-    set mot [mot]
-
-    sleep 1
-    send "\003";	# Ctrl-C
-    expect {
-	"=>" { send "\r" }
-    }
-    expect {
-	"=>" { send "cpld write 0x00 0x802181fe\r" }
-    }
-    expect {
-	"=>" { send "cpld write 0x80 0x01\r" }
-    }
-    expect {
-	"please send !"
-    }
-    upload_file $mot
-    expect {
-	">"
-    }
-}
-
-proc before_minicom {} {
-    global mode
-
-    power_check "OFF"
-    if {$mode == "sw"} {
-	sw_change_mode
-    }
-    power_check "ON"
-}
-
-proc after_minicom {} {
-    global mode
-
-    if {$mode == "sw"} {
-	sw_change_back
-    } else {
-	cpld_mode
-    }
-}
-
-argv_check
-source $top/linux/script/$soc
-
-#
-# check
-#
-file_check $lists
-mot_check
-
-#
-# run minicom
-#
-before_minicom
-spawn env LANG=C minicom -D $tty -b115200
-after_minicom
-
-#
-# run main
-#
-run_main $lists
+${TOP}/script/rom_writer $@

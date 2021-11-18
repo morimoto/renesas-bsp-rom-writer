@@ -1,0 +1,17 @@
+#! /bin/sh
+#===============================
+#
+# help
+#
+# 2021/04/14 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+README=$1/../README
+COMMAND=$2
+
+LINE1=`grep -n -w "^**  ${COMMAND}" ${README} | awk -F ":" '{print $1}'`
+LINE1=`expr ${LINE1} + 1`
+
+LINE2=`tail -n +${LINE1} ${README} | egrep -n "^\S+" | head -n 1 | awk -F ":" '{print $1}'`
+LINE2=`expr ${LINE1} + ${LINE2} - 2`
+
+sed -n ${LINE1},${LINE2}p ${README} | less -F
