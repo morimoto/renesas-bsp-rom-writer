@@ -47,7 +47,8 @@ exit
 ; mot exist => Full Auto
 mot = ""
 
-if has_cpld!=1 return
+strcompare auto_mode ""
+if result=0 return
 
 strdim auto 2
 auto[0] = "Half Auto - need dipswitch control"
@@ -230,16 +231,23 @@ return
 
 ;=============================
 ;
-; Mode Change (SW/CPLD)
+; Mode Change
 ;
 ;=============================
 : mode_change
 
 strcompare mot ""
 if result=0 then
+  ;
+  ; SW mode
+  ;
   call run_mode_sw
 else
-  call run_mode_cpld
+  ;
+  ; CPLD mode
+  ;
+  strcompare auto_mode "cpld"
+  if result=0 call run_mode_cpld
 endif
 
 return
