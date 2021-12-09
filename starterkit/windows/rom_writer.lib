@@ -237,8 +237,11 @@ return
 
 timeout = 1
 
+; avoid some noise (?)
 sendln ""
+wait ">"
 
+sendln ""
 wait ">"
 sendln "sup"
 
