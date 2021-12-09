@@ -5,9 +5,9 @@ list[3] = "44000000,1C0000,bl31-m3nulcb.srec"
 list[4] = "44100000,200000,tee-m3nulcb.srec"
 list[5] = "50000000,640000,u-boot-elf.srec"
 
-dipswitch_update[0] = "SW1    : OFF"
-dipswitch_update[1] = "SW6[3] : OFF"
+dipswitch_h_update[0] = "SW1    : OFF"
+dipswitch_h_update[1] = "SW6[3] : OFF"
 
-dipswitch_normal[0] = "SW1    : ON"
-dipswitch_normal[1] = "SW6[3] : ON"
+dipswitch_h_normal[0] = "SW1    : ON"
+dipswitch_h_normal[1] = "SW6[3] : ON"
 

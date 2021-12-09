@@ -53,12 +53,12 @@ auto_mode = "cpld"
 ; see below settings on each soc settings file
 ;
 ;	list
-;	dipswitch_update
-;	dipswitch_normal
+;	dipswitch_h_update
+;	dipswitch_h_normal
 ;
 ;=============================
 num_list = 6
-num_sw   = 4
+num_dipswitch_h = 4
 
 ;=============================
 ;

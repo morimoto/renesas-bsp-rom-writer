@@ -45,7 +45,7 @@ proc before_minicom {} {
 
     power_check "OFF"
     if {$mode == "sw"} {
-	sw_change_mode
+	sw_change_mode dipswitch_h_update
     }
     power_check "ON"
 }
@@ -54,7 +54,7 @@ proc after_minicom {} {
     global mode
 
     if {$mode == "sw"} {
-	sw_change_back
+	sw_change_back dipswitch_h_normal
     } else {
 	cpld_mode
     }

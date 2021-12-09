@@ -23,8 +23,8 @@ versions[7] = "android/10_1.2"
 
 
 strdim list             num_list
-strdim dipswitch_update num_sw
-strdim dipswitch_normal num_sw
+strdim dipswitch_h_update num_dipswitch_h
+strdim dipswitch_h_normal num_dipswitch_h
 
 call ask_mode
 call ask_soc
@@ -173,12 +173,12 @@ return
 ;=============================
 : run_mode_sw
 
-for i 0 num_sw-1
-  strcompare dipswitch_update[i] ""
-  if result!=0 sprintf2 sw_msg_for_qspi        "%s\n%s" sw_msg_for_qspi        dipswitch_update[i]
+for i 0 num_dipswitch_h-1
+  strcompare dipswitch_h_update[i] ""
+  if result!=0 sprintf2 sw_msg_for_qspi        "%s\n%s" sw_msg_for_qspi        dipswitch_h_update[i]
 
-  strcompare dipswitch_normal[i] ""
-  if result!=0 sprintf2 sw_msg_for_hyper_flash "%s\n%s" sw_msg_for_hyper_flash dipswitch_normal[i]
+  strcompare dipswitch_h_normal[i] ""
+  if result!=0 sprintf2 sw_msg_for_hyper_flash "%s\n%s" sw_msg_for_hyper_flash dipswitch_h_normal[i]
 next
 
 strspecial sw_msg_for_qspi

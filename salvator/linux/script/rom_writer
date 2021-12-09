@@ -15,12 +15,12 @@ set tty  [lindex $argv 3]
 
 proc before_minicom {} {
     power_check "OFF"
-    sw_change_mode
+    sw_change_mode dipswitch_h_update
     power_check "ON"
 }
 
 proc after_minicom {} {
-    sw_change_back
+    sw_change_back dipswitch_h_normal
 }
 
 source ${top}/linux/script/${tgt}/${map}/${soc}

@@ -50,18 +50,18 @@ proc power_check {onoff} {
     ask_yes_no "OK ?"
 }
 
-proc sw_change_mode {} {
+proc sw_change_mode {update} {
     puts "********************"
     puts "Change the Mode"
-    dipswitch_update
+    ${update}
     puts "********************"
     ask_yes_no "Are you ready ?"
 }
 
-proc sw_change_back {} {
+proc sw_change_back {back} {
     puts "********************"
     puts "Change back the Mode"
-    dipswitch_normal
+    ${back}
     puts "********************"
     ask_yes_no "Are you ready ?"
 }
