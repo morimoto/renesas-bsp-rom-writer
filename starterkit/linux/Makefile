@@ -1,5 +1,9 @@
 all: script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot loop_yocto loop_android
 
+clean:
+	@rm -fr script/android
+	@rm -fr script/yocto
+
 #--------------------------
 # common loop
 #--------------------------

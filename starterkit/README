@@ -100,9 +100,11 @@
 
 		> sudo apt install expect minicom git
 
-	You need make first.
+	If you used previous version ROM Writer,
+	maybe you need "make clean" for Linux, and make
 
 		> cd ${renesas-bsp-rom-writer}/starterkit/linux
+		> make clean
 		> make
 
 -------------------------------
