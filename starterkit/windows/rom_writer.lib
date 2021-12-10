@@ -4,7 +4,7 @@
 ; Renesas StarterKit ROM Writer
 ;
 ;====================================
-setbaud 115200
+setbaud baudrate
 
 ;=============================
 ;
@@ -36,6 +36,7 @@ call ask_ver
 call ask_dir
 call run_mode
 messagebox "finished" "message"
+setbaud baudrate
 exit
 
 ;=============================
