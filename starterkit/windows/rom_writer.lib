@@ -217,20 +217,19 @@ return
 yesnobox "Board Power OFF ?" "Power Check"
 if result!=1 end
 
-yesnobox "Board Power ON ?" "Power Check"
+sprintf2 msg "(1)Power ON Board\n(2)Stop auto run manually\n(3)Confirm U-boot is waiting by =>\n\nAll OK ?"
+strspecial msg
+yesnobox msg "Power Check"
 if result!=1 end
 
-; Ctrl-C
-pause 1
-sendln #3
-
-wait "=>"
-sendln ""
-
-wait "=>"
 sendln "cpld write 0x00 0x802181fe"
 
 wait "=>"
+
+; It seems TeraTerm macro bug (?)
+; But we can't send "0x01" without something sleep
+pause 1
+
 sendln "cpld write 0x80 0x01"
 
 wait "please send !"
