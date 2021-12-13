@@ -20,18 +20,15 @@ proc serial_number_check {} {
     set ans [gets stdin]
 
     switch $ans {
-	"1"     {
-	    puts "v1.0 is not supported"
-	    exit 0
-	}
-	"2"     { }
+	"1"     { set mem 2 }
+	"2"     { set mem 8 }
 	default { exit 0 }
     }
-}
 
-serial_number_check
+    return ${top}/linux/script/${tgt}/${map}/m3_${mem}g
+}
 
 #
 # load settings
 #
-source ${top}/linux/script/${tgt}/${map}/m3
+source [serial_number_check_and_get_load_file]

@@ -27,15 +27,15 @@ strdim soc_file	num_soc
 soc[0] = "H3    (S/N     0 - 2000)" ; WS1.1 is not supported
 soc[1] = "H3 4G (S/N  2001 - 4500)"
 soc[2] = "H3 8G (S/N 20001 - )"
-soc[3] = "M3 v1 (S/N     0 - 2000)" ; v1.0 is not supported
-soc[4] = "M3 v3 (S/N  2001 - )"
+soc[3] = "M3 2G (S/N     0 - 2000)"
+soc[4] = "M3 8G (S/N  2001 - )"
 soc[5] = "M3N   (S/N all)"
 
 soc_file[0] = ""
 soc_file[1] = "h3_4g"
 soc_file[2] = "h3_8g"
-soc_file[3] = ""
-soc_file[4] = "m3"
+soc_file[3] = "m3_2g"
+soc_file[4] = "m3_8g"
 soc_file[5] = "m3n"
 
 ;=============================
