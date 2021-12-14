@@ -206,7 +206,7 @@
 	Linux:
 		${renesas-bsp-rom-writer}/starterkit/linux/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
 	Windows:
-		${renesas-bsp-rom-writer}/starterkit/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+		${renesas-bsp-rom-writer}/starterkit/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
 
 **  Usage
 
