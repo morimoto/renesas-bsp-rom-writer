@@ -1,4 +1,9 @@
-all: script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot loop_yocto loop_android
+GCC=gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi
+GCC_PRE=arm-eabi
+GCC_URL=https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/${GCC_PRE}/${GCC}.tar.xz
+MOT=script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+
+all: ${MOT} loop_yocto loop_android
 
 clean:
 	@rm -fr script/android
@@ -36,13 +41,11 @@ script/${target}/${map}/${soc}: ../${target}/${map}/${soc}
 # for create mot
 #
 #--------------------------
-script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot: script/flash_writer/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi-gcc
+${MOT}: script/flash_writer/${GCC}/bin/${GCC_PRE}-gcc
 	cd script/flash_writer;\
-	CROSS_COMPILE=./gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi- make AArch=32 BOARD=ULCB
+	CROSS_COMPILE=./${GCC}/bin/${GCC_PRE}- make AArch=32 BOARD=ULCB
 
-script/flash_writer/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi/bin/arm-eabi-gcc:
+script/flash_writer/${GCC}/bin/${GCC_PRE}-gcc:
 	git clone https://github.com/renesas-rcar/flash_writer.git script/flash_writer;\
-	cd script/flash_writer;\
-	wget https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/arm-eabi/gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi.tar.xz; \
-	tar xvf gcc-linaro-7.3.1-2018.05-x86_64_arm-eabi.tar.xz
+	cd script/flash_writer; wget ${GCC_URL}; tar xvf ${GCC}.tar.xz
 	touch $@
