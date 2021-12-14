@@ -5,6 +5,12 @@ list[3] = "44000000,1C0000,bl31.srec"
 list[4] = "44100000,200000,tee.srec"
 list[5] = "50000000,640000,u-boot-elf.srec"
 
+dipswitch_a_update[0] = "pin         1 2 3 4 5 6 7 8"
+dipswitch_a_update[1] = "Front:SW10 [1 1 1 1 0 0 0 0]"
+
+dipswitch_a_normal[0] = "pin         1 2 3 4 5 6 7 8"
+dipswitch_a_normal[1] = "Front:SW10 [1 1 1 1 1 1 0 1]"
+
 dipswitch_h_update[0] = "pin         1 2 3 4 5 6 7 8"
 dipswitch_h_update[1] = "Front:SW10 [1 1 1 1 1 0 1 1]"
 dipswitch_h_update[2] = "Back :SW1  [1 1 1 1 1 1]"

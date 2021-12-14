@@ -43,7 +43,7 @@ soc_file[5] = "m3n"
 ; Auto Mode
 ;
 ;=============================
-auto_mode = "cpld"
+auto_mode = "starterkit"
 
 ;=============================
 ;
@@ -58,6 +58,7 @@ auto_mode = "cpld"
 ;
 ;=============================
 num_list = 6
+num_dipswitch_a = 0
 num_dipswitch_h = 4
 
 ;=============================

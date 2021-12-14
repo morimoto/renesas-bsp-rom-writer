@@ -11,7 +11,8 @@ SCRIPT=${TOP}/../../starterkit/linux/script
 #
 # parse params
 #
-while getopts a:y: OPT
+MODE=auto # default
+while getopts a:y:h OPT
 do
 	case $OPT in
 		a) TGT=android
@@ -20,6 +21,7 @@ do
 		y) TGT=yocto
 		   VER=$OPTARG
 		   CHK="${CHK}1";;
+		h) MODE=sw;;
 		*) ${SCRIPT}/help.sh && exit 1;;
 	esac
 done
@@ -49,4 +51,4 @@ if [ ! -e ${TTY} ]; then
 	exit
 fi
 
-${TOP}/script/rom_writer ${SOC} ${TGT} ${MAP} ${TTY}
+${TOP}/script/rom_writer ${SOC} ${TGT} ${MAP} ${MODE} ${TTY}

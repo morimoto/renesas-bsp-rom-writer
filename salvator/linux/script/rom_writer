@@ -11,16 +11,33 @@ source $top/../starterkit/linux/script/rom_writer.lib
 set soc  [lindex $argv 0]
 set tgt  [lindex $argv 1]
 set map  [lindex $argv 2]
-set tty  [lindex $argv 3]
+set mode [lindex $argv 3]
+set tty  [lindex $argv 4]
 
-proc before_minicom {} {
-    power_check "OFF"
-    sw_change_mode dipswitch_h_update
-    power_check "ON"
+proc mot {} {
+    global top
+    return $top/linux/script/flash_writer/AArch64_output/AArch64_Flash_writer_SCIF_DUMMY_CERT_E6300400_salvator-x.mot
 }
 
-proc after_minicom {} {
-    sw_change_back dipswitch_h_normal
+proc auto_mode {} {
+    set mot [mot]
+
+    expect {
+	"please send !"
+    }
+    upload_file $mot
+    expect {
+	">"
+    }
+}
+
+proc auto_mode_power_on {} {
+    puts "********************"
+    puts "It will start minicom from now."
+    puts "After minicom started,"
+    puts "Board Power ON"
+    puts "********************"
+    ask_yes_no "OK ?"
 }
 
 source ${top}/linux/script/${tgt}/${map}/${soc}
@@ -33,12 +50,29 @@ file_check $lists
 #
 # run minicom
 #
-before_minicom
-spawn env LANG=C minicom -D $tty -b115200
-after_minicom
-speed_up
+if {$mode == "auto"} {
+    power_check "OFF"
+    sw_change_mode dipswitch_a_update
+    auto_mode_power_on
 
-#
-# run main
-#
-run_main $lists
+    spawn env LANG=C minicom -D $tty -b115200
+
+    auto_mode
+    speed_up
+    run_main $lists
+    puts "\n\n"
+    sw_change_back dipswitch_a_normal
+
+} else {
+    power_check "OFF"
+    sw_change_mode dipswitch_h_update
+    power_check "ON"
+
+    spawn env LANG=C minicom -D $tty -b115200
+
+    sw_change_back dipswitch_h_normal
+
+    speed_up
+    run_main $lists
+}
+

@@ -21,24 +21,26 @@ versions[5] = "android/11_1.0"
 versions[6] = "android/10_2.0"
 versions[7] = "android/10_1.2"
 
-
 strdim list             num_list
 strdim dipswitch_h_update num_dipswitch_h
 strdim dipswitch_h_normal num_dipswitch_h
+
+if num_dipswitch_a>0 then
+  strdim dipswitch_a_update num_dipswitch_a
+  strdim dipswitch_a_normal num_dipswitch_a
+endif
 
 call ask_mode
 call ask_soc
 call ask_ver
 call ask_dir
-call mode_change
-call speed_up
-call run_main
+call run_mode
 messagebox "finished" "message"
 exit
 
 ;=============================
 ;
-; Ask Half-Auto or Fll-Auto
+; Ask Mode
 ;
 ;=============================
 : ask_mode
@@ -51,20 +53,24 @@ strcompare auto_mode ""
 if result=0 return
 
 strdim auto 2
-auto[0] = "Half Auto - need dipswitch control"
-auto[1] = "Full Auto - need mot file"
+auto[0] = "use Dip-Switch"
+auto[1] = "use Mot file"
 
 listbox "Auto Type Select" "Which Type ?" auto 1
+if result=0 return
 
-if result=1 then
-  sprintf2 mot "%s\AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot" top
-  filesearch mot
-  if result==0 then
-    msg = "mot file not exist\nget it from Linux user"
-    strspecial msg
-    messagebox msg "mot error"
-    end
-  endif
+strcompare auto_mode "starterkit"
+if result=0 sprintf2 mot "%s\AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot" top
+
+strcompare auto_mode "salvator"
+if result=0 sprintf2 mot "%s\AArch64_Flash_writer_SCIF_DUMMY_CERT_E6300400_salvator-x.mot" top
+
+filesearch mot
+if result=0 then
+  sprintf2 msg "%s\nmot file not exist\nget it from Linux user" mot
+  strspecial msg
+  messagebox msg "mot error"
+  end
 endif
 
 return
@@ -168,7 +174,7 @@ return
 
 ;=============================
 ;
-; Half-Auto mode
+; Dip-Switch mode
 ;
 ;=============================
 : run_mode_sw
@@ -196,14 +202,16 @@ if result!=1 end
 yesnobox sw_msg_for_hyper_flash  "SW check"
 if result!=1 end
 
+call speed_up
+call run_main
 return
 
 ;=============================
 ;
-; Full-Auto mode
+; StarterKit mode
 ;
 ;=============================
-: run_mode_cpld
+: run_mode_starterkit
 
 yesnobox "Board Power OFF ?" "Power Check"
 if result!=1 end
@@ -227,28 +235,43 @@ sendln "cpld write 0x80 0x01"
 wait "please send !"
 sendfile mot 1
 
+call speed_up
+call run_main
 return
 
 ;=============================
-;
-; Mode Change
-;
+; Salvator Mode
 ;=============================
-: mode_change
+: run_mode_salvator
 
-strcompare mot ""
-if result=0 then
-  ;
-  ; SW mode
-  ;
-  call run_mode_sw
-else
-  ;
-  ; CPLD mode
-  ;
-  strcompare auto_mode "cpld"
-  if result=0 call run_mode_cpld
-endif
+for i 0 num_dipswitch_a-1
+  strcompare dipswitch_a_update[i] ""
+  if result!=0 sprintf2 sw_msg_for_qspi        "%s\n%s" sw_msg_for_qspi        dipswitch_a_update[i]
+
+  strcompare dipswitch_a_normal[i] ""
+  if result!=0 sprintf2 sw_msg_for_hyper_flash "%s\n%s" sw_msg_for_hyper_flash dipswitch_a_normal[i]
+next
+
+strspecial sw_msg_for_qspi
+strspecial sw_msg_for_hyper_flash
+
+yesnobox "Board Power OFF ?" "Power Check"
+if result!=1 end
+
+yesnobox sw_msg_for_qspi "SW Check"
+if result!=1 end
+
+yesnobox "Board Power ON ?" "Power Check"
+if result!=1 end
+
+wait "please send !"
+sendfile mot 1
+
+call speed_up
+call run_main
+
+yesnobox sw_msg_for_hyper_flash  "SW check"
+if result!=1 end
 
 return
 
@@ -331,4 +354,40 @@ for i 0 num_list-1
 
    wait ">"
 next
+return
+
+;=============================
+;
+; Run each Mode
+;
+;=============================
+: run_mode
+
+;
+; SW mode
+;
+strcompare mot ""
+if result=0 then
+  call run_mode_sw
+  return
+endif
+
+;
+; CPLD mode
+;
+strcompare auto_mode "starterkit"
+if result=0 then
+  call run_mode_starterkit
+  return
+endif
+
+;
+; Salvator mode
+;
+strcompare auto_mode "salvator"
+if result=0 then
+  call run_mode_salvator
+  return
+endif
+
 return

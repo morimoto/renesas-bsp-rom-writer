@@ -41,6 +41,13 @@
 
 		> sudo apt install expect minicom git
 
+	If you used previous version ROM Writer,
+	maybe you need "make clean" for Linux, and make
+
+		> cd ${renesas-bsp-rom-writer}/salvator/linux
+		> make clean
+		> make
+
 -------------------------------
 * How to know my board is 4Gbyte or 8Gbyte ?
 -------------------------------
@@ -57,7 +64,7 @@
 
 **  rom_writer
 
-	rom_writer [a:y:] <soc> <tty>
+	rom_writer [a:y:h] <soc> <tty>
 
 	-y:	write Yocto
 		5.5.0
@@ -69,6 +76,8 @@
 		11_1.0
 		10_2.0
 		10_1.2
+	-h:	[Half-Auto] mode.
+		[Auto]      mode is default.
 	soc:	h3_4g
 		h3_8g
 		m3_4g
@@ -77,14 +86,32 @@
 	tty:	/dev/ttyUSBx
 		see above "How to know the connected tty ?"
 
+	[Half-Auto mode]
+	Need manual Dip-Switch on both Front/Back side.
+
+	[Auto mode]
+	Need manual Dip-Switch on Front side.
+	You need run "make" at salvator/linux once.
+
+	One note is that it looks stop after "please send !", but it is sending
+	Mot to board. No worry. You need is just waiting.
+
 	[Note]
 	This command should be called from ROM dir which has Yocto/Android binarys.
 
 	ex)
-	Yocto 5.5.0 for H3-8G Salvator-XS board
-
+	Yocto 5.5.0 for H3-8G Salvator-XS board by Half-Auto mode.
+	^^^^^^^^^^^     ^^^^^                      ^^^^^^^^^
 		> cd ${rom-dir}
-		> ${renesas-bsp-rom-writer}/salvator/linux/rom_writer -y 5.5.0 h3_8g /dev/ttyUSB0
+		> ${renesas-bsp-rom-writer}/salvator/linux/rom_writer -y 5.5.0 -h h3_8g /dev/ttyUSB0
+
+	ex)
+	Android 10_2.0 for M3-4G Salvator-XS board by Auto mode
+	^^^^^^^^^^^^^^     ^^^^^                      ^^^^
+		> cd ${renesas-bsp-rom-writer}/salvator/linux/
+		> make
+		> cd ${rom-dir}
+		> ${renesas-bsp-rom-writer}/salvator/linux/rom_writer -a 10_2.0 m3_4g /dev/ttyUSB0
 
 **  android_setup
 
@@ -121,6 +148,14 @@
 
 		https://ttssh2.osdn.jp/index.html.ja
 		https://ttssh2.osdn.jp/index.html.en
+
+	You need mot file if use "Auto" mode, but Windows user can't create it by yourself.
+	Please get it from Linux user, and set it below.
+
+	Linux:
+		${renesas-bsp-rom-writer}/salvator/linux/script/flash_writer/AArch64_output/AArch64_Flash_writer_SCIF_DUMMY_CERT_E6300400_salvator-x.mot
+	Windows:
+		${renesas-bsp-rom-writer}/salvator/AArch64_Flash_writer_SCIF_DUMMY_CERT_E6300400_salvator-x.mot
 
 **  Usage
 

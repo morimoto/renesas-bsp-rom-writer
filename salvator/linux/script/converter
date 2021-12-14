@@ -1,0 +1,69 @@
+#! /bin/sh
+#===============================
+#
+# converter
+#
+# 2021/09/06 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+file=$1
+
+#===============================
+# From (TeraTerm style)
+#
+#	list[0] = "E6320000,000000,bootparam_sa0.srec"
+#	list[1] = "E6304000,040000,bl2-h3ulcb.srec"
+#	list[2] = "E6320000,180000,cert_header_sa6.srec"
+#	list[3] = "44000000,1C0000,bl31-h3ulcb.srec"
+#	list[4] = "44100000,200000,tee-h3ulcb.srec"
+#	list[5] = "50000000,640000,u-boot-elf-h3ulcb.srec"
+# To
+#	set lists {
+#	    E6320000,000000,bootparam_sa0.srec
+#	    E6304000,040000,bl2-h3ulcb.srec
+#	    E6320000,180000,cert_header_sa6.srec
+#	    44000000,1C0000,bl31-h3ulcb.srec
+#	    44100000,200000,tee-h3ulcb.srec
+#	    50000000,640000,u-boot-elf-h3ulcb.srec
+#	}
+#===============================
+convert_list() {
+	echo "set lists {"
+	grep list $file | sed -e "s/list\[.\]\s=\s//g" | sed -e "s/\"//g" | sed -e "s/^/  /g"
+	echo "}"
+	echo
+}
+
+#===============================
+# From (TeraTerm style)
+#
+#	dipswitch_a_update[0] = "SW1    : OFF"
+#	dipswitch_a_update[1] = "SW6[3] : OFF"
+#
+#	dipswitch_a_normal[0] = "SW1    : ON"
+#	dipswitch_a_normal[1] = "SW6[3] : ON"
+#
+# To (Tcl style)
+#
+#	proc dipswitch_a_update {} {
+#	  puts "SW1    : OFF"
+#	  puts "SW6\[3\] : OFF"
+#	}
+#
+#	proc dipswitch_a_normal {} {
+#	  puts "SW1      : ON"
+#	  puts "SW6\[3\] : ON"
+#	}
+#===============================
+convert_msg() {
+	echo "proc $1 {} {"
+	grep $1 $file | sed -e "s/$1\[.\]\s*=\s*//g" | sed -e "s/\"//g" | sed -e "s/^/  puts \"/g" | sed -e "s/$/\"/" | sed -e "s/\[/\\\\\[/g" | sed -e "s/\]/\\\\\]/g"
+	echo "}"
+	echo
+}
+
+convert_list
+convert_msg dipswitch_a_update
+convert_msg dipswitch_a_normal
+
+convert_msg dipswitch_h_update
+convert_msg dipswitch_h_normal
