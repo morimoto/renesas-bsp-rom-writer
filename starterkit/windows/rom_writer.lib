@@ -11,15 +11,19 @@ setbaud baudrate
 ; Versions
 ;
 ;=============================
-strdim versions 8
+strdim versions 4
 versions[0] = "yocto/5.5.0"
 versions[1] = "yocto/5.1.0"
 versions[2] = "yocto/4.1.0"
 versions[3] = "yocto/3.21.0"
-versions[4] = "android/11_1.1"
-versions[5] = "android/11_1.0"
-versions[6] = "android/10_2.0"
-versions[7] = "android/10_1.2"
+
+; It doesn't support Android setting update
+; on Windows/TeraTerm for now.
+; Remove Android support to avoid confusion
+;versions[4] = "android/11_1.1"
+;versions[5] = "android/11_1.0"
+;versions[6] = "android/10_2.0"
+;versions[7] = "android/10_1.2"
 
 strdim list             num_list
 strdim dipswitch_h_update num_dipswitch_h
