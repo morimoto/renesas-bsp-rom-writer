@@ -320,6 +320,25 @@ return
 ;
 ;=============================
 : run_main
+
+;---------
+; StarterKit + M3 2G + Dip-Switch is speciall
+; We need to avoid 2nd Y on it
+;----------
+strcompare auto_mode "starterkit"
+tmp = (result == 0)
+
+strcompare load_soc "m3_2g"
+tmp = tmp + (result == 0)
+
+strcompare mot ""
+tmp = tmp + (result == 0)
+
+run_2nd_Y = (tmp != 3)
+
+;-------
+; main loop
+;-------
 for i 0 num_list-1
    strsplit list[i] ","
 
@@ -339,8 +358,10 @@ for i 0 num_list-1
    wait "(Push Y key)"
    send 'Y'
 
-   wait "(Push Y key)"
-   send 'Y'
+   if run_2nd_Y=1 then
+     wait "(Push Y key)"
+     send 'Y'
+   endif
 
    wait "Please Input : H'"
    sendln groupmatchstr1
