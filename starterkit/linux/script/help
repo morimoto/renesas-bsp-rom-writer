@@ -5,7 +5,7 @@
 #
 # 2021/04/14 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-README=$1/../README
+README=$1/README
 COMMAND=$2
 
 LINE1=`grep -n -w "^**  ${COMMAND}" ${README} | awk -F ":" '{print $1}'`

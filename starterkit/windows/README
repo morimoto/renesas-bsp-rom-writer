@@ -1,0 +1,53 @@
+============== -*- outline -*- ==============
+
+   Renesas StarterKit (H3/M3/M3N) BSP ROM Writer
+   for Windows/TeraTerm
+
+2022/01/05	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* How to get ROM ?
+* Known Issue
+-------------------------------
+
+	see
+		${renesas-bsp-rom-writer}/starterkit/README
+
+-------------------------------
+* Preparation
+-------------------------------
+
+**  TeraTerm
+
+	You need "TeraTerm". See here and get it
+
+		https://ttssh2.osdn.jp/index.html.ja
+		https://ttssh2.osdn.jp/index.html.en
+
+**  Mot file
+
+	You need mot file if use "Full-Auto" mode, but Windows user can't create it by yourself.
+	Please get it from Linux user, and set it as below.
+
+	Linux:
+		${renesas-bsp-rom-writer}/starterkit/linux/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+	Windows:
+		${renesas-bsp-rom-writer}/starterkit/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+
+-------------------------------
+* Usage
+-------------------------------
+
+	- Start TeraTerm
+	- Open Macro via
+		[Menu] - [Control] - [Macro]
+		${renesas-bsp-rom-writer}/starterkit/windows/rom_writer.ttl
+	- Follow the Questions
+
+		[Half-Auto] : You need change Dip-Switch manually.
+			      You need to use this mode if your board doesn't have U-boot yet.
+			      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+		[Full-Auto] : No Dip-Switch setting is needed.
+			      You can use this modd if your board have U-boot.
+			                               ^^^^^^^^^^^^^^^^^^^^^^

@@ -1,0 +1,137 @@
+============== -*- outline -*- ==============
+
+   Renesas StarterKit (H3/M3/M3N) BSP ROM Writer
+   for Linux
+
+2022/01/05	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* How to get ROM ?
+* Known Issue
+-------------------------------
+
+	see
+		${renesas-bsp-rom-writer}/starterkit/README
+
+-------------------------------
+* Preparation
+-------------------------------
+
+**  How to know the connected tty ?
+
+	Connect your PC and StarterKit by USB cable
+
+		[Host PC] <--> [StarterKit CN12]
+
+	Check it via
+
+		> dmesg | grep ttyUSB | tail
+
+**  Necessary Tools
+
+	You can install necessary tools by tool_install.xxx.
+	You need to use "sudo" for it.
+	If you are using Ubuntu, you can run.
+
+		> ./script/tool_install.ubuntu
+
+**  Make
+
+	You need run make first.
+	You may need to run "make clean" first if you used old version of ROM Writer.
+
+		> cd ${renesas-bsp-rom-writer}/starterkit/linux
+		> make clean
+		> make
+
+**  Goto ROM dir first
+
+	You need to go to ROM dir first, and call command from there.
+
+		> cd ${ROM_dir}
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer
+
+-------------------------------
+* Usage
+-------------------------------
+
+**  rom_writer
+
+	rom_writer [a:y:h] <soc> <tty>
+
+	You need to go to ROM dir, and call this command from there.
+
+	-y:	write Yocto
+		5.5.0
+		5.1.0
+		4.1.0
+		3.21.0
+	-a:	write Android
+		11_1.1
+		11_1.0
+		10_2.0
+		10_1.2
+	-h:	[Half-Auto] mode.
+		[Full-Auto] is default.
+	soc:	h3
+		m3
+		m3n
+	tty:	/dev/ttyUSBx
+		see above "How to know the connected tty ?"
+
+	[Half-Auto]
+	Need manual Dip-Switch setup.
+	You need to use "Half-Auto" if your board doesn't have U-boot yet.
+	                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	[Full-Auto]
+	No manual Dip-Switch setup is needed.
+	You need run "make" at starterkit/linux once.
+	You can use "Full-Auto" if your board already have U-boot.
+	                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	One note is that it looks stop after "please send !", but it is sending
+	Mot to board. No worry. You need is just waiting.
+
+	[Note]
+	This command should be called from ROM dir which has Yocto/Android binarys.
+
+	ex1)
+	Write Yocto v5.1.0 to H3 Starterkit by Half-Auto mode.
+	      ^^^^^^^^^^^^    ^^               ^^^^^^^^^
+
+		> cd ${rom-dir}
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer -y 5.1.0 -h h3 /dev/ttyUSBx
+
+	ex2)
+	Write Android 10_2.0 to M3N Starterkit by Full-Auto mode.
+	      ^^^^^^^^^^^^^^    ^^^               ^^^^^^^^^
+
+		> cd ${renesas-bsp-rom-writer}/starterkit/linux/
+		> make
+		> cd ${rom-dir}
+		> ${renesas-bsp-rom-writer}/starterkit/linux/rom_writer -a 10_2.0 m3n /dev/ttyUSBx
+
+**  android_setup
+
+	android_setup <mac> <tty>
+
+	mac:	Ether Mac address
+		Renesas board has it on Ether socket.
+		ex)
+			12:34:56:78:9a:bc
+	tty:	/dev/ttyUSBx
+		see above "How to know the connected tty ?"
+
+	[Note]
+	This command should be called from ROM dir which has Android binarys.
+	This command uses "sudo". you need belong to sudo group.
+	During this command, Ubuntu might has below message box. But you can ignore it.
+
+		-----------------------------------
+		Unable to mount USB download gadget
+		can't open MTP device xxx
+		-----------------------------------
+
+	ex)
+		> cd ${android-rom-dir}
+		> ${renesas-bsp-rom-writer}/starterkit/linux/android_setup 12:34:56:78:9a:bc /dev/ttyUSBx
