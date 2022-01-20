@@ -1,0 +1,23 @@
+; These informations are came from
+; "Linux Interface Specification Yocto recipe Start-Up Guide"
+; - 4. Writing of IPL/Secure
+;  - 4.1 Writing data
+; - 4.2 Dip-Switch
+;  - 4.2.1 a) QSPI Mode
+;          b) Hyper Flash Mode
+;
+; TeraTerm Macro has many limitation
+; We need to adjust to it here
+;
+strdim list_version 4
+strdim list_map     4
+
+list_version[0] = "5.5.0"
+list_version[1] = "5.1.0"
+list_version[2] = "4.1.0"
+list_version[3] = "3.21.0"
+
+list_map[0] = "map02"
+list_map[1] = "map02"
+list_map[2] = "map01"
+list_map[3] = "map01"

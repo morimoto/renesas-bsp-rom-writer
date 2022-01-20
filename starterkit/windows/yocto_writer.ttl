@@ -1,0 +1,98 @@
+; SPDX-License-Identifier: GPL-2.0
+;====================================
+;
+; Renesas StarterKit Yocto Writer
+;
+;====================================
+;=============================
+; dir_top
+;=============================
+getdir __dir
+sprintf2 dir_top "%s\..\.." __dir
+
+;=============================
+; os, board, baudrate
+;=============================
+board	 = "starterkit"
+os	 = "yocto"
+baudrate = 115200	; used at init / main
+
+;=============================
+; connection check (yocto)
+;=============================
+sprintf2 __soc "%s\%s\config\os\%s\connection" dir_top board os
+include __soc
+
+func_name = "connection_check"
+call call_func
+
+;=============================
+; load soc
+;=============================
+sprintf2 __soc "%s\%s\config\soc" dir_top board
+include __soc
+
+;=============================
+; load addr_map
+;=============================
+func_name = "load_addr_map"
+call call_func
+
+;=============================
+; select mode
+;=============================
+func_name = "select_mode_with_mot"
+call call_func
+
+;=============================
+; select srec dir
+;=============================
+func_name = "select_srec_dir"
+call call_func
+
+;=============================
+; load dip-swich settings
+;=============================
+sprintf2 __sw "%s\%s\config\sw\%s" dir_top board soc
+include __sw
+
+;=============================
+; init for each mode
+;=============================
+strcompare mode "normal"
+if result=0 then
+   func_name = "starterkit_type_init_normal"
+else
+   func_name = "starterkit_type_init_mot"
+endif
+call call_func
+
+;=============================
+; speed_up
+;=============================
+func_name = "speed_up"
+call call_func
+
+;=============================
+; run_main
+; M3-2G normal mode is special
+;=============================
+sprintf2 __check "%s_%s" soc_ws mode
+strcompare __check "m3_2g_normal"
+if result=0 then
+  run_2nd_Y = 0
+else
+  run_2nd_Y = 1
+endif
+
+func_name = "starterkit_type_main"
+call call_func
+
+exit
+;=============================
+; call_func
+;=============================
+: call_func
+sprintf2 func "%s\script\ttm\%s" dir_top func_name
+include func
+return

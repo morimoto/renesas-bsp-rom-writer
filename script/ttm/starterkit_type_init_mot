@@ -1,0 +1,65 @@
+;
+; StarterKit type Mot mode
+;
+; require
+;	mot
+;	baudrate
+;	sw_head
+;	sw_update
+;	sw_normal
+;	cpld_cmd
+;
+
+;
+; create dip-swich explanation message
+;
+__sw_head="Setup Board Dip-Switch\n\n"
+for i 0 num_sw_head-1
+  sprintf2 __sw_head "%s\n%s" __sw_head  sw_head[i]
+next
+strspecial __sw_head
+
+__sw_update=__sw_head
+for i 0 num_sw_update-1
+  sprintf2 __sw_update "%s\n%s" __sw_update  sw_update[i]
+next
+strspecial __sw_update
+
+__sw_normal=__sw_head
+for i 0 num_sw_normal-1
+  sprintf2 __sw_normal "%s\n%s" __sw_normal  sw_normal[i]
+next
+strspecial __sw_normal
+
+;
+; set baudrate
+;
+setbaud baudrate
+
+;
+; mot file
+;
+sprintf2 __mot_file "%s\%s\%s" dir_top board mot
+
+;
+; Guide
+;
+yesnobox "Board Power OFF ?" "Power Check"
+if result!=1 end
+
+sprintf2 msg "(1)Power ON Board\n(2)Stop auto run manually\n(3)Confirm U-boot is waiting by => \n\nAll OK ?"
+strspecial msg
+yesnobox msg "Power Check"
+if result!=1 end
+
+sendln cpld_cmd[0]
+wait "=>"
+
+; It seems TeraTerm macro bug (?),
+; but we can't send "0x01" without something sleep
+pause 1
+
+sendln cpld_cmd[1]
+
+wait "please send !"
+sendfile __mot_file 1

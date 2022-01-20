@@ -1,0 +1,21 @@
+;  These informations are came from
+; "Android 11 Board Support Package Specification Release Note: Software"
+; - 3. Flashing binaries
+;  - 3.1. Flashing IPL
+;
+;
+; TeraTerm Macro has many limitation
+; We need to adjust to it here
+;
+strdim list_version 4
+strdim list_map     4
+
+list_version[0] = "11_1.1"
+list_version[1] = "11_1.0"
+list_version[2] = "10_2.0"
+list_version[3] = "10_1.2"
+
+list_map[0] = "map01"
+list_map[1] = "map01"
+list_map[2] = "map01"
+list_map[3] = "map01"

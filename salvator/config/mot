@@ -1,0 +1,2 @@
+dir_mot	= "AArch64_output"
+mot	= "AArch64_Flash_writer_SCIF_DUMMY_CERT_E6300400_salvator-x.mot"

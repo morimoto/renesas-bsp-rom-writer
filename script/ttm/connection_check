@@ -1,0 +1,20 @@
+;
+; indicate connection
+;
+; require
+;	tty_connection
+;
+
+;
+; create message
+;
+__message = "Check Serial Connection\n\n"
+for i 0 num_tty_connection-1
+   groupmatchstr1=__message
+   groupmatchstr2=tty_connection[i]
+   strjoin __message "\n" 2
+next
+strspecial __message
+
+messagebox __message "Serial connection ?" 
+if result<0 end

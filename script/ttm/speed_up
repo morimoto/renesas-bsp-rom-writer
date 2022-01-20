@@ -1,0 +1,29 @@
+;
+; speed_up
+;
+timeout = 1
+
+; avoid some noise (?)
+sendln ""
+wait ">"
+
+sendln ""
+wait ">"
+sendln "sup"
+
+msg1 = 'Change to 460.8Kbps baud rate setting of the SCIF. OK? (y/n)'
+msg2 = 'Please change to 460.8Kbps baud rate setting of the terminal.'
+msg3 = 'Please change to 921.6Kbps baud rate setting of the terminal.'
+wait msg1 msg2 msg3
+
+If result=1 then
+  sendln 'y'
+  wait 'Please change to 460.8Kbps baud rate setting of the terminal.'
+  setbaud 460800
+elseif result=2 then
+  setbaud 460800
+elseif result=3 then
+  setbaud 921600
+endif
+
+timeout = 0

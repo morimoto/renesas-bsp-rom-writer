@@ -1,0 +1,8 @@
+;
+; Salvator type Dip-Switch mode step2
+;
+; require
+;	__sw_normal
+
+yesnobox __sw_normal  "SW check"
+if result!=1 end

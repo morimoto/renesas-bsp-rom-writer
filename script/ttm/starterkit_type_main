@@ -1,0 +1,65 @@
+;
+; StarterKit / Salvator type main loop
+;
+; required
+;	num_addr_map
+;	addr_map
+;	dir_srec
+;	run_2nd_Y
+;
+
+;
+; ask write mode
+;
+strdim __ask_txt 2
+__ask_txt[0] = "Write [all binaries] without asking"
+__ask_txt[1] = "[Ask] for each times [write the binary] or [skip it]"
+listbox "You can select Write mode" "Write mode" __ask_txt
+__ask_in_main_loop=result
+
+;
+; main loop
+;
+for i 0 num_addr_map-1
+   strsplit addr_map[i] ","
+
+   if __ask_in_main_loop=1 then
+     yesnobox groupmatchstr3 "Run ?"
+     if result!=1 continue
+   endif
+
+   sendln ""
+
+   wait ">"
+   sendln "xls2"
+
+   wait "Select (1-3)>"
+   sendln "3"
+
+   wait "(Push Y key)"
+   send 'Y'
+
+   if run_2nd_Y=1 then
+     wait "(Push Y key)"
+     send 'Y'
+   endif
+
+   wait "Please Input : H'"
+   sendln groupmatchstr1
+
+   wait "Please Input : H'"
+   sendln groupmatchstr2
+
+   wait "please send !"
+
+   sprintf2 file "%s\%s" dir_srec groupmatchstr3
+   sendfile file 1
+
+   wait "Clear OK?(y/n)"
+   sendln "y"
+
+   wait ">"
+next
+
+messagebox "finished" "message"
+setbaud baudrate

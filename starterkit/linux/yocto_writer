@@ -1,0 +1,10 @@
+#! /bin/bash
+#===============================
+#
+# yocto_writer
+#
+# 2022/01/13 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname`/script/python
+
+${SCRIPT}/starterkit.py yocto

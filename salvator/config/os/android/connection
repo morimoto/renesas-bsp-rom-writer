@@ -1,0 +1,4 @@
+num_tty_connection = 2
+strdim tty_connection num_tty_connection
+tty_connection[0] = "[Host PC] <--> [Salvator-XS CN25] (/dev/ttyUSBx)"
+tty_connection[1] = "[Host PC] <--> [Salvator-XS CN9]  (ADB)"
