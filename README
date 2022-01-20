@@ -5,24 +5,32 @@
 2021/09/03	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 =============================================
 
+-------------------------------
 * What is this ?
+-------------------------------
 
 	When you get Renesas BSP, it is difficult to understand
 	what you need to do to use it. This is one of helper for it.
 	This helps you to write ROM to your Renesas board.
 
+-------------------------------
 * Note
+-------------------------------
 
 	This is *Un Official* Tool.
 	        ^^^^^^^^^^^^^^^^^^^
 	Contributor never take responsibility even though some issue happen.
 	            ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* Where is it ?
+-------------------------------
+* How to use ?
+-------------------------------
 
 	Please check each board name folder and README in it.
 
+-------------------------------
 * License ?
+-------------------------------
 
 	Copyright (C) 2021 Renesas Electronics Corp.
 	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
@@ -31,7 +39,9 @@
 	it under the terms of the GNU General Public License version 2 as
 	published by the Free Software Foundation.
 
+-------------------------------
 * Where to get renesas-bsp-rom-writer ?
+-------------------------------
 
 	https://github.com/morimoto/renesas-bsp-rom-writer
 	https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer

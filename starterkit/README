@@ -14,16 +14,6 @@
 		https://elinux.org/R-Car
 
 -------------------------------
-* Special Thanks
--------------------------------
-
-	Special Thanks to Magnus Damm.
-	The original code was his do_xls2 script
-
-	Special Thanks to Shimoda-san, Goda-san.
-	The original code was his TeraTerm Macro
-
--------------------------------
 * How to get ROM ?
 -------------------------------
 
@@ -40,16 +30,12 @@
 	https://github.com/morimoto/renesas-yocto-maker
 	https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
 
-	ex) In case of "H3" with "Yocto v5.1.0"
-
-		> git clone https://github.com/morimoto/renesas-yocto-maker
-		         or https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
-		> cd renesas-yocto-maker
-		> yocto-make -b 5.1.0 h3ulcb
-		> tar -jxf yocto-5.1.0-h3ulcb-xxxx-bin.tar.bz2
+**  Android Maker
+	https://github.com/morimoto/renesas-android-maker
+	https://gitlab.com/morimoto.kuninori/renesas-android-maker
 
 -------------------------------
-* WS1.x Boards on H3 is not supported
+* R-Car H3 WS1.x Boards is not supported
 -------------------------------
 
 	Please check your board at
@@ -62,10 +48,22 @@
 
 	renesas-bsp-rom-writer doesn't work correctly
 	if USB cable is connected through USB Hub.
-	We don't know why...
 
 		NG: Host PC <--> USB Hub <--> StarterKit
 		OK: Host PC <---------------> StarterKit
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+**  for Yocto BSP
+
+	[Host PC] <--> [StarterKit CN12] (/dev/ttyUSBx)
+
+**  for Android
+
+	[Host PC] <--> [StarterKit CN12] (/dev/ttyUSBx)
+	[Host PC] <--> [Kingfisher CN13] (ADB)
 
 -------------------------------
 * How to use ?
@@ -73,3 +71,6 @@
 
 	linux/README
 	windows/README
+
+	It needs Mot file if you want use mot mode.
+	See more detail on each README

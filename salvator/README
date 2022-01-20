@@ -32,13 +32,32 @@
 	https://github.com/morimoto/renesas-yocto-maker
 	https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
 
-	ex) In case of "H3" with "Yocto v5.1.0"
+**  Android Maker
+	https://github.com/morimoto/renesas-android-maker
+	https://gitlab.com/morimoto.kuninori/renesas-android-maker
 
-		> git clone https://github.com/morimoto/renesas-yocto-maker
-		         or https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
-		> cd renesas-yocto-maker
-		> yocto-make -b 5.1.0 salvator-x
-		> tar -jxf yocto-5.1.0-salvator-x-xxxx-bin.tar.bz2
+-------------------------------
+* Known Issue
+-------------------------------
+
+	renesas-bsp-rom-writer doesn't work correctly
+	if USB cable is connected through USB Hub.
+
+		NG: Host PC <--> USB Hub <--> Salvator-XS
+		OK: Host PC <---------------> Salvator-XS
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+**  for Yocto BSP
+
+	[Host PC] <--> [Salvator-XS CN25] (/dev/ttyUSBx)
+
+**  for Android
+
+	[Host PC] <--> [Salvator-XS CN25] (/dev/ttyUSBx)
+	[Host PC] <--> [Salvator-XS CN9]  (ADB)
 
 -------------------------------
 * How to know my board is 4Gbyte or 8Gbyte ?
@@ -49,3 +68,13 @@
 
 	Alternatively, write 4Gbyte bootloader (small one) fist,
 	run and check Memory Size.
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/README
+
+	It needs Mot file if you want use mot mode.
+	See more detail on each README

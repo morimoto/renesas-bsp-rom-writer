@@ -5,19 +5,9 @@
 
 2022/01/05	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 =============================================
-
--------------------------------
-* How to get ROM ?
-* Known Issue
--------------------------------
-
-	see
-		${renesas-bsp-rom-writer}/starterkit/README
-
 -------------------------------
 * Preparation
 -------------------------------
-
 **  TeraTerm
 
 	You need "TeraTerm". See here and get it
@@ -25,29 +15,59 @@
 		https://ttssh2.osdn.jp/index.html.ja
 		https://ttssh2.osdn.jp/index.html.en
 
-**  Mot file
+**  Mot file (optional)
 
-	You need mot file if use "Full-Auto" mode, but Windows user can't create it by yourself.
-	Please get it from Linux user, and set it as below.
+	It has "normal mode" or "mot mode" to write ROM.
 
-	Linux:
-		${renesas-bsp-rom-writer}/starterkit/linux/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
-	Windows:
+	normal:	Need manual Dip-Switch settings to write ROM.
+		You need to select normal mode
+		if your current board has no ROM (no U-boot)
+	mot:	No Dip-Switch settings are needed.
+
+	You need [mot file] if you want to use "mot mode".
+	But Windows user can't create it by yourself.
+	Please get it from Linux user, and copy it as below.
+
+	Copy from Linux:
+		${renesas-bsp-rom-writer}/script/flash_writer/AArch32_output/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
+	Copy to Windows:
 		${renesas-bsp-rom-writer}/starterkit/AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot
 
--------------------------------
-* Usage
--------------------------------
+**  ROM
 
-	- Start TeraTerm
-	- Open Macro via
-		[Menu] - [Control] - [Macro]
-		${renesas-bsp-rom-writer}/starterkit/windows/rom_writer.ttl
-	- Follow the Questions
+	You need prepare Yocto or Android ROM.
+	see
+		[How to get ROM ?]
+		${renesas-bsp-rom-writer}/starterkit/README
 
-		[Half-Auto] : You need change Dip-Switch manually.
-			      You need to use this mode if your board doesn't have U-boot yet.
-			      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-		[Full-Auto] : No Dip-Switch setting is needed.
-			      You can use this modd if your board have U-boot.
-			                               ^^^^^^^^^^^^^^^^^^^^^^
+-------------------------------
+* Supported OS
+-------------------------------
+	Yocto
+
+	Current renesas-bsp-rom-writer isn't support "Android" for Windows users.
+	Please use Linux for it.
+
+-------------------------------
+* How to use ?
+-------------------------------
+**  [step1] connect Serial between PC and StarterKit
+
+	see
+		[Serial connection]
+		[Known Issue]
+		${renesas-bsp-rom-writer}/starterkit/README
+
+**  [step2] prepare ROM / Mot file (optional)
+
+	You need to prepare Yocto or Android ROM.
+	(optional)
+	You need to prepare mot file if you want to use mot mode.
+
+	see above [Preparation] how to get ROM / mot file.
+
+**  [step3] Start TeraTerm and Open Macro
+
+	[Menu] - [Control] - [Macro]
+	Open macro file
+		${renesas-bsp-rom-writer}/starterkit/windows/yocto_writer.ttl

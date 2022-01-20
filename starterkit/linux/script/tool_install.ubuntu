@@ -1,8 +1,0 @@
-#! /bin/bash
-#===============================
-#
-# tool_install
-#
-# 2022/01/05 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-#===============================
-sudo apt install expect minicom git

@@ -1,6 +1,5 @@
-/starterkit/linux/script/yocto
-/starterkit/linux/script/android
-/starterkit/linux/script/flash_writer
-/salvator/linux/script/yocto
-/salvator/linux/script/android
-/salvator/linux/script/flash_writer
+/script/python/__pycache__
+/script/flash_writer
+/script/gcc-*
+/starterkit/*.mot
+/salvator/*.mot
