@@ -305,6 +305,7 @@ class board(base):
 
     #--------------------
     # mode
+    # board
     # tty
     # soc
     # addr_map
@@ -312,6 +313,7 @@ class board(base):
     # mot
     #--------------------
     def mode(self):	return self.__mode
+    def board(self):	return self.__board
     def tty(self):	return self.__tty
     def soc(self):	return self.__soc
     def os(self):	return self.__os
@@ -542,6 +544,20 @@ class board(base):
                 text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
 
         self.msg(text)
+
+    #--------------------
+    # confirm_location
+    #--------------------
+    def confirm_location(self):
+        # check config file.
+        # If not exist, confirm_location
+        if (os.path.exists(self.config_file())): return
+
+        self.msg("This script requires be called from {} ROM directory.\n".format(self.os()) +\
+                 "Are you calling this script from there ?\n\n" +\
+                 "  > cd ${{{0} ROM dir}}\n".format(self.os()) +\
+                 "  > ${{renesas-bsp-rom-writer}}/{}/linux/{}-writer".format(self.board(), self.os()))
+        self.ask_yn(quit=True)
 
     #--------------------
     # confirm_info

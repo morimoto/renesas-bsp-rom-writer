@@ -28,6 +28,7 @@ class board(base.board):
 
         super().__init__("salvator", soc=soc, os=os, ver=ver, tty=tty, mac=mac, mode="", mot_file=mot_file)
 
+        self.confirm_location()
         self.config_load()
         self.setup()
 
