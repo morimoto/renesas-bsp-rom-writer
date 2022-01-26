@@ -103,7 +103,9 @@ class base:
             self.msg(text)
             try:
                 ret = int(self.input("select number (1-{}): ".format(max)))
-            except:
+            except KeyboardInterrupt:
+                sys.exit(1)
+            except ValueError:
                 ret = -1
             if (ret < 0 or ret > max):
                 self.error("select number in 1 - {}".format(max), quit=0)
