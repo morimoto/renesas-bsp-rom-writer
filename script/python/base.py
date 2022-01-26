@@ -100,7 +100,6 @@ class base:
             text += "\n  {}) ".format(i + 1) + list[i]
 
         while 1:
-            print("\n")
             self.msg(text)
             try:
                 ret = int(self.input("select number (1-{}): ".format(max)))
