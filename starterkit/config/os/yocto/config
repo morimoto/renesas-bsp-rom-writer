@@ -6,15 +6,17 @@
 ; TeraTerm Macro has many limitation
 ; We need to adjust to it here
 ;
-strdim list_version 4
-strdim list_map     4
+strdim list_version 5
+strdim list_map     5
 
-list_version[0] = "5.5.0"
-list_version[1] = "5.1.0"
-list_version[2] = "4.1.0"
-list_version[3] = "3.21.0"
+list_version[0] = "5.9.0"
+list_version[1] = "5.5.0"
+list_version[2] = "5.1.0"
+list_version[3] = "4.1.0"
+list_version[4] = "3.21.0"
 
 list_map[0] = "map02"
 list_map[1] = "map02"
-list_map[2] = "map01"
+list_map[2] = "map02"
 list_map[3] = "map01"
+list_map[4] = "map01"
