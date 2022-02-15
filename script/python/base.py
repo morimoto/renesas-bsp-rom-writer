@@ -424,7 +424,7 @@ class board(base):
             self.error("select version first")
 
         dir_map = self.dir_config_os(list_map[list_version.index(self.__ver)])
-        text = "Select write SoC/WS\n\n" + self.soc_explanation()
+        text = self.soc_explanation() + "\n\nSelect SoC/WS ROM\n"
 
         while (not os.path.isfile("{}/{}".format(dir_map, self.__soc))):
             self.__soc = self.select(text, list_soc)
@@ -459,9 +459,16 @@ class board(base):
             return 1
 
     def __select_tty(self):
-        text = "Your board and PC need to connect\n" +\
-               self.tty_connection() + "\n\n"\
-               "Which tty is connected to board ?\n" +\
+        text = "Your board and PC need to connect\n" + self.tty_connection()
+        self.msg(text)
+        self.ask_yn(quit=True)
+
+        text = "You need to stop minicom or other software\n" +\
+               "which is connecting to the board"
+        self.msg(text)
+        self.ask_yn(quit=True)
+
+        text = "Which tty is connected to board ?\n" +\
                "  ex) /dev/ttyUSBx\n\n" +\
                "You can confirm it by this command maybe ?\n" +\
                "  > dmesg | grep ttyUSB"
