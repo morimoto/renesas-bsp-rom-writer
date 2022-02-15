@@ -107,7 +107,7 @@ class base:
                 sys.exit(1)
             except ValueError:
                 ret = -1
-            if (ret < 0 or ret > max):
+            if (ret <= 0 or ret > max):
                 self.error("select number in 1 - {}".format(max), quit=0)
             else:
                 return list[ret - 1]
