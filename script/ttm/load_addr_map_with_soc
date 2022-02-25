@@ -3,6 +3,7 @@
 ; should have necessary settings
 ;
 ; require
+;	os
 ;	list_soc
 ;	list_soc_explanation
 ;	list_version
