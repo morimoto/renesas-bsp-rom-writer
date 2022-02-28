@@ -62,5 +62,4 @@ for i 0 num_addr_map-1
    wait ">"
 next
 
-messagebox "finished" "message"
 setbaud baudrate

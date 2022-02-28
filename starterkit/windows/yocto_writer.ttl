@@ -87,6 +87,11 @@ select_ans = "3"
 func_name = "starterkit_type_main"
 call call_func
 
+;=============================
+; finish
+;=============================
+messagebox "finished" "message"
+
 exit
 ;=============================
 ; call_func
