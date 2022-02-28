@@ -45,7 +45,7 @@ next
 
 strcompare __error ""
 if result!=0 then
-  sprintf2 __error "These srec binary are required, nut not found\n\n%s" __error
+  sprintf2 __error "These srec binary are required, but not found\n\n%s" __error
   strspecial __error
   messagebox __error "error"
   end
