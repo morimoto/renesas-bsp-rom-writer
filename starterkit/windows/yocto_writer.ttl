@@ -85,6 +85,7 @@ else
   run_2nd_Y = 1
 endif
 
+select_ans = "3"
 func_name = "starterkit_type_main"
 call call_func
 
