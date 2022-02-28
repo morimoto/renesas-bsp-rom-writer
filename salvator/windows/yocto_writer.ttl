@@ -51,16 +51,18 @@ func_name = "select_srec_dir"
 call call_func
 
 ;=============================
-; load dip-swich settings
+; load dip switch settings
 ;=============================
-sprintf2 __sw "%s\%s\config\sw\%s" dir_top board mode
-include __sw
+sprintf2 sw_file "%s\%s\config\sw\%s" dir_top board mode
+func_name = "dip_switch_msg"
+call call_func
 
 ;=============================
 ; init for each mode
 ;=============================
 strcompare mode "mot"
 if result=0 then
+   sprintf2 mot_file "%s\%s\%s" dir_top board mot
    func_name = "salvator_type_init_mot1"
 else
    ; same as starterkit init

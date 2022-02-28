@@ -3,31 +3,9 @@
 ;
 ; require
 ;	baudrate
-;	sw_head
-;	sw_update
-;	sw_normal
+;	sw_msg_update
+;	sw_msg_normal
 ;
-
-;
-; create dip-swich explanation message
-;
-__sw_head="Setup Board Dip-Switch\n\n"
-for i 0 num_sw_head-1
-  sprintf2 __sw_head "%s\n%s" __sw_head  sw_head[i]
-next
-strspecial __sw_head
-
-__sw_update=__sw_head
-for i 0 num_sw_update-1
-  sprintf2 __sw_update "%s\n%s" __sw_update  sw_update[i]
-next
-strspecial __sw_update
-
-__sw_normal=__sw_head
-for i 0 num_sw_normal-1
-  sprintf2 __sw_normal "%s\n%s" __sw_normal  sw_normal[i]
-next
-strspecial __sw_normal
 
 ;
 ; set baudrate
@@ -40,11 +18,11 @@ setbaud baudrate
 yesnobox "Board Power OFF ?" "Power Check"
 if result!=1 end
 
-yesnobox __sw_update "SW Check"
+yesnobox sw_msg_update "SW Check"
 if result!=1 end
 
 yesnobox "Board Power ON ?" "Power Check"
 if result!=1 end
 
-yesnobox __sw_normal  "SW check"
+yesnobox sw_msg_normal  "SW check"
 if result!=1 end
