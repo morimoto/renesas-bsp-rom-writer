@@ -4,5 +4,8 @@
 ; require
 ;	sw_msg_normal
 
+yesnobox "Board Power OFF ?" "Power Check"
+if result!=1 end
+
 yesnobox sw_msg_normal  "SW check"
 if result!=1 end

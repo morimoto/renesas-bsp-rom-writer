@@ -1,0 +1,29 @@
+;
+; Spider type Mot mode
+;
+; require
+;	mot_file
+;	baudrate
+;
+
+;
+; set baudrate
+;
+setbaud baudrate
+
+;
+; Guide Power and Dip-Switch
+;
+yesnobox "Board Power OFF ?" "Power Check"
+if result!=1 end
+
+yesnobox sw_msg_update "SW Check"
+if result!=1 end
+
+yesnobox "Board Power ON ?" "Power Check"
+if result!=1 end
+
+; sw_msg_normal will be called after finished
+
+wait "please send !"
+sendfile mot_file 1

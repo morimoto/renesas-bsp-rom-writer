@@ -1,0 +1,12 @@
+;
+; TeraTerm Macro has many limitation
+; We need to adjust to it here
+;
+strdim list_version 2
+strdim list_map     2
+
+list_version[0] = "Pre-Alpha4.0"
+list_version[1] = "Alpha3.0"
+
+list_map[0] = "map01"
+list_map[1] = "map02"

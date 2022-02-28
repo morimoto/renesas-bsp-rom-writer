@@ -1,0 +1,43 @@
+============== -*- outline -*- ==============
+
+   Renesas S4 Spider BSP ROM Writer
+   for Windows/TeraTerm
+
+2022/02/25	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+**  TeraTerm
+
+	You need "TeraTerm". See here and get it
+
+		https://ttssh2.osdn.jp/index.html.ja
+		https://ttssh2.osdn.jp/index.html.en
+
+-------------------------------
+* How to use ?
+-------------------------------
+**  [step0] check premise
+
+	see
+		[premise]
+		${renesas-bsp-rom-writer}/spider/README
+
+**  [step1] connect Serial between PC and Spider
+
+	see
+		[Serial connection]
+		${renesas-bsp-rom-writer}/spider/README
+
+**  [step2] prepare ROM
+
+	see
+		[How to get ROM]
+		${renesas-bsp-rom-writer}/spider/README
+
+**  [step3] Start TeraTerm and Open Macro
+
+	[Menu] - [Control] - [Macro]
+	Open macro file
+		${renesas-bsp-rom-writer}/spider/windows/yocto_writer.ttl

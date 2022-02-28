@@ -431,6 +431,17 @@ class board(base):
         self.__addr_map = addr_map("{}/{}".format(dir_map, self.__soc))
 
     #--------------------
+    # select_soc_noselect
+    #--------------------
+    def __select_soc_noselect(self):
+        list_version = self.ttm_array(self.dir_config_os("config"), "list_version")
+        list_map     = self.ttm_array(self.dir_config_os("config"), "list_map")
+
+        map = list_map[list_version.index(self.__ver)]
+
+        self.__addr_map = addr_map(self.dir_config_os(map))
+
+    #--------------------
     # select_tty (default)
     #--------------------
     def __tty_error(self):

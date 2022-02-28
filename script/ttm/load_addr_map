@@ -1,0 +1,36 @@
+;
+; ${renesas-bsp-rom-writer}\${board}\config\os\${os}\config
+; should have necessary settings
+;
+; require
+;	os
+;	list_version
+;	list_map
+;
+; return
+;	ver
+;	addr_map	# load from ${renesas-bsp-rom-writer}\${board}\config\os\${os}\${map}
+;	num_addr_map	#
+;
+
+;
+; load config
+;
+sprintf2 __tmp "%s\%s\config\os\%s\config" dir_top board os
+include __tmp
+
+;
+; converter version -> map
+;
+sprintf2 __txt "Which [%s] Version ?" os
+listbox __txt "Version Select" list_version
+if result<0 end
+
+ver = list_version[result]
+map = list_map[result]
+
+;
+; load addr_map
+;
+sprintf2 __tmp "%s\%s\config\os\%s\%s" dir_top board os map
+include __tmp

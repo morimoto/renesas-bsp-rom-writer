@@ -1,0 +1,42 @@
+============== -*- outline -*- ==============
+
+   Renesas S4 Spider BSP ROM Writer
+
+2022/02/25	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* What is Renesas Spider ?
+-------------------------------
+
+	R-Car S4 Reference Board/Spider
+
+		https://www.renesas.com/jp/ja/products/automotive-products/automotive-system-chips-socs/rtp8a779f0askb0sp2s-r-car-s4-reference-boardspider
+
+-------------------------------
+* How to get ROM ?
+-------------------------------
+
+	Please Contact to [Renesas Sales team] or
+	[Renesas appointed store Sales team]
+
+-------------------------------
+* premise
+-------------------------------
+
+	This ROM Writer is assuming your Spider board
+	already setup [SCIF baudrate] as [1843200]
+	via [S4 Spider Configuration Tool]
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+	[Host PC] <--> [Spider CN21] (/dev/ttyUSBx)
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/README
