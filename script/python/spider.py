@@ -64,39 +64,6 @@ class rom_write_guide(base.guide):
         self.board = board
 
     #--------------------
-    # main loop
-    #--------------------
-    def main_loop(self):
-        for map in self.board.addr_map():
-            self.send()
-            self.expect(">")
-
-            self.send("xls2")
-
-            self.expect("Select (1-3)>")
-            self.send("1")
-
-            self.expect("(Push Y key)")
-            self.send("Y", end="")
-
-            self.expect("(Push Y key)")
-            self.send("Y", end="")
-
-            self.expect("Please Input : H'")
-            self.send(map["addr"])
-
-            self.expect("Please Input : H'")
-            self.send(map["save"])
-
-            self.expect("please send !")
-            self.send_file("{}/{}".format(self.cwd(), map["srec"]))
-
-            self.expect("Clear OK?(y/n)")
-            self.send("y", end="")
-
-            self.expect(">")
-
-    #--------------------
     # guide_start
     #--------------------
     def guide_start(self):
@@ -129,7 +96,7 @@ class rom_write_guide(base.guide):
         self.expect(">")
 
         # main loop
-        self.main_loop()
+        self.sk_type_main_loop(self.board.addr_map(), "1", True)
 
         # power off
         self.power("OFF")

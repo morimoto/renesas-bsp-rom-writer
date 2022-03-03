@@ -763,6 +763,40 @@ class guide(base):
     def power(self, onoff):
         self.msg("Power {}".format(onoff))
 
+    #--------------------
+    # sk_type_send
+    #--------------------
+    def sk_type_main_loop(self, addr_map, select, use_2nd_Y):
+        for map in addr_map:
+            self.send()
+            self.expect(">")
+
+            self.send("xls2")
+
+            self.expect("Select (1-3)>")
+            self.send(select)
+
+            self.expect("(Push Y key)")
+            self.send("Y", end="")
+
+            if (use_2nd_Y):
+                self.expect("(Push Y key)")
+                self.send("Y", end="")
+
+            self.expect("Please Input : H'")
+            self.send(map["addr"])
+
+            self.expect("Please Input : H'")
+            self.send(map["save"])
+
+            self.expect("please send !")
+            self.send_file("{}/{}".format(self.cwd(), map["srec"]))
+
+            self.expect("Clear OK?(y/n)")
+            self.send("y", end="")
+
+            self.expect(">")
+
 #====================================
 #
 # As command
