@@ -105,7 +105,6 @@ class rom_write_guide(base.guide):
     #--------------------
     def main_loop(self):
         self.sk_type_main_loop(self.board.addr_map(), "3", self.__use_2nd_Y)
-        self.msg("finished !!")
 
     #--------------------
     # guide_for_mot
@@ -139,6 +138,7 @@ class rom_write_guide(base.guide):
 
         # main loop
         self.main_loop()
+        self.msg("finished !!")
 
     #--------------------
     # guide_for_normal
@@ -162,6 +162,7 @@ class rom_write_guide(base.guide):
 
         # main loop
         self.main_loop()
+        self.msg("finished !!")
 
     #--------------------
     # guide_start

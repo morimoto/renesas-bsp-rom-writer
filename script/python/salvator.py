@@ -117,6 +117,8 @@ class rom_write_guide(starterkit.rom_write_guide):
         sw.print_msg_normal()
         self.ask_yn()
 
+        self.msg("finished !!")
+
 #====================================
 #
 # As command
