@@ -115,13 +115,19 @@ class base:
     #--------------------
     # ask_yn
     #--------------------
-    def ask_yn(self, quit=None):
-        ret = self.input("OK? (y/n): ")
-        print()
-        ret = (ret == "y")
-        if (quit and not ret):
-            sys.exit(1)
-        return ret
+    def ask_yn(self, quit=None, default=None):
+        while 1:
+            msg = " <default {}>: ".format(default) if (default) else ": "
+            ret = self.input("OK? (y/n)" + msg)
+            if (default and ret == ""):
+                ret = default
+            if (ret == "y"):
+                return 1
+            if (ret == "n"):
+                if (quit):
+                    sys.exit(1)
+                else:
+                    return 0
 
     #--------------------
     # error
