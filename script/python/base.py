@@ -673,9 +673,42 @@ class guide(base):
         size = self.__serial.inWaiting()
         if (not size): return
 
+        # read serial data
+        # and print it immediately
         line = self.__serial.read(size).decode(errors='ignore')
         print(line, end="", flush=True)
+
+        # add new data to end of previous remain data
         self.__remain_lines += line
+
+        #
+        # We can't handle expected data in big one-line data,
+        # because current "end of arrived data" might be in the middle
+        # of the expected data.
+        #
+        # ex) expected data is "ABCD",
+        #     "AB" is arrived, but "CD" is not.
+        #
+        #	@ : previous loaded data
+        #	x : new      loaded data
+        #	[]: line break (= \n)
+        #
+        #	__remain_lines = @@@@@@@@@@@@xxxxxx[]xxxxxAB
+        #
+        # In this case, we can't find expected data (= ABCD) from
+        # __remain_lines, and can't clear __remain_lines because
+        # we can't judge the part of expect data was included or not.
+        #
+        # Keeping __remain_lines and checks it everytime until it
+        # could find expected data is very waste of CPU power.
+        #
+        # Thus it transforms the data to line array,
+        # and remain_lines. see __expect()
+        #
+        #	@@@@@@@@@@@@xxxxxx	-> __line_array
+        #	xxxxxxxxxxxxxxxxxx	-> __line_array
+        #	xxxx			-> __remain_lines
+        #
         array = self.__remain_lines.split("\n")
         last  = len(array) - 1
 
@@ -690,14 +723,43 @@ class guide(base):
     # __expect
     #--------------------
     def __expect(self, pattern):
+        #
+        # ex)
+        #	@ : previous loaded data
+        #	x : new      loaded data
+        #
+        #	@@@@@@@@@@@@xxxxxx	: __line_array
+        #	xxxxxxxxxxxxxxxxxx	: __line_array
+        #	xxxx			: __remain_lines
+        #
+
+        #
+        # pop older data, and check it line-by-line
+        #
+        #	@@@@@@@@@@@@xxxxxx	: __line_array
+        #	xxxxxxxxxxxxxxxxxx	: __line_array
+        #
         while len(self.__line_array) > 0:
             line = self.__line_array.pop(0)
             if (pattern in line):
                 return True
+        #
+        # check last data
+        #
+        #	xxxx			: __remain_lines
+        #
         idx = self.__remain_lines.find(pattern)
         if (idx >= 0):
+            #
+            # remove matched pattern from remain lines
+            #
+            # ex) pattern = ABCD
+            # before __remain_lines : xxxABCDyyyyy
+            # after  __remain_lines : yyyyy
+            #
             self.__remain_lines = self.__remain_lines[idx + len(pattern):]
             return True
+
         return False
 
     #--------------------
