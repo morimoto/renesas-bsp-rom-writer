@@ -303,20 +303,17 @@ class fastboot_uboot_guide(base.guide):
 #
 #====================================
 if __name__=='__main__':
-    confirm	= 0
+    confirm	= 1
     os		= ""
-    guide	= None
 
-    if (not sys.argv[1]):
+    if (len(sys.argv) < 2):
         # test
-        board("h3_4g", os="yocto", ver="5.5.0", tty="/dev/ttyUSB0")
+        board(confirm, soc="h3_4g", os="yocto", ver="5.5.0", tty="/dev/ttyUSB0")
         sys.exit(0)
     if (sys.argv[1] == "yocto"):
-        confirm = 1
         os = "yocto"
         guide = rom_write_guide
     elif (sys.argv[1] == "android"):
-        confirm = 1
         os = "android"
         guide = rom_write_guide
     elif (sys.argv[1] == "android_fastboot"):
