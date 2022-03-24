@@ -21,14 +21,6 @@
 	[Renesas appointed store Sales team]
 
 -------------------------------
-* premise
--------------------------------
-
-	This ROM Writer is assuming your Spider board
-	already setup [SCIF baudrate] as [1843200]
-	via [S4 Spider Configuration Tool]
-
--------------------------------
 * Serial connection
 -------------------------------
 

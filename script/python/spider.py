@@ -29,11 +29,6 @@ class board(base.board):
 
         super().__init__("spider", soc="s4", os="linux-bsp", ver=ver, tty=tty, mode="normal")
 
-        # expect S4_Spider_Configurator.exe setting has done
-        self.msg("This tool is expecting that your board alreday has\n"\
-                 "changed SCIF speed to 1843200 via S4_Spider_Configurator.exe")
-        self.ask_yn(quit=True)
-
         self.confirm_location()
         self.config_load()
         self.setup()
