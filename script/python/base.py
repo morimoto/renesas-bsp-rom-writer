@@ -763,9 +763,9 @@ class guide(base):
         return False
 
     #--------------------
-    # expect
+    # ___expect
     #--------------------
-    def expect(self, pattern, timeout=60):
+    def ___expect(self, pattern, timeout=60):
         timeout += int(time.time())
         try:
             while int(time.time()) < timeout:
@@ -779,7 +779,14 @@ class guide(base):
         except KeyboardInterrupt:
             sys.exit(1)
 
-        self.error("expect timeout")
+        return False
+
+    #--------------------
+    # expect
+    #--------------------
+    def expect(self, pattern, timeout=60):
+        if (not self.___expect(pattern, timeout)):
+            self.error("expect timeout")
 
     #--------------------
     # stop_autorun
