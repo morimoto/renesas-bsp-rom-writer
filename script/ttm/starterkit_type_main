@@ -6,7 +6,7 @@
 ;	num_addr_map
 ;	addr_map
 ;	dir_srec
-;	run_2nd_Y
+;	yes_loop
 ;
 
 ;
@@ -37,13 +37,10 @@ for i 0 num_addr_map-1
    wait "Select (1-3)>"
    sendln select_ans
 
-   wait "(Push Y key)"
-   send 'Y'
-
-   if run_2nd_Y=1 then
-     wait "(Push Y key)"
-     send 'Y'
-   endif
+   for y 1 yes_loop
+      wait "(Push Y key)"
+      send 'Y'
+   next
 
    wait "Please Input : H'"
    sendln groupmatchstr1

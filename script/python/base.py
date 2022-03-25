@@ -834,7 +834,7 @@ class guide(base):
     #--------------------
     # sk_type_send
     #--------------------
-    def sk_type_main_loop(self, addr_map, select, use_2nd_Y):
+    def sk_type_main_loop(self, addr_map, select, yes_loop):
         for map in addr_map:
             self.send()
             self.expect(">")
@@ -844,10 +844,7 @@ class guide(base):
             self.expect("Select (1-3)>")
             self.send(select)
 
-            self.expect("(Push Y key)")
-            self.send("Y", end="")
-
-            if (use_2nd_Y):
+            for i in range(yes_loop):
                 self.expect("(Push Y key)")
                 self.send("Y", end="")
 

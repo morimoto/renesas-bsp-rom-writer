@@ -83,12 +83,12 @@ class rom_write_guide(base.guide):
     # <Overwrite>
     #
     # M2 v1 Starterkit doesn't need 2nd Y in main loop
-    # Overwrite use_2nd_Y() if other board re-use rom_write_guide
+    # Overwrite yes_loop_num() if other board re-use rom_write_guide
     #======================
-    def use_2nd_Y(self):
+    def yes_loop_num(self):
         if (self.board.soc_ws() == "m3_2g"):
-            return False
-        return True
+            return 1
+        return 2
 
     #--------------------
     # __init__
@@ -98,13 +98,13 @@ class rom_write_guide(base.guide):
         # possible to use from child-class
         self.board = board
 
-        self.__use_2nd_Y = self.use_2nd_Y()
+        self.__yes_loop = self.yes_loop_num()
 
     #--------------------
     # main loop
     #--------------------
     def main_loop(self):
-        self.sk_type_main_loop(self.board.addr_map(), "3", self.__use_2nd_Y)
+        self.sk_type_main_loop(self.board.addr_map(), "3", self.__yes_loop)
 
     #--------------------
     # guide_for_mot

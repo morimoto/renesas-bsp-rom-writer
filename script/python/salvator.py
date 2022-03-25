@@ -83,8 +83,8 @@ class rom_write_guide(starterkit.rom_write_guide):
     #
     # Salvator always need 2nd Y in main loop
     #======================
-    def use_2nd_Y(self):
-        return True
+    def yes_loop_num(self):
+        return 2
 
     #======================
     # <Overwrite>

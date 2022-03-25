@@ -58,7 +58,7 @@ call call_func
 ; same as StarterKit
 ;=============================
 select_ans = "1"
-run_2nd_Y = 1
+yes_loop = 2
 func_name = "starterkit_type_main"
 call call_func
 

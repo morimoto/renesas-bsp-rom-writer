@@ -78,9 +78,9 @@ call call_func
 sprintf2 __check "%s_%s" soc_ws mode
 strcompare __check "m3_2g_normal"
 if result=0 then
-  run_2nd_Y = 0
+  yes_loop = 1
 else
-  run_2nd_Y = 1
+  yes_loop = 2
 endif
 
 select_ans = "3"
