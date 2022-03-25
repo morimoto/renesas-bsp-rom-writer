@@ -73,10 +73,6 @@ class rom_write_guide(base.guide):
             self.ask_yn()
             sys.exit(1)
 
-        # serial connection
-        self.msg("Confirm serial connection.\n" +\
-                 self.board.tty_connection())
-
         # power off
         self.power("OFF")
         self.ask_yn()
