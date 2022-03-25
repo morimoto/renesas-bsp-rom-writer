@@ -1,0 +1,8 @@
+strdim list_soc 2
+list_soc[0] = "ebisu"
+list_soc[1] = "ebisu_4d"
+
+num_list_soc_explanation = 2
+strdim list_soc_explanation num_list_soc_explanation
+list_soc_explanation[0]="ebisu:    1Gbyte"
+list_soc_explanation[1]="ebisu_4d: 2Gbyte"
