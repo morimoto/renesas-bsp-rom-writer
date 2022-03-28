@@ -39,12 +39,9 @@ class board(base.board):
         self.check_files()
 
     #--------------------
-    # tty_connection
     # soc_explanation
     # mode_explanation
     #--------------------
-    def tty_connection(self):
-        return "\n".join(self.ttm_array(self.dir_config_os("connection"), "tty_connection"))
     def soc_explanation(self):
         return "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation"))
     def mode_explanation(self):

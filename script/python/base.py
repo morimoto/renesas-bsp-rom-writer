@@ -450,6 +450,9 @@ class board(base):
     #--------------------
     # select_tty (default)
     #--------------------
+    def tty_connection(self):
+        return "\n".join(self.ttm_array(self.dir_config_os("connection"), "tty_connection"))
+
     def __tty_error(self):
         if (not os.path.exists(self.__tty)):
             return 1

@@ -37,12 +37,6 @@ class board(base.board):
         self.config_save()
         self.check_files()
 
-    #--------------------
-    # tty_connection
-    #--------------------
-    def tty_connection(self):
-        return "\n".join(self.ttm_array(self.dir_config_os("connection"), "tty_connection"))
-
 #====================================
 #
 # rom_write_guide
