@@ -30,12 +30,6 @@ class board(base.board):
         self.config_save()
         self.check_files()
 
-    #--------------------
-    # soc_explanation
-    #--------------------
-    def soc_explanation(self):
-        return "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation"))
-
 #====================================
 #
 # rom_write_guide

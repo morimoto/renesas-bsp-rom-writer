@@ -305,10 +305,8 @@ class board(base):
 
     #--------------------
     # mode_explanation
-    # soc_explanation
     #--------------------
     def mode_explanation(self): return ""
-    def soc_explanation(self):  return ""
 
     #--------------------
     # mode
@@ -421,6 +419,9 @@ class board(base):
     #--------------------
     # select_soc (default)
     #--------------------
+    def soc_explanation(self):
+        return "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation"))
+
     def __select_soc(self):
         list_soc     = self.ttm_array(self.dir_config("soc"), "list_soc")
         list_version = self.ttm_array(self.dir_config_os("config"), "list_version")

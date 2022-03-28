@@ -40,11 +40,8 @@ class board(base.board):
         self.check_files()
 
     #--------------------
-    # soc_explanation
     # mode_explanation
     #--------------------
-    def soc_explanation(self):
-        return "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation"))
     def mode_explanation(self):
         # We can't share mode explanation message on config file
         # because Linux vs Windows explanation are different
