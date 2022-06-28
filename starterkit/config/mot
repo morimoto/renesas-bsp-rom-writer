@@ -4,7 +4,7 @@
 ; But, M3 v1 board is too old, thus, it can't have CPLD 64bit mode.
 ; We use 32bit CPLD mode for all Starterkit boards.
 ;
-dir_mot	= "AArch32_output"
+dir_mot	= "script\flash_writer\AArch32_output"
 mot	= "AArch32_Flash_writer_SCIF_DUMMY_CERT_E6300400_ULCB.mot"
 
 num_cpld_cmd = 2

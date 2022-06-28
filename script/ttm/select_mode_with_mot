@@ -2,7 +2,7 @@
 ; select [normal] or [mot]
 ;
 ; require
-;	dir_mot	# ${renesas-bsp-rom-writer}\script\flash_writer\${dir_mot}}\${mot}
+;	dir_mot	# ${renesas-bsp-rom-writer}\${dir_mot}}\${mot}
 ;	mot
 ;
 ; return
@@ -25,7 +25,7 @@ include __tmp
 ; create explanation message
 ;
 groupmatchstr1=""
-sprintf2 groupmatchstr2 "Linux   : ${renesas_bsp_rom_writer}\script\flash_writer\%s\%s" dir_mot mot
+sprintf2 groupmatchstr2 "Linux   : ${renesas_bsp_rom_writer}\%s\%s" dir_mot mot
 sprintf2 groupmatchstr3 "Windows : ${renesas_bsp_rom_writer}\%s" board
 strjoin __copy_from "\n" 3
 strspecial __copy_from

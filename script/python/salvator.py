@@ -16,6 +16,32 @@ import starterkit
 #====================================
 class board(base.board):
     #--------------------
+    # mot_file
+    # mot_error
+    #--------------------
+    def mot_init(self):
+        # mot setting file for dir_config()
+        # ${renesas-bsp-rom-writer}/starterkit/config/mot
+        mot_config = self.dir_config("mot")
+
+        # because Windws path is not same as Linux,
+        # we need to call replace() to exchange \ to /
+        self.__mot = "{}/{}".format(
+            self.ttm_array(mot_config, "dir_mot")[0].replace("\\", "/"),
+            self.ttm_array(mot_config, "mot")[0])
+
+    def mot_file(self):
+        return "{}/{}".format(self.top(), self.__mot)
+
+    def mot_error(self):
+        self.error("You selected mot mode to write ROM.\n"\
+                   "It needs mot file, but you didn't create it yet.\n"\
+                   "Please run make and create mot file.\n\n"\
+                   "   > cd ${renesas-bsp-rom-writer}\n"\
+                   "   > make\n\n"\
+                   "You need is\n" + self.mot_file())
+
+    #--------------------
     # __init__
     #--------------------
     def __init__(self, confirm, soc="", os="", ver="", tty="", mac=None):
@@ -23,10 +49,10 @@ class board(base.board):
         # mac is needed if Android
         if (os == "android"):
             mac = ""
-        # mot setting file for dir_config()
-        mot_file = "mot"
 
-        super().__init__("salvator", soc=soc, os=os, ver=ver, tty=tty, mac=mac, mode="", mot_file=mot_file)
+        super().__init__("salvator", soc=soc, os=os, ver=ver, tty=tty, mac=mac, mode="")
+
+        self.mot_init()
 
         self.confirm_location()
         self.config_load()
@@ -98,7 +124,7 @@ class rom_write_guide(starterkit.rom_write_guide):
 
         # indicate meesage
         # and send mot file
-        self.send_file(self.board.mot())
+        self.send_file(self.board.mot_file())
         self.expect(">")
 
         # speed up

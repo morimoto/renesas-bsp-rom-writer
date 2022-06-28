@@ -277,7 +277,7 @@ class board(base):
     # __init__
     #--------------------
     def __init__(self, board,
-                 soc=None, os=None, ver=None, tty=None, mode=None, mac=None, mot_file=None):
+                 soc=None, os=None, ver=None, tty=None, mode=None, mac=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -292,16 +292,14 @@ class board(base):
         # for Android
         self.__mac	= mac
 
-        # for mot mode
-        self.__mot	= None		# enable mot mode if file exist
-        if (mot_file):
-            dir = self.ttm_array(self.dir_config(mot_file), "dir_mot")
-            mot = self.ttm_array(self.dir_config(mot_file), "mot")
-            self.__mot = "{}/{}".format(dir[0], mot[0])
-
         # for inside
         self.__config	= ".renesas_bsp_rom_writer.{}".format(board)
         self.__addr_map	= None
+
+    #--------------------
+    # mot_file
+    #--------------------
+    def mot_file(self): return None
 
     #--------------------
     # mode_explanation
@@ -315,7 +313,6 @@ class board(base):
     # soc
     # addr_map
     # mac
-    # mot
     #--------------------
     def mode(self):	return self.__mode
     def board(self):	return self.__board
@@ -324,7 +321,6 @@ class board(base):
     def os(self):	return self.__os
     def addr_map(self):	return self.__addr_map
     def mac(self):	return self.__mac
-    def mot(self):	return "{}/script/flash_writer/{}".format(self.top(), self.__mot)
 
     #--------------------
     # soc_ws : h3_4g
@@ -534,7 +530,7 @@ class board(base):
         mode_list = ["normal"]
 
         # add more mode here
-        if (self.__mot): mode_list.append("mot")
+        if (self.mot_file()): mode_list.append("mot")
 
         if (self.__mode in mode_list):
             return
@@ -629,16 +625,11 @@ class board(base):
     # check_mot
     #--------------------
     def __check_mot(self):
-        if (not self.__mot): return
+        if (not self.mot_file()): return
         if (not self.mode() == "mot"): return
 
-        if (not os.path.isfile(self.mot())):
-            self.error("You selected mot mode to write ROM.\n"\
-                       "It needs mot file, but you didn't create it yet.\n"\
-                       "Please run make and create mot file.\n\n"\
-                       "   > cd ${renesas-bsp-rom-writer}\n"\
-                       "   > make\n\n"\
-                       "You need is\n" + self.mot())
+        if (not os.path.isfile(self.mot_file())):
+            self.mot_error()
 
     #--------------------
     # check_files
