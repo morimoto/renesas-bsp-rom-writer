@@ -830,7 +830,17 @@ class guide(base):
     # sk_type_send
     #--------------------
     def sk_type_main_loop(self, addr_map, select, yes_loop):
+        list = ["Update all files without asking",
+                "Ask one by one whether to update"]
+        idx = list.index(self.select("You can select update style", list))
+
         for map in addr_map:
+            if (idx):
+                self.msg("Do you update this ?\n" +\
+                          map["srec"] + " (" + map["addr"] + " : " + map["save"] + ")")
+                if (not self.ask_yn()):
+                    continue
+
             self.send()
             self.expect(">")
 
