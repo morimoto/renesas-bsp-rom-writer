@@ -67,6 +67,13 @@ class rom_write_guide(base.guide):
             self.ask_yn()
             sys.exit(1)
 
+        # warning
+        self.msg("*NOTE*\n\n"\
+                 "We don't know why but it seems it will hung up on some PC\n"\
+                 "during sending file to Spider board.  Please check README\n"\
+                 "if it doesn't finish sending file in 5 min.")
+        self.ask_yn()
+
         # power off
         self.power("OFF")
         self.ask_yn()
