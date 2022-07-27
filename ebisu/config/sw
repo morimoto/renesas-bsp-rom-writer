@@ -18,6 +18,6 @@ strdim sw_normal num_sw_normal
 sw_normal[0] = "SW1  : [0 0 0 0 0 0]"
 sw_normal[1] = "SW2  : [0 0 0 0 0 0]"
 sw_normal[2] = "SW3  : [1]"
-sw_normal[3] = "SW10 : [1 0 0 1 1 1 0 0]"
+sw_normal[3] = "SW10 : [1 0 0 1 1 1 0 1]"
 sw_normal[4] = "SW31 : [1]"
 
