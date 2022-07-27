@@ -1,0 +1,45 @@
+============== -*- outline -*- ==============
+
+   Renesas V3H Condor BSP ROM Writer
+
+2022/07/27	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* What is Renesas Condor ?
+-------------------------------
+
+	elinux
+	https://elinux.org/R-Car/Boards/Condor
+
+	RTP0RC77980SEBS012SA01
+	https://www.renesas.com/us/en/products/automotive-products/automotive-system-chips-socs/rtp0rc77980sebs012sa01-adas-automated-driving-solution-r-car-v3h-reference-board-condor-i
+
+-------------------------------
+* Condor vs Condor-I
+-------------------------------
+
+	V3H  Condor	= r8a77980  = RTP0RC77980SEB0010S
+	V3H2 Condor-I	= r8a77980A = RTP0RC77980SEB0012SA01
+
+	This script is tested on "V3H2 r8a77980A Condor-I board"
+
+-------------------------------
+* How to get ROM ?
+-------------------------------
+
+	Please Contact to [Renesas Sales team] or
+	[Renesas appointed store Sales team]
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+	[Host PC] <--> [Condor-I CN11] (/dev/ttyUSBx)
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/README

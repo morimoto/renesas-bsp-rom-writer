@@ -1,0 +1,11 @@
+num_addr_map = 7
+strdim addr_map num_addr_map
+addr_map[0] = "EB200000,000000,bootparam_sa0.srec"
+addr_map[1] = "EB2D8000,040000,icumxa_loader.srec"
+addr_map[2] = "EB200000,180000,cert_header_sa6.srec"
+addr_map[3] = "EB2B4000,0C0000,dummy_fw.srec"
+addr_map[4] = "EB200000,1C0000,dummy_rtos.srec"
+addr_map[5] = "46400000,2C0000,bl31-condor.srec"
+addr_map[6] = "50000000,840000,u-boot-elf-condor.srec"
+
+mot_file = "ICUMXA_Flash_writer_SCIF_DUMMY_CERT_EB200400_condor.mot"
