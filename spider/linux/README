@@ -19,12 +19,6 @@
 -------------------------------
 * How to use ?
 -------------------------------
-**  [step0] check premise
-
-	see
-		[premise]
-		${renesas-bsp-rom-writer}/spider/README
-
 **  [step1] connect Serial between PC and Spider
 
 	see
