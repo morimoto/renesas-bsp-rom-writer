@@ -295,6 +295,7 @@ class board(base):
         # for inside
         self.__config	= ".renesas_bsp_rom_writer.{}".format(board)
         self.__addr_map	= None
+        self.__map	= None
 
     #--------------------
     # mot_file
@@ -319,6 +320,7 @@ class board(base):
     def tty(self):	return self.__tty
     def soc(self):	return self.__soc
     def os(self):	return self.__os
+    def map(self):	return self.__map
     def addr_map(self):	return self.__addr_map
     def mac(self):	return self.__mac
 
@@ -431,7 +433,9 @@ class board(base):
 
         while (not os.path.isfile("{}/{}".format(dir_map, self.__soc))):
             self.__soc = self.select(text, list_soc)
-        self.__addr_map = addr_map("{}/{}".format(dir_map, self.__soc))
+
+        self.__map = "{}/{}".format(dir_map, self.__soc)
+        self.__addr_map = addr_map(self.__map)
 
     #--------------------
     # select_soc_noselect
@@ -442,7 +446,8 @@ class board(base):
 
         map = list_map[list_version.index(self.__ver)]
 
-        self.__addr_map = addr_map(self.dir_config_os(map))
+        self.__map = self.dir_config_os(map)
+        self.__addr_map = addr_map(self.__map)
 
     #--------------------
     # select_tty (default)
