@@ -50,7 +50,6 @@ call call_func
 ; load mot
 ;=============================
 sprintf2 mot_file "%s\%s" dir_srec mot_file
-messagebox mot_file "hoge"
 
 func_name = "salvator_type_init_mot1"
 call call_func
