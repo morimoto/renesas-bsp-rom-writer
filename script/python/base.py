@@ -629,11 +629,10 @@ class board(base):
     #--------------------
     # check_mot
     #--------------------
-    def __check_mot(self):
-        if (not self.mot_file()): return
-        if (not self.mode() == "mot"): return
+    def check_mot(self, mot_file):
+        if (not mot_file): return
 
-        if (not os.path.isfile(self.mot_file())):
+        if (not os.path.exists(mot_file)):
             self.mot_error()
 
     #--------------------
@@ -641,7 +640,9 @@ class board(base):
     #--------------------
     def check_files(self):
         self.__check_srec()
-        self.__check_mot()
+
+        if (self.mode() == "mot"):
+            self.check_mot(self.mot_file())
 
 #====================================
 #
