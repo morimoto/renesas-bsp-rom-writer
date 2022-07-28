@@ -10,3 +10,5 @@ addr_map[6] = "46400000,0480000,bl31.srec"
 addr_map[7] = "50000000,0E00000,u-boot-elf.srec"
 addr_map[8] = "00500000,0380000,dummy_icumh_case1.srec"
 addr_map[9] = "44100000,1000000,tee.srec"
+
+mot_file = "ICUMXA_Flash_writer_SCIF_DUMMY_CERT_EB200000_spider.mot"

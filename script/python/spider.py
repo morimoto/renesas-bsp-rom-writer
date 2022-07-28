@@ -17,6 +17,21 @@ import base
 #====================================
 class board(base.board):
     #--------------------
+    # mot_file
+    # mot_error
+    #--------------------
+    def mot_file_raw(self):
+            return self.ttm_array(self.map(), "mot_file")[0]
+
+    def mot_file(self):
+        return "{}/{}".format(self.cwd(), self.mot_file_raw())
+
+    def mot_error(self):
+        self.error("It seems you don't have necessary mot file\n" +\
+                   "({})\n".format(self.mot_file_raw()) +\
+                   "Please re-check current dir")
+
+    #--------------------
     # select_soc
     #--------------------
     def __select_soc(self):
@@ -26,6 +41,8 @@ class board(base.board):
     # __init__
     #--------------------
     def __init__(self, ver="", tty="", mac=None):
+
+        self.__mot = None
 
         super().__init__("spider", soc="s4", os="linux-bsp", ver=ver, tty=tty, mode="normal")
 
@@ -59,13 +76,8 @@ class rom_write_guide(base.guide):
         sw = base.switch(self.board.dir_config("sw"))
 
         # chech mot file
-        mot_file = "ICUMXA_Flash_writer_SCIF_DUMMY_CERT_EB200000_spider.mot"
-        if (not os.path.exists("{}/{}".format(self.cwd(), mot_file))):
-            self.msg("It seems you don't have necessary mot file\n"\
-                     "({})\n".format(mot_file) +\
-                     "Please re-check current dir")
-            self.ask_yn()
-            sys.exit(1)
+        mot_file = self.board.mot_file()
+        self.board.check_mot(mot_file)
 
         # warning
         self.msg("*NOTE*\n\n"\
@@ -84,7 +96,7 @@ class rom_write_guide(base.guide):
 
         self.power("ON")
         self.expect("please send !")
-        self.send_file("{}/{}".format(self.cwd(), mot_file))
+        self.send_file(mot_file)
         self.expect(">")
 
         # main loop

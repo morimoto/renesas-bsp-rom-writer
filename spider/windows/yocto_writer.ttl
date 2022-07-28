@@ -49,7 +49,8 @@ call call_func
 ;=============================
 ; load mot
 ;=============================
-sprintf2 mot_file "%s\ICUMXA_Flash_writer_SCIF_DUMMY_CERT_EB200000_spider.mot" dir_srec
+sprintf2 mot_file "%s\%s" dir_srec mot_file
+
 func_name = "salvator_type_init_mot1"
 call call_func
 
