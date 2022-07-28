@@ -20,8 +20,16 @@ class board(base.board):
     # mot_file
     # mot_error
     #--------------------
+    def mot_file_raw(self):
+            return self.ttm_array(self.map(), "mot_file")[0]
+
     def mot_file(self):
-        return self.ttm_array(self.map(), "mot_file")[0]
+        return "{}/{}".format(self.cwd(), self.mot_file_raw())
+
+    def mot_error(self):
+        self.error("It seems you don't have necessary mot file\n" +\
+                   "({})\n".format(self.mot_file_raw()) +\
+                   "Please re-check current dir")
 
     #--------------------
     # select_soc
@@ -33,6 +41,8 @@ class board(base.board):
     # __init__
     #--------------------
     def __init__(self, ver="", tty="", mac=None):
+
+        self.__mot = None
 
         super().__init__("condor", soc="v4h2", os="sdk", ver=ver, tty=tty, mode="normal")
 
@@ -67,11 +77,7 @@ class rom_write_guide(base.guide):
 
         # chech mot file
         mot_file = self.board.mot_file()
-        if (not os.path.exists("{}/{}".format(self.cwd(), mot_file))):
-            self.msg("It seems you don't have necessary mot file\n"\
-                     "({})\n".format(mot_file) +\
-                     "Please re-check current dir")
-            sys.exit(1)
+        self.board.check_mot(mot_file)
 
         # power off
         self.power("OFF")
@@ -83,7 +89,7 @@ class rom_write_guide(base.guide):
 
         self.power("ON")
         self.expect("please send !")
-        self.send_file("{}/{}".format(self.cwd(), mot_file))
+        self.send_file(mot_file)
         self.expect(">")
 
         # main loop
