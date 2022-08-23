@@ -211,15 +211,15 @@ class switch(base):
 
 #====================================
 #
-# addr_map
+# map
 #
 #====================================
-class addr_map:
+class map:
 
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, file):
+    def __init__(self, file, map_name):
         #
         # read addr_map file
         #
@@ -227,14 +227,14 @@ class addr_map:
         # addr_map[1] = "E6304000,040000,bl2-salvator-x.srec"
         # addr_map[2] = ...
         #
-        self.__addr_map = []
+        self.__map = []
         b = base()
-        map = b.ttm_array(file, "addr_map")
+        map = b.ttm_array(file, map_name)
         for m in map:
             am = m.split(',')
-            self.__addr_map.append({"addr":am[0],
-                                    "save":am[1],
-                                    "srec":am[2]})
+            self.__map.append({"addr":am[0],
+                               "save":am[1],
+                               "srec":am[2]})
 
     #--------------------
     # __iter__
@@ -247,8 +247,8 @@ class addr_map:
     # __next__
     #--------------------
     def __next__(self):
-        if self.__iter >= len(self.__addr_map): raise StopIteration
-        ret = self.__addr_map[self.__iter]
+        if self.__iter >= len(self.__map): raise StopIteration
+        ret = self.__map[self.__iter]
         self.__iter += 1
         return ret
 
@@ -256,15 +256,25 @@ class addr_map:
     # __getitem__
     #--------------------
     def __getitem__(self, idx):
-        if (idx >= len(self.__addr_map)):
+        if (idx >= len(self.__map)):
             return []
-        return self.__addr_map[idx]
+        return self.__map[idx]
 
     #--------------------
     # len
     #--------------------
     def len(self):
-        return len(self.__addr_map)
+        return len(self.__map)
+
+#====================================
+# addr_map
+#====================================
+class addr_map(map):
+    #--------------------
+    # __init__
+    #--------------------
+    def __init__(self, file):
+        super().__init__(file, "addr_map")
 
 #====================================
 #
