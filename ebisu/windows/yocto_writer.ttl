@@ -64,6 +64,9 @@ call call_func
 ; run_main
 ; same as StarterKit
 ;=============================
+func_name = "ask_loop_mode"
+call call_func
+
 select_ans = "3"
 yes_loop = 3
 func_name = "starterkit_type_main"

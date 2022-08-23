@@ -10,15 +10,6 @@
 ;
 
 ;
-; ask write mode
-;
-strdim __ask_txt 2
-__ask_txt[0] = "Write [all binaries] without asking"
-__ask_txt[1] = "[Ask] for each times [write the binary] or [skip it]"
-listbox "You can select Write mode" "Write mode" __ask_txt
-__ask_in_main_loop=result
-
-;
 ; main loop
 ;
 for i 0 num_addr_map-1
