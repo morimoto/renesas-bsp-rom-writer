@@ -277,6 +277,16 @@ class addr_map(map):
         super().__init__(file, "addr_map")
 
 #====================================
+# emmc_map
+#====================================
+class emmc_map(map):
+    #--------------------
+    # __init__
+    #--------------------
+    def __init__(self, file):
+        super().__init__(file, "emmc_map")
+
+#====================================
 #
 # board
 #
@@ -305,6 +315,7 @@ class board(base):
         # for inside
         self.__config	= ".renesas_bsp_rom_writer.{}".format(board)
         self.__addr_map	= None
+        self.__emmc_map	= None
         self.__map	= None
 
     #--------------------
@@ -323,6 +334,7 @@ class board(base):
     # tty
     # soc
     # addr_map
+    # emmc_map
     # mac
     #--------------------
     def mode(self):	return self.__mode
@@ -332,6 +344,7 @@ class board(base):
     def os(self):	return self.__os
     def map(self):	return self.__map
     def addr_map(self):	return self.__addr_map
+    def emmc_map(self):	return self.__emmc_map
     def mac(self):	return self.__mac
 
     #--------------------
@@ -446,6 +459,7 @@ class board(base):
 
         self.__map = "{}/{}".format(dir_map, self.__soc)
         self.__addr_map = addr_map(self.__map)
+        self.__emmc_map = emmc_map(self.__map)
 
     #--------------------
     # select_soc_noselect
@@ -458,6 +472,7 @@ class board(base):
 
         self.__map = self.dir_config_os(map)
         self.__addr_map = addr_map(self.__map)
+        self.__emmc_map = emmc_map(self.__map)
 
     #--------------------
     # select_tty (default)
@@ -578,10 +593,12 @@ class board(base):
         text += "\nYou can manually setup if you want\n" +\
                 "   > vi ./{}\n".format(self.__config)
 
-        if (self.__addr_map is not None):
-            text += "\nAddr      Save    Srec\n"
-            for m in self.__addr_map:
-                text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
+        text += "\nAddr      Save    Srec\n"
+        for m in self.addr_map():
+            text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
+
+        for m in self.emmc_map():
+            text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
 
         self.msg(text)
 
@@ -620,10 +637,13 @@ class board(base):
     # check_srec
     #--------------------
     def __check_srec(self):
-        if (not self.__addr_map): return
+        if (not self.addr_map()): return
 
         err = ""
-        for m in self.__addr_map:
+        for m in self.addr_map():
+            if (not os.path.exists("{}/{}".format(self.cwd(), m["srec"]))):
+                err += "  {}\n".format(m["srec"])
+        for m in self.emmc_map():
             if (not os.path.exists("{}/{}".format(self.cwd(), m["srec"]))):
                 err += "  {}\n".format(m["srec"])
 
@@ -887,6 +907,40 @@ class guide(base):
             self.send("y", end="")
 
             self.expect(">")
+
+    #--------------------
+    # wh_type_emmc_main_loop
+    #--------------------
+    def wh_type_emmc_loop(self, emmc_map, select, yes_loop, ask):
+        for map in emmc_map:
+            if (ask):
+                self.msg("Do you update this ?\n" +\
+                          map["srec"] + " (" + map["addr"] + " : " + map["save"] + ")")
+                if (not self.ask_yn()):
+                    continue
+
+            self.send()
+            self.expect(">")
+
+            self.send("em_w")
+
+            for i in range(yes_loop):
+                self.expect("(Push Y key)")
+                self.send("Y", end="")
+
+            self.expect("Select area(0-2)>")
+            self.send(select)
+
+            self.expect("Please Input Start Address in sector :")
+            self.send(map["save"])
+
+            self.expect("Please Input Program Start Address :")
+            self.send(map["addr"])
+
+            self.expect("please send !")
+            self.send_file("{}/{}".format(self.cwd(), map["srec"]))
+
+            self.expect("EM_W Complete!")
 
 #====================================
 #

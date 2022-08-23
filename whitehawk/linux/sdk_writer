@@ -1,0 +1,10 @@
+#! /bin/bash
+#===============================
+#
+# linux_sdk_writer
+#
+# 2022/08/23 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname`/script/python
+
+${SCRIPT}/whitehawk.py sdk

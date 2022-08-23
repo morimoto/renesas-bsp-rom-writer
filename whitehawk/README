@@ -1,0 +1,38 @@
+============== -*- outline -*- ==============
+
+   Renesas V4H White Hawk ROM Writer
+
+2022/08/23	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* What is Renesas White Hawk ?
+-------------------------------
+
+	R-Car V4H Reference Board White Hawk
+
+		English
+		https://www.renesas.com/eu/en/products/automotive-products/automotive-system-chips-socs/rtp8a779g0askb0fs0sa000-r-car-v4h-system-evaluation-board-set-white-hawk
+
+		Japanese
+		https://www.renesas.com/jp/ja/products/automotive-products/automotive-system-chips-socs/rtp8a779g0askb0fs0sa000-r-car-v4h-system-evaluation-board-set-white-hawk
+
+-------------------------------
+* How to get ROM ?
+-------------------------------
+
+	Please Contact to [Renesas Sales team] or
+	[Renesas appointed store Sales team]
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+	[Host PC] <--> [Spider CN10] (/dev/ttyUSBx)
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/README
