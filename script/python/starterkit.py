@@ -123,7 +123,7 @@ class rom_write_guide(base.guide):
     # main loop
     #--------------------
     def main_loop(self):
-        self.sk_type_main_loop(self.board.addr_map(), "3", self.__yes_loop)
+        self.sk_type_main_loop(self.board.addr_map(), "3", self.__yes_loop, self.ask_loop())
 
     #--------------------
     # guide_for_mot

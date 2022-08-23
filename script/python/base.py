@@ -833,15 +833,20 @@ class guide(base):
         self.msg("Power {}".format(onoff))
 
     #--------------------
-    # sk_type_send
+    # ask_loop
     #--------------------
-    def sk_type_main_loop(self, addr_map, select, yes_loop):
+    def ask_loop(self):
         list = ["Update all files without asking",
                 "Ask one by one whether to update"]
-        idx = list.index(self.select("You can select update style", list))
+        return list.index(self.select("You can select update style", list))
+
+    #--------------------
+    # sk_type_send
+    #--------------------
+    def sk_type_main_loop(self, addr_map, select, yes_loop, ask):
 
         for map in addr_map:
-            if (idx):
+            if (ask):
                 self.msg("Do you update this ?\n" +\
                           map["srec"] + " (" + map["addr"] + " : " + map["save"] + ")")
                 if (not self.ask_yn()):

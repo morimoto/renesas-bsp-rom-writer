@@ -100,7 +100,7 @@ class rom_write_guide(base.guide):
         self.expect(">")
 
         # main loop
-        self.sk_type_main_loop(self.board.addr_map(), "1", 2)
+        self.sk_type_main_loop(self.board.addr_map(), "1", 2, self.ask_loop())
 
         # power off
         self.power("OFF")
