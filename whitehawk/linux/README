@@ -47,7 +47,7 @@
 			/* ${ROM_dir} */
 		> ls
 			/* Linux SDK ROMs */
-		> ${renesas-bsp-rom-writer}/whitehawk/linux/linux_sdk_writer
+		> ${renesas-bsp-rom-writer}/whitehawk/linux/sdk_writer
 
 	It will ask you many things, and try to write ROM to board.
 
