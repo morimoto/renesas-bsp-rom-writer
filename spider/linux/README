@@ -47,7 +47,7 @@
 			/* ${ROM_dir} */
 		> ls
 			/* Linux BSP ROMs */
-		> ${renesas-bsp-rom-writer}/spider/linux/linux_bsp_writer
+		> ${renesas-bsp-rom-writer}/spider/linux/sdk_writer
 
 	It will ask you many things, and try to write ROM to board.
 

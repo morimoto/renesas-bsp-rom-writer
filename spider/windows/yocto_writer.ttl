@@ -14,7 +14,7 @@ sprintf2 dir_top "%s\..\.." __dir
 ; os, board, baudrate
 ;=============================
 board	 = "spider"
-os	 = "linux-bsp"
+os	 = "sdk"
 baudrate = 1843200	; used at init / main
 
 ;=============================

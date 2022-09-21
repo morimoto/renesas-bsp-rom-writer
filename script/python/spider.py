@@ -44,7 +44,7 @@ class board(base.board):
 
         self.__mot = None
 
-        super().__init__("spider", soc="s4", os="linux-bsp", ver=ver, tty=tty, mode="normal")
+        super().__init__("spider", soc="s4", os="sdk", ver=ver, tty=tty, mode="normal")
 
         self.confirm_location()
         self.config_load()
@@ -127,14 +127,14 @@ class rom_write_guide(base.guide):
 # As command
 #
 #	> spider ""		# test
-#	> spider linux-bsp	# Linux BSP
+#	> spider sdk		# Linux BSP
 #
 #====================================
 if __name__=='__main__':
     if (len(sys.argv) < 2):
         # test
         board(ver="Pre-Alpha4.0", tty="/dev/ttyUSB0")
-    elif (sys.argv[1] == "linux-bsp"):
+    elif (sys.argv[1] == "sdk"):
         rom_write_guide(board()).guide_start()
     else:
         print("unknown command")
