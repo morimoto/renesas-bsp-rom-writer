@@ -80,7 +80,15 @@ class rom_write_guide(base.guide):
         self.board.check_mot(mot_file)
 
         # warning
-        self.msg("*NOTE*\n\n"\
+        self.msg("*NOTE1*\n\n"\
+                 "The board which serial number No.2023 - No.2132\n"\
+                 "needs CPLD setting to enable SW8.\n"\
+                 "This script is assuming this settings has already done.\n"\
+                 "If not, please see Startup Guide")
+        self.ask_yn()
+
+        # warning
+        self.msg("*NOTE2*\n\n"\
                  "We don't know why but it seems it will hung up on some PC\n"\
                  "during sending file to Spider board.  Please check README\n"\
                  "if it doesn't finish sending file in 5 min.")
@@ -100,7 +108,9 @@ class rom_write_guide(base.guide):
         self.expect(">")
 
         # main loop
-        self.sk_type_main_loop(self.board.addr_map(), "1", 2, self.ask_loop())
+        ask = self.ask_loop()
+        self.sk_type_main_loop(self.board.addr_map(), "1", 2, ask)
+        self.wh_type_emmc_loop(self.board.emmc_map(), "1", 1, ask)
 
         # power off
         self.power("OFF")
@@ -112,9 +122,9 @@ class rom_write_guide(base.guide):
 
         # baudrate settings
         self.msg("finished !!\n\n"\
-                 "But, you might not see any U-Boot output because of\n"\
-                 "baudrate settings. In such case, you need to setup\n"\
-                 "U-Boot baudrate by yourself\n"\
+                 "One note is that IPL is using 1843200 baudrate,\n"\
+                 "But *default* U-Boot is using  115200 baudrate\n\n"\
+                 "You can update U-Boot baudrate by\n"\
                  " 1) Connect board via baudrate 115200\n"\
                  " 2) Power ON\n"\
                  " 3) Change baudrate to 1843200, and save it\n"\
