@@ -1,0 +1,74 @@
+============== -*- outline -*- ==============
+
+   Renesas Ebisu (E3 System Evaluation Board) BSP ROM Writer
+   for Linux
+
+2022/03/24	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+
+**  Necessary Tools
+
+	You can install necessary tools by tool_install.xxx.
+	If you are using Ubuntu, you can run.
+
+		> ${renesas-bsp-rom-writer}/script/tool_install.ubuntu
+
+**  ROM
+
+	You need prepare Yocto ROM.
+	see
+		[How to get ROM ?]
+		${renesas-bsp-rom-writer}/board/e3_ebisu/README
+
+-------------------------------
+* Supported OS
+-------------------------------
+	Yocto
+
+-------------------------------
+* How to use ?
+-------------------------------
+**  [step1] connect Serial between PC and Ebisu
+
+	see
+		[Serial connection]
+		${renesas-bsp-rom-writer}/board/e3_ebisu/README
+
+**  [step2] prepare ROM
+
+	You need prepare Yocto ROM.
+	see above [Preparation] how to get ROM.
+	This Document call its directory as ${ROM_dir}.
+
+**  [step3] cd ${ROM_dir}
+
+	You need to go to Yocto ${ROM_dir} first.
+
+		> cd ${ROM_dir}
+		> ls
+			/* Yocto ROMs */
+
+**  [step4] call ROM_writer
+
+	You can call ROM_writer from ${ROM_dir}.
+
+		> pwd
+			/* ${ROM_dir} */
+		> ls
+			/* Yocto ROMs */
+		> ${renesas-bsp-rom-writer}/board/e3_ebisu/linux/${rom}_writer
+
+	It will ask you many things, and try to write ROM to board.
+
+**  [option] edit config
+
+	[step4] will create config file (.renesas_bsp_rom_writer.e3_ebisu)
+	on ${ROM_dir} (if you have answered questions, and confirmed the settings).
+	It will load settings from this config file if you re-try to
+	use ROM writer from ${ROM_dir}.
+	You can edit it and skip interactive setup if you want (optional).
+
+		> vi ${ROM_dir}/.renesas_bsp_rom_writer.e3_ebisu

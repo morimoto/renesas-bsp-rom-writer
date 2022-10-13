@@ -296,15 +296,14 @@ class board(base):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, board,
-                 soc=None, os=None, ver=None, tty=None, mode=None, mac=None):
+    def __init__(self, soc=None, rom=None, ver=None, tty=None, mode="normal", mac=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
         # "xxx"  : be used, and selected
-        self.__board	= board
+        self.__board	= os.path.splitext(os.path.basename(sys.argv[0]))[0]
         self.__soc	= soc
-        self.__os	= os
+        self.__rom	= rom
         self.__ver	= ver
         self.__tty	= tty
         self.__mode	= mode		# normal, mot
@@ -313,7 +312,7 @@ class board(base):
         self.__mac	= mac
 
         # for inside
-        self.__config	= ".renesas_bsp_rom_writer.{}".format(board)
+        self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board)
         self.__addr_map	= None
         self.__emmc_map	= None
         self.__map	= None
@@ -341,7 +340,7 @@ class board(base):
     def board(self):	return self.__board
     def tty(self):	return self.__tty
     def soc(self):	return self.__soc
-    def os(self):	return self.__os
+    def rom(self):	return self.__rom
     def map(self):	return self.__map
     def addr_map(self):	return self.__addr_map
     def emmc_map(self):	return self.__emmc_map
@@ -366,9 +365,9 @@ class board(base):
     #--------------------
     def dir_board(self, path="", full=1):
         dir = "{}/".format(self.top()) if (full) else ""
-        return "{}{}/{}".format(dir, self.__board, path)
+        return "{}board/{}/{}".format(dir, self.__board, path)
     def dir_config(self, path="", full=1):	return self.dir_board("config/" + path, full)
-    def dir_config_os(self, path="", full=1):	return self.dir_config("os/{}/{}".format(self.__os, path), full)
+    def dir_config_rom(self, path="", full=1):	return self.dir_config("rom/{}/{}".format(self.__rom, path), full)
     def dir_config_sw(self, path="", full=1):	return self.dir_config("sw/" + path, full)
 
     #--------------------
@@ -393,7 +392,7 @@ class board(base):
         # __init__() set default value
         # lood config if value was ""
         if (self.__soc  == ""): self.__soc  = self.config_read("soc")
-        if (self.__os   == ""): self.__os   = self.config_read("os")
+        if (self.__rom  == ""): self.__rom  = self.config_read("rom")
         if (self.__ver  == ""): self.__ver  = self.config_read("version")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
         if (self.__mac  == ""): self.__mac  = self.config_read("mac")
@@ -401,7 +400,7 @@ class board(base):
 
     def config_save(self):
         if (self.__soc  is not None): self.config_write("soc",     self.__soc)
-        if (self.__os   is not None): self.config_write("os",      self.__os)
+        if (self.__rom  is not None): self.config_write("rom",     self.__rom)
         if (self.__ver  is not None): self.config_write("version", self.__ver)
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
         if (self.__mac  is not None): self.config_write("mac",     self.__mac)
@@ -414,7 +413,7 @@ class board(base):
     # if default select_xx() was not good match
     #--------------------
     def setup(self):
-        if (self.__os   is not None): self.__select_os()
+        if (self.__rom  is not None): self.__select_rom()
         if (self.__ver  is not None): self.__select_ver()
         if (self.__soc  is not None): self.__select_soc()
         if (self.__tty  is not None): self.__select_tty()
@@ -422,20 +421,20 @@ class board(base):
         if (self.__mode is not None): self.__select_mode()
 
     #--------------------
-    # select_os (default)
+    # select_rom (default)
     #--------------------
-    def __select_os(self):
-        # check os/${os}/config file
-        while (not os.path.exists(self.dir_config_os("config"))):
-            self.__os = self.select("Select write OS", self.runl("ls {}".format(self.dir_config("os"))))
+    def __select_rom(self):
+        # check rom/${os}/config file
+        while (not os.path.exists(self.dir_config_rom("config"))):
+            self.__rom = self.select("Select write OS", self.runl("ls {}".format(self.dir_config("rom"))))
 
     #--------------------
     # select_ver (default)
     #--------------------
     def __select_ver(self):
-        list_version = self.ttm_array(self.dir_config_os("config"), "list_version")
+        list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
         while (not self.__ver in list_version):
-            self.__ver = self.select("Select [{}] Version".format(self.os()), list_version)
+            self.__ver = self.select("Select [{}] Version".format(self.rom()), list_version)
 
     #--------------------
     # select_soc (default)
@@ -445,13 +444,13 @@ class board(base):
 
     def __select_soc(self):
         list_soc     = self.ttm_array(self.dir_config("soc"), "list_soc")
-        list_version = self.ttm_array(self.dir_config_os("config"), "list_version")
-        list_map     = self.ttm_array(self.dir_config_os("config"), "list_map")
+        list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
+        list_map     = self.ttm_array(self.dir_config_rom("config"), "list_map")
 
         if (not self.__ver in list_version):
             self.error("select version first")
 
-        dir_map = self.dir_config_os(list_map[list_version.index(self.__ver)])
+        dir_map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
         text = self.soc_explanation() + "\n\nSelect SoC/WS ROM\n"
 
         while (not os.path.isfile("{}/{}".format(dir_map, self.__soc))):
@@ -465,12 +464,12 @@ class board(base):
     # select_soc_noselect
     #--------------------
     def __select_soc_noselect(self):
-        list_version = self.ttm_array(self.dir_config_os("config"), "list_version")
-        list_map     = self.ttm_array(self.dir_config_os("config"), "list_map")
+        list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
+        list_map     = self.ttm_array(self.dir_config_rom("config"), "list_map")
 
         map = list_map[list_version.index(self.__ver)]
 
-        self.__map = self.dir_config_os(map)
+        self.__map = self.dir_config_rom(map)
         self.__addr_map = addr_map(self.__map)
         self.__emmc_map = emmc_map(self.__map)
 
@@ -478,7 +477,7 @@ class board(base):
     # select_tty (default)
     #--------------------
     def tty_connection(self):
-        return "\n".join(self.ttm_array(self.dir_config_os("connection"), "tty_connection"))
+        return "\n".join(self.ttm_array(self.dir_config_rom("connection"), "tty_connection"))
 
     def __tty_error(self):
         if (not os.path.exists(self.__tty)):
@@ -581,7 +580,7 @@ class board(base):
 
         deep = 0
         if (self.__soc  is not None): text += "  [SoC/WS]:  {}\n".format(self.__soc)
-        if (self.__os   is not None): text += "  [OS]:      {}\n".format(self.__os)
+        if (self.__rom  is not None): text += "  [OS]:      {}\n".format(self.__rom)
         if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
         if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
         if (self.__tty  is not None): text += "* [TTY]:     {}\n".format(self.__tty); deep = 1
@@ -610,10 +609,10 @@ class board(base):
         # If not exist, confirm_location
         if (os.path.exists(self.config_file())): return
 
-        self.msg("This script requires be called from {} ROM directory.\n".format(self.os()) +\
+        self.msg("This script requires be called from {} ROM directory.\n".format(self.rom()) +\
                  "Are you calling this script from there ?\n\n" +\
-                 "  > cd ${{{0} ROM dir}}\n".format(self.os()) +\
-                 "  > ${{renesas-bsp-rom-writer}}/{}/linux/{}-writer".format(self.board(), self.os()))
+                 "  > cd ${{{0} ROM dir}}\n".format(self.rom()) +\
+                 "  > ${{renesas-bsp-rom-writer}}/board/{}/linux/{}-writer".format(self.board(), self.rom()))
         self.ask_yn(quit=True)
 
     #--------------------
@@ -625,7 +624,7 @@ class board(base):
             if (self.ask_yn()): break;
 
             # reset all setting
-            # ignore os here
+            # ignore rom here
             if (self.__soc  is not None): self.__soc  = ""
             if (self.__ver  is not None): self.__ver  = ""
             if (self.__tty  is not None): self.__tty  = ""
@@ -972,7 +971,7 @@ if __name__=='__main__':
         #
         # addr_map
         #
-        map = addr_map(b.top() + "/starterkit/config/os/yocto/map01/h3_4g")
+        map = addr_map(b.top() + "/starterkit/config/rom/yocto/map01/h3_4g")
 
         print("addr      save    srec")
         for i in range(map.len()):

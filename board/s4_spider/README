@@ -1,0 +1,58 @@
+============== -*- outline -*- ==============
+
+   Renesas S4 Spider BSP ROM Writer
+
+2022/02/25	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* What is Renesas Spider ?
+-------------------------------
+
+	R-Car S4 Reference Board/Spider
+
+		English
+		https://www.renesas.com/jp/en/products/automotive-products/automotive-system-chips-socs/rtp8a779f0askb0sp2s-r-car-s4-reference-boardspider
+
+		Japanese
+		https://www.renesas.com/jp/ja/products/automotive-products/automotive-system-chips-socs/rtp8a779f0askb0sp2s-r-car-s4-reference-boardspider
+
+-------------------------------
+* How to get ROM ?
+-------------------------------
+
+	Please Contact to [Renesas Sales team] or
+	[Renesas appointed store Sales team]
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+	[Host PC] <--> [board CN21] (/dev/ttyUSBx)
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/README
+
+-------------------------------
+* It will be hung up :(
+-------------------------------
+
+	We don't know why but it seems it will hung up on some PC during
+	sending file to Spider board.
+
+	When you start to update, it will ask you
+
+		+---------------------------------------+
+		| You can select update mode            |
+		|   1) Update all files without asking  |
+		|   2) Ask one by one whether to update |
+		+---------------------------------------+
+
+	You can select 1) and try to update all files as first step.
+	If hung up happen, please remember which files was updated, which files was not.
+
+	Next, please select 2) and skip the updated files.

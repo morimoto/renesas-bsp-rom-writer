@@ -10,7 +10,7 @@ MOT_SALVATOR=${FLASH_WRITER}/AArch64_output/AArch64_Flash_writer_SCIF_DUMMY_CERT
 
 all: ${FLASH_WRITER} ${MOT_STARTERKIT} ${MOT_SALVATOR}
 
-# see ${renesas-bsp-rom-writer}/starterkit/config/mot
+# see ${renesas-bsp-rom-writer}/board/gen3-starterkit/config/mot
 # why we can't use 64bit gcc on Starterkit
 ${MOT_STARTERKIT}: script/${GCC32}/bin/${GCC32_PRE}-gcc
 	@cd ${FLASH_WRITER};\

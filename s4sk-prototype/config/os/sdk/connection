@@ -1,3 +1,0 @@
-num_tty_connection = 1
-strdim tty_connection num_tty_connection
-tty_connection[0] = "[Host PC] <--> [S4 Starterkit Prototype CN13] (/dev/ttyUSBx)"

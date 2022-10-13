@@ -18,7 +18,7 @@
 ;	mot		(from mot file)
 ;	cpld_mot	(from mot file if exist)
 ;
-sprintf2 __tmp "%s\%s\config\mot" dir_top board
+sprintf2 __tmp "%s\board\%s\config\mot" dir_top board
 include __tmp
 
 ;
@@ -26,7 +26,7 @@ include __tmp
 ;
 groupmatchstr1=""
 sprintf2 groupmatchstr2 "Linux   : ${renesas_bsp_rom_writer}\%s\%s" dir_mot mot
-sprintf2 groupmatchstr3 "Windows : ${renesas_bsp_rom_writer}\%s" board
+sprintf2 groupmatchstr3 "Windows : ${renesas_bsp_rom_writer}\board\%s" board
 strjoin __copy_from "\n" 3
 strspecial __copy_from
 
@@ -41,7 +41,7 @@ groupmatchstr1=__explanation
 groupmatchstr2="[mot]"
 groupmatchstr3="No or a few Dip-Switch settings is needed."
 groupmatchstr4="But you need mot file. Copy it from Linux user."
-sprintf2 groupmatchstr5 "see ${renesas_bsp_rom_writer}\%s\windows\README" board
+sprintf2 groupmatchstr5 "see ${renesas_bsp_rom_writer}\board\%s\windows\README" board
 groupmatchstr6=__copy_from
 strjoin __explanation "\n" 6
 strspecial __explanation
@@ -66,7 +66,7 @@ strcompare mode "normal"
 if result!=0 then
 
   ; check mot file
-  sprintf2 __mot_file "%s\%s\%s" dir_top board mot
+  sprintf2 __mot_file "%s\board\%s\%s" dir_top board mot
   filesearch __mot_file
   if result=0 then
      groupmatchstr1="You don't have mot file. Copy it from Linux user."

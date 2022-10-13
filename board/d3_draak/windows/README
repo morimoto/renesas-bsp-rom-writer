@@ -1,0 +1,37 @@
+============== -*- outline -*- ==============
+
+   Renesas R-Car Draak (D3) BSP ROM Writer
+   for Windows/TeraTerm
+
+2022/03/28	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+**  TeraTerm
+
+	You need "TeraTerm". See here and get it
+
+		https://ttssh2.osdn.jp/index.html.ja
+		https://ttssh2.osdn.jp/index.html.en
+
+-------------------------------
+* How to use ?
+-------------------------------
+**  [step1] connect Serial between PC and Draak
+
+	see
+		[Serial connection]
+		${renesas-bsp-rom-writer}/board/d3_draak/README
+
+**  [step2] prepare ROM
+
+	see
+		[How to get ROM]
+		${renesas-bsp-rom-writer}/board/d3_draak/README
+
+**  [step3] Start TeraTerm and Open Macro
+
+	[Menu] - [Control] - [Macro]
+	Open macro file
+		${renesas-bsp-rom-writer}/board/d3_draak/windows/yocto_writer.ttl

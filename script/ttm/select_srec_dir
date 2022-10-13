@@ -4,7 +4,7 @@
 ;
 ; require
 ;	board
-;	os
+;	rom
 ;
 ; require (load_addr_map)
 ;	ver
@@ -20,7 +20,7 @@
 ; select srec dir
 ;
 groupmatchstr1="Select srec binary dir for"
-sprintf2 groupmatchstr2 "[%s][%s][%s][%s]" board soc_ws os ver
+sprintf2 groupmatchstr2 "[%s][%s][%s][%s]" board soc_ws rom ver
 strjoin __txt "\n" 2
 strspecial __txt
 

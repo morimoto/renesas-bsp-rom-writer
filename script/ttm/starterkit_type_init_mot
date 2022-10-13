@@ -18,7 +18,7 @@ setbaud baudrate
 ;
 ; mot file
 ;
-sprintf2 __mot_file "%s\%s\%s" dir_top board mot
+sprintf2 __mot_file "%s\board\%s\%s" dir_top board mot
 
 ;
 ; Guide

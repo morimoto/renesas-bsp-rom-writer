@@ -1,0 +1,74 @@
+============== -*- outline -*- ==============
+
+   Renesas Salvator-XS (H3/M3/M3N) BSP ROM Writer
+   for Windows/TeraTerm
+
+2022/01/05	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+**  TeraTerm
+
+	You need "TeraTerm". See here and get it
+
+		https://ttssh2.osdn.jp/index.html.ja
+		https://ttssh2.osdn.jp/index.html.en
+
+**  Mot file (optional)
+
+	It has "normal mode" or "mot mode" to write ROM.
+
+	normal	Need Dip-Switch settings at both Front/Back side
+		to write ROM. You need to select normal mode
+		if your current board has no ROM (no U-boot).
+	mot	Need Dip-Switch settings at only Front side.
+
+	You need [mot file] if you want to use "mot mode".
+	But Windows user can't create it by yourself.
+	Please get it from Linux user, and copy it as below.
+
+	Copy from Linux:
+		${renesas-bsp-rom-writer}/script/flash_writer/AArch64_output/AArch64_Flash_writer_SCIF_DUMMY_CERT_E6300400_salvator-x.mot
+	Copy to Windows:
+		${renesas-bsp-rom-writer}/board/gen3_salvator/AArch64_Flash_writer_SCIF_DUMMY_CERT_E6300400_salvator-x.mot
+
+**  ROM
+
+	You need prepare Yocto or Android ROM.
+	see
+		[How to get ROM ?]
+		[How to know my board is 4Gbyte or 8Gbyte ?]
+		${renesas-bsp-rom-writer}/board/gen3_starterkit/README
+
+-------------------------------
+* Supported OS
+-------------------------------
+	Yocto
+
+	Current renesas-bsp-rom-writer isn't support "Android" for Windows users.
+	Please use Linux for it.
+
+-------------------------------
+* How to use ?
+-------------------------------
+**  [step1] connect Serial between PC and Salvator-XS
+
+	see
+		[Serial connection]
+		[Known Issue]
+		${renesas-bsp-rom-writer}/board/gen3_salvator/README
+
+**  [step2] prepare ROM / Mot file (optional)
+
+	You need to prepare Yocto or Android ROM.
+	(optional)
+	You need to prepare mot file if you want to use mot mode.
+
+	see above [Preparation] how to get ROM / mot file.
+
+**  [step3] Start TeraTerm and Open Macro
+
+	[Menu] - [Control] - [Macro]
+	Open macro file
+		${renesas-bsp-rom-writer}/board/gen3_salvator/windows/rom_writer.ttl

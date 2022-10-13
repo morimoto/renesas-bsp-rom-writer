@@ -1,0 +1,42 @@
+============== -*- outline -*- ==============
+
+   Renesas R-Car Draak (D3) BSP ROM Writer
+
+2022/03/28	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* What is Renesas Draak ?
+-------------------------------
+
+	See here
+		https://elinux.org/R-Car/Boards/Draak
+
+-------------------------------
+* How to get ROM ?
+-------------------------------
+
+	You have some informations / helpers
+
+**  Quick Start Guide
+
+	see "RENESAS_RCHxxx_YoctoStartupGuide_UME_vxxx.pdf"
+	3. Building Instructions
+
+**  Yocto Maker
+
+	https://github.com/morimoto/renesas-yocto-maker
+	https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+	[Host PC] <--> [board CN25] (/dev/ttyUSBx)
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/README

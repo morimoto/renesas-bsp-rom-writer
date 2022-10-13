@@ -1,9 +1,9 @@
 ;
-; ${renesas-bsp-rom-writer}\${board}\config\os\${os}\config
+; ${renesas-bsp-rom-writer}\board\${board}\config\rom\${rom}\config
 ; should have necessary settings
 ;
 ; require
-;	os
+;	rom
 ;	list_soc
 ;	list_soc_explanation
 ;	list_version
@@ -14,20 +14,20 @@
 ;	ver
 ;	soc_ws		# h3_4g
 ;	soc		# h3
-;	addr_map	# load from ${renesas-bsp-rom-writer}\${board}\config\os\${os}\${__map}\${soc_ws}
+;	addr_map	# load from ${renesas-bsp-rom-writer}\board\${board}\config\rom\${rom}\${__map}\${soc_ws}
 ;	num_addr_map	#
 ;
 
 ;
 ; load config
 ;
-sprintf2 __tmp "%s\%s\config\os\%s\config" dir_top board os
+sprintf2 __tmp "%s\board\%s\config\rom\%s\config" dir_top board rom
 include __tmp
 
 ;
 ; converter version -> map
 ;
-sprintf2 __txt "Which [%s] Version ?" os
+sprintf2 __txt "Which [%s] Version ?" rom
 listbox __txt "Version Select" list_version
 if result<0 end
 
@@ -61,5 +61,5 @@ soc = groupmatchstr1
 ;
 ; load addr_map
 ;
-sprintf2 __tmp "%s\%s\config\os\%s\%s\%s" dir_top board os __map soc_ws
+sprintf2 __tmp "%s\board\%s\config\rom\%s\%s\%s" dir_top board rom __map soc_ws
 include __tmp
