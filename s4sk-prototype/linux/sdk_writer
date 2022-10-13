@@ -1,0 +1,10 @@
+#! /bin/bash
+#===============================
+#
+# sdk_writer
+#
+# 2022/10/13 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname`/script/python
+
+${SCRIPT}/s4sk-prototype.py sdk

@@ -1,0 +1,15 @@
+num_addr_map = 11
+strdim addr_map num_addr_map
+addr_map[0]  = "EB200000,0000000,bootparam_sa0.srec"
+addr_map[1]  = "EB210000,0040000,icumx_loader.srec"
+addr_map[2]  = "EB230000,0240000,cert_header_sa9.srec"
+addr_map[3]  = "EB240000,0280000,dummy_fw.srec"
+addr_map[4]  = "E2100000,0500000,dummy_rtos.srec"
+addr_map[5]  = "E6300000,0480000,ca55_loader.srec"
+addr_map[6]  = "00000000,0900000,dummy_g4mh_case0.srec"
+addr_map[7]  = "00500000,0380000,dummy_icumh_case1.srec"
+addr_map[8]  = "46400000,0E00000,bl31-s4sk-proto.srec"
+addr_map[9]  = "44100000,0E80000,tee-s4sk-proto.srec"
+addr_map[10] = "50000000,0F80000,u-boot-elf-s4sk-proto.srec"
+
+mot_file = "ICUMX_Flash_writer_SCIF_DUMMY_CERT_EB203000_S4.mot"
