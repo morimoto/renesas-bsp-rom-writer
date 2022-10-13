@@ -42,8 +42,6 @@ class board(base.board):
     #--------------------
     def __init__(self, ver="", tty="", mac=None):
 
-        self.__mot = None
-
         super().__init__("spider", soc="s4", os="sdk", ver=ver, tty=tty, mode="normal")
 
         self.confirm_location()
