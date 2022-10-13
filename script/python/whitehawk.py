@@ -40,7 +40,7 @@ class board(base.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, ver="", tty="", mac=None):
+    def __init__(self, ver="", tty=""):
 
         super().__init__("whitehawk", soc="v4h", os="sdk", ver=ver, tty=tty, mode="normal")
 
