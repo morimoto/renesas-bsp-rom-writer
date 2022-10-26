@@ -16,8 +16,18 @@
 		https://ttssh2.osdn.jp/index.html.en
 
 -------------------------------
-* How to use ?
+* How to use ? (v3.6.0 or later)
 -------------------------------
+
+	You can use TeraTerm Macro which is included on
+
+		R-CarSDK_Startup_Guide_xOS3_ADAS_xxx.zip
+			teratermmacro/Flash_Bootloader_V4H.ttl
+
+-------------------------------
+* How to use ? (v3.0.1)
+-------------------------------
+
 **  [step1] connect Serial between PC and Board
 
 	see
