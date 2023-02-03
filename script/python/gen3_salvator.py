@@ -21,7 +21,7 @@ class board(base.board):
     #--------------------
     def mot_init(self):
         # mot setting file for dir_config()
-        # ${renesas-bsp-rom-writer}/starterkit/config/mot
+        # ${renesas-bsp-rom-writer}/board/gen3_starterkit/config/mot
         mot_config = self.dir_config("mot")
 
         # because Windws path is not same as Linux,
@@ -93,7 +93,7 @@ class rom_write_guide(gen3_starterkit.rom_write_guide):
     # load_sw
     #
     # salvator sw setting are located at
-    # ${renesas-bsp-rom-writer}/starterkit/config/sw/${mode}
+    # ${renesas-bsp-rom-writer}/board/gen3_starterkit/config/sw/${mode}
     #======================
     def load_sw(self):
         return base.switch(self.board.dir_config_sw(self.board.mode()))

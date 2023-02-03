@@ -21,7 +21,7 @@ class board(base.board):
     #--------------------
     def mot_init(self):
         # mot setting file for dir_config()
-        # ${renesas-bsp-rom-writer}/starterkit/config/mot
+        # ${renesas-bsp-rom-writer}/board/gen3_starterkit/config/mot
         mot_config = self.dir_config("mot")
 
         # because Windws path is not same as Linux,
@@ -91,7 +91,7 @@ class rom_write_guide(base.guide):
     # load_sw
     #
     # starterkit sw setting are located at
-    # ${renesas-bsp-rom-writer}/starterkit/config/sw/${soc}
+    # ${renesas-bsp-rom-writer}/board/gen3_starterkit/config/sw/${soc}
     #
     # Overwrite load_sw() if other board re-use rom_write_guide
     #======================
@@ -129,7 +129,7 @@ class rom_write_guide(base.guide):
     # guide_for_mot
     #--------------------
     def guide_for_mot(self):
-        mot_config = "{}/starterkit/config/mot".format(self.top())
+        mot_config = self.board.dir_config("mot")
         cpld_cmd = self.ttm_array(mot_config, "cpld_cmd")
 
         # power on

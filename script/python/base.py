@@ -964,14 +964,14 @@ if __name__=='__main__':
         #
         # switch
         #
-        sw = switch(b.top() + "/starterkit/config/sw/h3")
+        sw = switch(b.top() + "/board/gen3_starterkit/config/sw/h3")
         sw.print_msg_update()
         sw.print_msg_normal()
     elif (sys.argv[1] == "map"):
         #
         # addr_map
         #
-        map = addr_map(b.top() + "/starterkit/config/rom/yocto/map01/h3_4g")
+        map = addr_map(b.top() + "board/gen3_starterkit/config/rom/yocto/map01/h3_4g")
 
         print("addr      save    srec")
         for i in range(map.len()):
