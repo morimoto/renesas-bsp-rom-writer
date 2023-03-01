@@ -21,8 +21,40 @@
 * How to get ROM ?
 -------------------------------
 
-	Please Contact to [Renesas Sales team] or
-	[Renesas appointed store Sales team]
+** Download SDK
+
+	Japanese
+	https://www.renesas.com/jp/ja/products/automotive-products/automotive-system-chips-socs/r-car-s4-automotive-system-chip-soc-car-servercommunication-gateway
+
+	English
+	https://www.renesas.com/us/en/products/automotive-products/automotive-system-chips-socs/r-car-s4-automotive-system-chip-soc-car-servercommunication-gateway
+
+	NOTE. v3.11.0 case
+
+	- Software Downloads
+	 - R-Car S4 SDK Linux PKG with GCC compiler v3.11.0	(binary)
+	 - R-Car S4 SDK Start Up Guide PKG v3.11.0		(TeraTerm macro for Windows user)
+
+** Prepare items
+
+	NOTE. v3.11.0 case
+
+	Binary
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/bl31-spider.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/tee-spider.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/u-boot-elf-spider.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/bootparam_sa0.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/icumx_loader.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/cert_header_sa9.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/dummy_fw.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/dummy_rtos.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/ca55_loader.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/dummy_g4mh_case0.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/dummy_icumh_case1.srec
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.11.0_release/rcar-xos/v3.11.0/os/bootloader/s4/s4/ICUMX_Flash_writer_SCIF_DUMMY_CERT_EB203000_S4.mot
+
+	TeraTerm macro (for Windows user)
+	 - R-Car_S4_SDK_start_up_guide_content_v3.11.0/R-CarS4_SDK_StartupGuide_3_11_0/teratermmacro/Flash_Bootloader_S4.ttl
 
 -------------------------------
 * Serial connection
