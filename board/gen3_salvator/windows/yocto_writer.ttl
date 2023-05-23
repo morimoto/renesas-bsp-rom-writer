@@ -8,7 +8,7 @@
 ; dir_top
 ;=============================
 getdir __dir
-sprintf2 dir_top "%s\..\.." __dir
+sprintf2 dir_top "%s\..\..\.." __dir
 
 ;=============================
 ; rom, board, baudrate
@@ -20,7 +20,7 @@ baudrate = 115200	; used at init / main
 ;=============================
 ; connection check (yocto)
 ;=============================
-sprintf2 __soc "%s\%s\config\rom\%s\connection" dir_top board rom
+sprintf2 __soc "%s\board\%s\config\rom\%s\connection" dir_top board rom
 include __soc
 
 func_name = "connection_check"
@@ -29,7 +29,7 @@ call call_func
 ;=============================
 ; load soc
 ;=============================
-sprintf2 __soc "%s\%s\config\soc" dir_top board
+sprintf2 __soc "%s\board\%s\config\soc" dir_top board
 include __soc
 
 ;=============================
@@ -53,7 +53,7 @@ call call_func
 ;=============================
 ; load dip switch settings
 ;=============================
-sprintf2 sw_file "%s\%s\config\sw\%s" dir_top board mode
+sprintf2 sw_file "%s\board\%s\config\sw\%s" dir_top board mode
 func_name = "dip_switch_msg"
 call call_func
 
@@ -62,7 +62,7 @@ call call_func
 ;=============================
 strcompare mode "mot"
 if result=0 then
-   sprintf2 mot_file "%s\%s\%s" dir_top board mot
+   sprintf2 mot_file "%s\board\%s\%s" dir_top board mot
    func_name = "salvator_type_init_mot1"
 else
    ; same as starterkit init

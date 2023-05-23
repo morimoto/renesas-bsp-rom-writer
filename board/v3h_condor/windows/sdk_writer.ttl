@@ -8,7 +8,7 @@
 ; dir_top
 ;=============================
 getdir __dir
-sprintf2 dir_top "%s\..\.." __dir
+sprintf2 dir_top "%s\..\..\.." __dir
 
 ;=============================
 ; rom, board, baudrate
@@ -21,7 +21,7 @@ baudrate = 115200	; used at init / main
 ;=============================
 ; connection check
 ;=============================
-sprintf2 __soc "%s\%s\config\rom\%s\connection" dir_top board rom
+sprintf2 __soc "%s\board\%s\config\rom\%s\connection" dir_top board rom
 include __soc
 
 func_name = "connection_check"
@@ -42,7 +42,7 @@ call call_func
 ;=============================
 ; load dip-swich settings
 ;=============================
-sprintf2 sw_file "%s\%s\config\sw" dir_top board
+sprintf2 sw_file "%s\board\%s\config\sw" dir_top board
 func_name = "dip_switch_msg"
 call call_func
 
