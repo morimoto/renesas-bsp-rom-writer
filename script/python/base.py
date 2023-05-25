@@ -483,8 +483,9 @@ class board(base):
         if (not os.path.exists(self.__tty)):
             return 1
 
-        m = re.match("/dev/tty.*", self.__tty)
-        if (not m):
+        m1 = re.match("/dev/tty.*",     self.__tty)
+        m2 = re.match("/dev/serial/.*", self.__tty)
+        if (not m1 and not m2):
             return 1
 
         if (not os.access(self.__tty, os.R_OK) or
