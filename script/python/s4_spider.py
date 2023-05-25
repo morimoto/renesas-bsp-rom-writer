@@ -81,6 +81,7 @@ class rom_write_guide(base.guide):
         self.msg("*NOTE1*\n\n"\
                  "The board which serial number No.2023 - No.2132\n"\
                  "needs CPLD setting to enable SW8.\n"\
+                 "And baudrate = 1843200.\n"\
                  "This script is assuming this settings has already done.\n"\
                  "If not, please see Startup Guide")
         self.ask_yn()
