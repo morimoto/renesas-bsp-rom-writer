@@ -21,7 +21,6 @@ baudrate = 115200
 ; connection check (yocto)
 ;=============================
 sprintf2 __soc "%s\board\%s\config\rom\%s\connection" dir_top board rom
-messagebox __soc "hoge"
 include __soc
 
 func_name = "connection_check"
