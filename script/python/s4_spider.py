@@ -40,9 +40,11 @@ class board(base.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, ver="", tty=""):
+    def __init__(self, speed, board, ver="", tty=""):
 
-        super().__init__(soc="s4", rom="sdk", ver=ver, tty=tty)
+        super().__init__(soc="s4", rom="sdk", board=board, ver=ver, tty=tty)
+
+        self.speed = speed
 
         self.confirm_location()
         self.config_load()
@@ -63,7 +65,7 @@ class rom_write_guide(base.guide):
     # __init__
     #--------------------
     def __init__(self, board):
-        super().__init__(board.tty(), 1843200)
+        super().__init__(board.tty(), board.speed)
         # possible to use from child-class
         self.board = board
 
@@ -76,22 +78,6 @@ class rom_write_guide(base.guide):
         # chech mot file
         mot_file = self.board.mot_file()
         self.board.check_mot(mot_file)
-
-        # warning
-        self.msg("*NOTE1*\n\n"\
-                 "The board which serial number No.2023 - No.2132\n"\
-                 "needs CPLD setting to enable SW8.\n"\
-                 "And baudrate = 1843200.\n"\
-                 "This script is assuming this settings has already done.\n"\
-                 "If not, please see Startup Guide")
-        self.ask_yn()
-
-        # warning
-        self.msg("*NOTE2*\n\n"\
-                 "We don't know why but it seems it will hung up on some PC\n"\
-                 "during sending file to Spider board.  Please check README\n"\
-                 "if it doesn't finish sending file in 5 min.")
-        self.ask_yn()
 
         # power off
         self.power("OFF")
@@ -120,16 +106,7 @@ class rom_write_guide(base.guide):
         self.ask_yn()
 
         # baudrate settings
-        self.msg("finished !!\n\n"\
-                 "One note is that IPL is using 1843200 baudrate,\n"\
-                 "But *default* U-Boot is using  115200 baudrate\n\n"\
-                 "You can update U-Boot baudrate by\n"\
-                 " 1) Connect board via baudrate 115200\n"\
-                 " 2) Power ON\n"\
-                 " 3) Change baudrate to 1843200, and save it\n"\
-                 "      .. boot U-boot...\n"\
-                 "      => setenv baudrate 1843200\n"\
-                 "      => saveenv\n")
+        self.msg("finished !!")
 
 #====================================
 #
@@ -142,8 +119,35 @@ class rom_write_guide(base.guide):
 if __name__=='__main__':
     if (len(sys.argv) < 2):
         # test
-        board(ver="Pre-Alpha4.0", tty="/dev/ttyUSB0")
-    elif (sys.argv[1] == "sdk"):
-        rom_write_guide(board()).guide_start()
+        board(1843200, ver="Pre-Alpha4.0", tty="/dev/ttyUSB0")
+    elif (sys.argv[1] == "s4_sk"):
+        rom_write_guide(board(921600, sys.argv[1])).guide_start()
+    elif (sys.argv[1] == "s4_spider"):
+        self.msg("*NOTE1*\n\n"\
+                 "The board which serial number No.2023 - No.2132\n"\
+                 "needs CPLD setting to enable SW8.\n"\
+                 "And baudrate = 1843200.\n"\
+                 "This script is assuming this settings has already done.\n"\
+                 "If not, please see Startup Guide")
+        self.ask_yn()
+
+        self.msg("*NOTE2*\n\n"\
+                 "We don't know why but it seems it will hung up on some PC\n"\
+                 "during sending file to Spider board.  Please check README\n"\
+                 "if it doesn't finish sending file in 5 min.")
+        self.ask_yn()
+
+        rom_write_guide(board(1843200, sys.argv[1])).guide_start()
+
+        self.msg("\n"\
+                 "One note is that IPL is using 1843200 baudrate,\n"\
+                 "But *default* U-Boot is using  115200 baudrate\n\n"\
+                 "You can update U-Boot baudrate by\n"\
+                 " 1) Connect board via baudrate 115200\n"\
+                 " 2) Power ON\n"\
+                 " 3) Change baudrate to 1843200, and save it\n"\
+                 "      .. boot U-boot...\n"\
+                 "      => setenv baudrate 1843200\n"\
+                 "      => saveenv\n")
     else:
         print("unknown command")

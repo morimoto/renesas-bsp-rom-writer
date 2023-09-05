@@ -1,0 +1,68 @@
+============== -*- outline -*- ==============
+
+   Renesas S4 StarterKit BSP ROM Writer
+
+2023/09/05	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* What is Renesas S4 StarterKit ?
+-------------------------------
+
+	Official Page (English)
+	https://www.renesas.com/us/en/products/automotive-products/automotive-system-chips-socs/y-ask-rcar-s4-1000base-t-r-car-s4-starter-kit
+
+	Official Page (Japanese)
+	https://www.renesas.com/jp/ja/products/automotive-products/automotive-system-chips-socs/y-ask-rcar-s4-1000base-t-r-car-s4-starter-kit
+
+	elinux
+	https://elinux.org/R-Car/Boards/S4SK
+
+-------------------------------
+* How to get ROM ?
+-------------------------------
+
+** Download SDK
+
+	Access to above official page, and go to
+	 - "Design & Development"
+	  - "R-Car S4 SDK for gateway"
+	   - "Software Downloads"
+
+	NOTE. v3.16.0 case
+
+	 - R-Car S4 SDK Linux PKG with GCC compiler v3.16.0
+
+** Prepare items
+
+	NOTE. v3.16.0 case
+
+	Binary
+	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.16.0_release/rcar-xos/v3.16.0/os/bootloader/s4/s4sk/
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+	[Host PC] <--> [board CN13] (/dev/ttyUSBx)
+
+-------------------------------
+* How to know the Ether Mac address
+-------------------------------
+
+	You need to use "R-Car S4 Starter Kit Configuration Tool" to
+	know the Ether Mac address.
+
+	You can get it from
+	- above "Official Page"
+	 - "Software Downloads"
+	  - "R-Car S4 Starter Kit Configuration Tool"
+
+	Run "S4_StarterKit_Configurationr.exe" on Windows.
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/README

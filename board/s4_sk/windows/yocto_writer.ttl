@@ -1,0 +1,82 @@
+; SPDX-License-Identifier: GPL-2.0
+;====================================
+;
+; Renesas S4 StarterKit Yocto Writer
+;
+;====================================
+;=============================
+; dir_top
+;=============================
+getdir __dir
+sprintf2 dir_top "%s\..\..\.." __dir
+
+;=============================
+; rom, board, baudrate
+;=============================
+board	 = "s4_sk"
+rom	 = "sdk"
+baudrate = 921600	; used at init / main
+
+;=============================
+; connection check (yocto)
+;=============================
+sprintf2 __soc "%s\board\%s\config\rom\%s\connection" dir_top board rom
+include __soc
+
+func_name = "connection_check"
+call call_func
+
+;=============================
+; load addr_map
+;=============================
+func_name = "load_addr_map"
+call call_func
+
+;=============================
+; select srec dir
+;=============================
+soc_ws = "s4"
+func_name = "select_srec_dir"
+call call_func
+
+;=============================
+; load dip-swich settings
+;=============================
+sprintf2 sw_file "%s\board\%s\config\sw" dir_top board
+func_name = "dip_switch_msg"
+call call_func
+
+;=============================
+; load mot
+;=============================
+sprintf2 mot_file "%s\%s" dir_srec mot_file
+
+func_name = "salvator_type_init_mot1"
+call call_func
+
+;=============================
+; run_main
+; same as StarterKit
+;=============================
+func_name = "ask_loop_mode"
+call call_func
+
+select_ans = "1"
+yes_loop = 2
+func_name = "starterkit_type_main"
+call call_func
+
+;=============================
+; dip-swich setting back
+;=============================
+func_name = "salvator_type_init_mot2"
+call call_func
+
+exit
+;=============================
+; call_func
+;=============================
+: call_func
+sprintf2 func "%s\script\ttm\%s" dir_top func_name
+include func
+return

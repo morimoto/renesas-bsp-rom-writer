@@ -3,8 +3,8 @@
 #
 # sdk_writer
 #
-# 2022/02/25 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+# 2023/09/05 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
 SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script/python
 
-${SCRIPT}/s4_spider.py sdk
+${SCRIPT}/s4_spider.py s4_sk
