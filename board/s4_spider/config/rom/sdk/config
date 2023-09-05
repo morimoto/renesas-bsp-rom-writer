@@ -11,7 +11,7 @@ list_version[2] = "Beta3.0"
 list_version[3] = "v3.6.0"
 list_version[4] = "v3.11.0"
 list_version[5] = "v3.13.0"
-list_version[7] = "v3.14.0"
+list_version[6] = "v3.14.0"
 
 list_map[0] = "map01"
 list_map[1] = "map02"
