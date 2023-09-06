@@ -296,12 +296,15 @@ class board(base):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, soc=None, rom=None, ver=None, tty=None, mode="normal", mac=None):
+    def __init__(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", mac=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
         # "xxx"  : be used, and selected
-        self.__board	= os.path.splitext(os.path.basename(sys.argv[0]))[0]
+        if (board):
+            self.__board = board
+        else:
+            self.__board = os.path.splitext(os.path.basename(sys.argv[0]))[0]
         self.__soc	= soc
         self.__rom	= rom
         self.__ver	= ver
