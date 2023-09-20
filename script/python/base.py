@@ -12,6 +12,7 @@ import subprocess
 import serial
 import time
 import getpass
+import readchar
 
 #====================================
 #
@@ -92,6 +93,44 @@ class base:
     # select("message", ["hoge", "pkuku"])
     #--------------------
     def select(self, text, list):
+        max = len(list)
+        for i in range(max):
+            text += "\n  ".format(i + 1) + list[i]
+
+        self.msg(text)
+        print("\033[{}A".format(max + 1), end="")
+        print("\033[1C", end="")
+        print("=>", end="", flush=True)
+
+        num = 1
+        while 1:
+            c = readchar.readkey()
+            if (c == "\033[A"):
+                if (num == 1):
+                    continue
+                print("\b\b  \b\b", end="")
+                print(c, end="")
+                print("=>", end="", flush=True)
+                num = num - 1
+
+            if (c == "\033[B"):
+                if (num == max):
+                    continue
+                print("\b\b  \b\b", end="")
+                print(c, end="")
+                print("=>", end="", flush=True)
+                num = num + 1
+
+            if (c == "\n"):
+                break
+        print("\033[{}B".format(max - num + 1))
+
+        return list[num - 1]
+
+    #--------------------
+    # select("message", ["hoge", "pkuku"])
+    #--------------------
+    def select_old(self, text, list):
         max = len(list)
         if (max == 1):
             return list[0]
