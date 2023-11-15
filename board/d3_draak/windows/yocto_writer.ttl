@@ -14,6 +14,7 @@ sprintf2 dir_top "%s\..\..\.." __dir
 ; rom, board, baudrate
 ;=============================
 board	 = "d3_draak"
+soc_ws	 = "d3"
 rom	 = "yocto"
 baudrate = 115200
 
@@ -35,7 +36,6 @@ call call_func
 ;=============================
 ; select srec dir
 ;=============================
-soc_ws = "d3"
 func_name = "select_srec_dir"
 call call_func
 

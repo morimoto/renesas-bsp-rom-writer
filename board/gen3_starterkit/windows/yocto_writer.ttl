@@ -15,7 +15,14 @@ sprintf2 dir_top "%s\..\..\.." __dir
 ;=============================
 board	 = "gen3_starterkit"
 rom	 = "yocto"
+soc_ws	 = ""
 baudrate = 115200	; used at init / main
+
+;=============================
+; load soc (soc_ws == "")
+;=============================
+sprintf2 __soc "%s\board\%s\config\soc" dir_top board
+include __soc
 
 ;=============================
 ; connection check (yocto)
@@ -27,15 +34,9 @@ func_name = "connection_check"
 call call_func
 
 ;=============================
-; load soc
-;=============================
-sprintf2 __soc "%s\board\%s\config\soc" dir_top board
-include __soc
-
-;=============================
 ; load addr_map
 ;=============================
-func_name = "load_addr_map_with_soc"
+func_name = "load_addr_map"
 call call_func
 
 ;=============================

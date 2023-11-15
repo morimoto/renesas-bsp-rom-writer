@@ -7,11 +7,18 @@
 ;	list_version
 ;	list_map
 ;
+;	if (soc_sw == "")
+;		list_soc
+;		list_soc_explanation
+;		num_list_soc_explanation
+;
 ; return
 ;	ver
-;	addr_map	# load from ${renesas-bsp-rom-writer}\board\${board}\config\rom\${rom}\${map}
+;	addr_map	# load from ${renesas-bsp-rom-writer}\board\${board}\config\rom\${rom}\${__map}\${soc_ws}
 ;	num_addr_map	#
 ;
+;	if (soc_sw == "")
+;		soc_ws	# h3_4g
 
 ;
 ; load config
@@ -27,10 +34,38 @@ listbox __txt "Version Select" list_version
 if result<0 end
 
 ver = list_version[result]
-map = list_map[result]
+__map = list_map[result]
 
 ;
-; load addr_map
+; if (soc_ws == "xxx")
 ;
-sprintf2 __tmp "%s\board\%s\config\rom\%s\%s" dir_top board rom map
+strcompare soc_ws ""
+if result!=0 then
+  ;
+  ; load addr_map
+  ;
+  sprintf2 __tmp "%s\board\%s\config\rom\%s\%s" dir_top board rom __map
+else
+  __explanation = list_soc_explanation[0]
+  for i 1 num_list_soc_explanation-1
+     groupmatchstr1=__explanation
+     groupmatchstr2=list_soc_explanation[i]
+     strjoin __explanation "\n" 2
+  next
+  strspecial __explanation
+
+  listbox __explanation "SoC Select" list_soc
+  if result<0 end
+
+  ;
+  ; soc_ws : h3_4g
+  ;
+  soc_ws = list_soc[result]
+
+  ;
+  ; load addr_map
+  ;
+  sprintf2 __tmp "%s\board\%s\config\rom\%s\%s\%s" dir_top board rom __map soc_ws
+endif
+
 include __tmp

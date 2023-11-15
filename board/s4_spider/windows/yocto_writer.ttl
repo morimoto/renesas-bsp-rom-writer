@@ -14,6 +14,7 @@ sprintf2 dir_top "%s\..\..\.." __dir
 ; rom, board, baudrate
 ;=============================
 board	 = "s4_spider"
+soc_ws	 = "s4"
 rom	 = "sdk"
 baudrate = 1843200	; used at init / main
 
@@ -35,7 +36,6 @@ call call_func
 ;=============================
 ; select srec dir
 ;=============================
-soc_ws = "s4"
 func_name = "select_srec_dir"
 call call_func
 
