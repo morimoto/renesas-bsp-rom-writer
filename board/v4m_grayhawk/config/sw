@@ -1,0 +1,20 @@
+num_sw_head = 4
+strdim sw_head num_sw_head
+sw_head[0]   = "1 : ON"
+sw_head[1]   = "0 : OFF"
+sw_head[2]   = ""
+sw_head[3]   = "        1 2 3 4 5 6 7 8"
+
+num_sw_update = 7
+strdim sw_update num_sw_update
+sw_update[0] = "SW13 : [0] (pin 1 side)"
+sw_update[1] = "SW57 : [Center]"
+sw_update[2] = "SW1  : [0 1 0 0 0 0 0 0]"
+sw_update[3] = "SW2  : [0 1 1 1 0 1 0 0]"
+sw_update[4] = "SW3  : [1 1 1 1 0 1 0 0]"
+sw_update[5] = "SW4  : [1 1 1 1 1 1 1 1]"
+sw_update[6] = "SW5  : [1 1 1 1 1 0 0 0]"
+
+num_sw_normal = 1
+strdim sw_normal num_sw_normal
+sw_normal[0] = "SW1  : [0 1 0 0 1 0 1 1]"

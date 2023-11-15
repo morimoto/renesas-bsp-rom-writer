@@ -40,9 +40,11 @@ class board(base.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, ver="", tty=""):
+    def __init__(self, board, ver="", tty=""):
 
-        super().__init__(soc="v4h", rom="sdk", ver=ver, tty=tty)
+        arg = board.split("_") # v4h_whitehawk
+
+        super().__init__(soc=arg[0], rom="sdk", board=board, ver=ver, tty=tty)
 
         self.confirm_location()
         self.config_load()
@@ -119,6 +121,6 @@ if __name__=='__main__':
         # test
         board(ver="3.0.1", tty="/dev/ttyUSB0")
     elif (sys.argv[1] == "sdk"):
-        rom_write_guide(board()).guide_start()
+        rom_write_guide(board(sys.argv[2])).guide_start()
     else:
         print("unknown command")

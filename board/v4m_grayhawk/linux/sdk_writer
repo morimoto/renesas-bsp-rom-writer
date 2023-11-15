@@ -3,8 +3,8 @@
 #
 # sdk_writer
 #
-# 2022/08/23 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+# 2023/11/15 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
 SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script/python
 
-${SCRIPT}/v4h_whitehawk.py sdk v4h_whitehawk
+${SCRIPT}/v4h_whitehawk.py sdk v4m_grayhawk

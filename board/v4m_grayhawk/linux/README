@@ -1,0 +1,62 @@
+============== -*- outline -*- ==============
+
+   Renesas Gray Hawk SDK ROM Writer
+   for Linux
+
+2023/11/15	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+
+**  Necessary Tools
+
+	You can install necessary tools by tool_install.xxx.
+	If you are using Ubuntu, you can run.
+
+		> ${renesas-bsp-rom-writer}/script/tool_install.ubuntu
+
+-------------------------------
+* How to use ?
+-------------------------------
+**  [step1] connect Serial between PC and Board
+
+	see
+		[Serial connection]
+		${renesas-bsp-rom-writer}/board/v4m_grayhawk/README
+
+**  [step2] prepare ROM
+
+	see
+		[How to get ROM]
+		${renesas-bsp-rom-writer}/board/v4m_grayhawk/README
+
+**  [step3] cd ${ROM_dir}
+
+	You need to go to Linux SDK ${ROM_dir} first.
+
+		> cd ${ROM_dir}
+		> ls
+			/* Linux SDK ROMs */
+
+**  [step4] call ROM_writer
+
+	You can call ROM_writer from ${ROM_dir}.
+
+		> pwd
+			/* ${ROM_dir} */
+		> ls
+			/* Linux SDK ROMs */
+		> ${renesas-bsp-rom-writer}/board/v4m_grayhawk/linux/sdk_writer
+
+	It will ask you many things, and try to write ROM to board.
+
+**  [option] edit config
+
+	[step4] will create config file (.renesas_bsp_rom_writer.v4m_grayhawk)
+	on ${ROM_dir} (if you have answered questions, and confirmed the settings).
+	It will load settings from this config file if you re-try to
+	use ROM writer from ${ROM_dir}.
+	You can edit it and skip interactive setup if you want (optional).
+
+		> vi ${ROM_dir}/.renesas_bsp_rom_writer.v4m_grayhawk

@@ -1,0 +1,3 @@
+num_tty_connection = 1
+strdim tty_connection num_tty_connection
+tty_connection[0] = "[Host PC] <--> [board CN10] (/dev/ttyUSBx)"

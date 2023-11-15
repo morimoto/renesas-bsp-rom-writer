@@ -1,0 +1,32 @@
+============== -*- outline -*- ==============
+
+   Renesas V4M Gray Hawk ROM Writer
+
+2023/11/15	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* What is Renesas Gray Hawk ?
+-------------------------------
+
+	T.B.D
+
+-------------------------------
+* How to get ROM ?
+-------------------------------
+
+	Please Contact to [Renesas Sales team] or
+	[Renesas appointed store Sales team]
+
+-------------------------------
+* Serial connection
+-------------------------------
+
+	[Host PC] <--> [board CN10] (/dev/ttyUSBx)
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/README
