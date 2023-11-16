@@ -56,6 +56,11 @@ call call_func
 ;=============================
 strcompare mode "normal"
 if result=0 then
+   ; soc_ws : h3_4g
+   ; soc    : h3
+   strmatch soc_ws "(.*)_.*"
+   soc = groupmatchstr1
+
    sprintf2 sw_file "%s\board\%s\config\sw\%s" dir_top board soc
    func_name = "dip_switch_msg"
    call call_func
