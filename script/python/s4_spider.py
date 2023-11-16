@@ -40,9 +40,9 @@ class board(base.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, baudrate, board, ver="", tty=""):
+    def __init__(self, baudrate, rom, board, ver="", tty=""):
 
-        super().__init__(soc="s4", rom="sdk", board=board, ver=ver, tty=tty, baudrate=baudrate)
+        super().__init__(soc="s4", rom=rom, board=board, ver=ver, tty=tty, baudrate=baudrate)
 
         self.confirm_location()
         self.config_load()
@@ -113,13 +113,13 @@ class rom_write_guide(base.guide):
 #
 #====================================
 if __name__=='__main__':
-    if (len(sys.argv) < 2):
+    if (len(sys.argv) < 3):
         # test
         board(1843200, ver="Pre-Alpha4.0", tty="/dev/ttyUSB0")
-    elif (sys.argv[1] == "s4_sk"):
-        rom_write_guide(board(921600, sys.argv[1])).guide_start()
-    elif (sys.argv[1] == "s4_spider"):
-        board = board(1843200, sys.argv[1])
+    elif (sys.argv[2] == "s4_sk"):
+        rom_write_guide(board(921600, sys.argv[1], sys.argv[2])).guide_start()
+    elif (sys.argv[2] == "s4_spider"):
+        board = board(1843200, sys.argv[1], sys.argv[2])
         board.msg("*NOTE1*\n\n"\
                  "The board which serial number No.2023 - No.2132\n"\
                  "needs CPLD setting to enable SW8.\n"\

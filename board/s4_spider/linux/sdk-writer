@@ -7,4 +7,4 @@
 #===============================
 SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script/python
 
-${SCRIPT}/s4_spider.py s4_spider
+${SCRIPT}/s4_spider.py sdk s4_spider

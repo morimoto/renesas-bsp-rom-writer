@@ -15,7 +15,7 @@ sprintf2 dir_top "%s\..\..\.." __dir
 ;=============================
 board	 = "s4_sk"
 soc_ws	 = "s4"
-rom	 = "yocto"
+rom	 = "sdk"
 baudrate = 921600	; used at init / main
 
 ;=============================
