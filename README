@@ -45,3 +45,37 @@
 
 	https://github.com/morimoto/renesas-bsp-rom-writer
 	https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer
+
+-------------------------------
+* How to skip specified srec writing (Linux)
+-------------------------------
+
+	You can find ".renesas_bsp_rom_writer.xxx" file at your ROM dir
+	if you first write ROM by using linux script.
+
+	You can indicates the srec files into it which you want to ignore
+	writing.
+
+	ex) .renesas_bsp_rom_writer.xxx
+
+		-----------------
+		[bootparam_sa0.srec]:ignore
+		[icumx_loader.srec]:ignore
+		...
+		-----------------
+
+	+---------------------------------------+
+	| You can select update style           |
+	|   1) Update all files without asking  |
+	|   2) Ask one by one whether to update |
+	+---------------------------------------+
+	select number (1-2): 1
+
+	+-------------------------------------------------+
+	| config file indicates ignore bootparam_sa0.srec |
+	+-------------------------------------------------+
+
+	+------------------------------------------------+
+	| config file indicates ignore icumx_loader.srec |
+	+------------------------------------------------+
+	...
