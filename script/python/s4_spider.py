@@ -119,23 +119,24 @@ if __name__=='__main__':
     elif (sys.argv[1] == "s4_sk"):
         rom_write_guide(board(921600, sys.argv[1])).guide_start()
     elif (sys.argv[1] == "s4_spider"):
-        self.msg("*NOTE1*\n\n"\
+        board = board(1843200, sys.argv[1])
+        board.msg("*NOTE1*\n\n"\
                  "The board which serial number No.2023 - No.2132\n"\
                  "needs CPLD setting to enable SW8.\n"\
                  "And baudrate = 1843200.\n"\
                  "This script is assuming this settings has already done.\n"\
                  "If not, please see Startup Guide")
-        self.ask_yn()
+        board.ask_yn()
 
-        self.msg("*NOTE2*\n\n"\
+        board.msg("*NOTE2*\n\n"\
                  "We don't know why but it seems it will hung up on some PC\n"\
                  "during sending file to Spider board.  Please check README\n"\
                  "if it doesn't finish sending file in 5 min.")
-        self.ask_yn()
+        board.ask_yn()
 
-        rom_write_guide(board(1843200, sys.argv[1])).guide_start()
+        rom_write_guide(board).guide_start()
 
-        self.msg("\n"\
+        board.msg("\n"\
                  "One note is that IPL is using 1843200 baudrate,\n"\
                  "But *default* U-Boot is using  115200 baudrate\n\n"\
                  "You can update U-Boot baudrate by\n"\
