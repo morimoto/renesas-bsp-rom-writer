@@ -42,7 +42,7 @@ class board(base.board):
     #--------------------
     def __init__(self, ver="", tty=""):
 
-        super().__init__(soc="v4h2", rom="sdk", ver=ver, tty=tty)
+        super().__init__(soc="v4h2", rom="sdk", ver=ver, tty=tty, baudrate=115200)
 
         self.confirm_location()
         self.config_load()
@@ -63,19 +63,17 @@ class rom_write_guide(base.guide):
     # __init__
     #--------------------
     def __init__(self, board):
-        super().__init__(board.tty(), 115200)
-        # possible to use from child-class
-        self.board = board
+        super().__init__(board)
 
     #--------------------
     # guide_start
     #--------------------
     def guide_start(self):
-        sw = base.switch(self.board.dir_config("sw"))
+        sw = base.switch(self.board().dir_config("sw"))
 
         # chech mot file
-        mot_file = self.board.mot_file()
-        self.board.check_mot(mot_file)
+        mot_file = self.board().mot_file()
+        self.board().check_mot(mot_file)
 
         # power off
         self.power("OFF")
@@ -91,7 +89,7 @@ class rom_write_guide(base.guide):
         self.expect(">")
 
         # main loop
-        self.sk_type_main_loop(self.board.addr_map(), "3", 2, self.ask_loop())
+        self.sk_type_main_loop(self.board().addr_map(), "3", 2, self.ask_loop())
 
         # power off
         self.power("OFF")

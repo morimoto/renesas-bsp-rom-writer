@@ -20,7 +20,7 @@ class board(base.board):
     #--------------------
     def __init__(self, soc="", ver="", tty=""):
 
-        super().__init__(soc=soc, rom="yocto", ver=ver, tty=tty)
+        super().__init__(soc=soc, rom="yocto", ver=ver, tty=tty, baudrate=115200)
 
         self.confirm_location()
         self.config_load()
@@ -40,15 +40,13 @@ class rom_write_guide(base.guide):
     # __init__
     #--------------------
     def __init__(self, board):
-        super().__init__(board.tty(), 115200)
-        # possible to use from child-class
-        self.board = board
+        super().__init__(board)
 
     #--------------------
     # guide_start
     #--------------------
     def guide_start(self):
-        sw = base.switch(self.board.dir_config("sw"))
+        sw = base.switch(self.board().dir_config("sw"))
 
         # power off
         self.power("OFF")
@@ -69,7 +67,7 @@ class rom_write_guide(base.guide):
         self.speed_up("921.6Kbps", 921600)
 
         # main loop
-        self.sk_type_main_loop(self.board.addr_map(), "3", 3, self.ask_loop())
+        self.sk_type_main_loop(self.board().addr_map(), "3", 3, self.ask_loop())
         self.msg("finished !!")
 
 #====================================

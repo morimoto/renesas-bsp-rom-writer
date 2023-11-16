@@ -296,7 +296,7 @@ class board(base):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", mac=None):
+    def __init__(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, mac=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -310,6 +310,7 @@ class board(base):
         self.__ver	= ver
         self.__tty	= tty
         self.__mode	= mode		# normal, mot
+        self.__baudrate	= baudrate
 
         # for Android
         self.__mac	= mac
@@ -338,6 +339,7 @@ class board(base):
     # addr_map
     # emmc_map
     # mac
+    # baudrate
     #--------------------
     def mode(self):	return self.__mode
     def board(self):	return self.__board
@@ -348,6 +350,7 @@ class board(base):
     def addr_map(self):	return self.__addr_map
     def emmc_map(self):	return self.__emmc_map
     def mac(self):	return self.__mac
+    def baudrate(self):	return self.__baudrate
 
     #--------------------
     # soc_ws : h3_4g
@@ -687,15 +690,16 @@ class guide(base):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, tty, baudrate):
+    def __init__(self, board):
         # for guide
         self.__serial		= None
         self.__line_array	= []
         self.__remain_lines	= ""
+        self.__board		= board
 
         self.__serial = serial.Serial(
-            port	= tty,
-            baudrate	= baudrate,
+            port	= board.tty(),
+            baudrate	= board.baudrate(),
             bytesize	= serial.EIGHTBITS,
             parity	= serial.PARITY_NONE,
             stopbits	= serial.STOPBITS_ONE)
@@ -814,6 +818,12 @@ class guide(base):
             sys.exit(1)
 
         return False
+
+    #--------------------
+    # board
+    #--------------------
+    def board(self):
+        return self.__board
 
     #--------------------
     # expect

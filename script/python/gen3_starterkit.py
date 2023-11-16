@@ -50,7 +50,7 @@ class board(base.board):
         if (rom == "android"):
             mac = ""
 
-        super().__init__(soc=soc, rom=rom, ver=ver, tty=tty, mac=mac, mode="")
+        super().__init__(soc=soc, rom=rom, ver=ver, tty=tty, mac=mac, baudrate=115200, mode="")
 
         self.mot_init()
 
@@ -113,9 +113,7 @@ class rom_write_guide(base.guide):
     # __init__
     #--------------------
     def __init__(self, board):
-        super().__init__(board.tty(), 115200)
-        # possible to use from child-class
-        self.board = board
+        super().__init__(board)
 
         self.__yes_loop = self.yes_loop_num()
 
@@ -123,13 +121,13 @@ class rom_write_guide(base.guide):
     # main loop
     #--------------------
     def main_loop(self):
-        self.sk_type_main_loop(self.board.addr_map(), "3", self.__yes_loop, self.ask_loop())
+        self.sk_type_main_loop(self.board().addr_map(), "3", self.__yes_loop, self.ask_loop())
 
     #--------------------
     # guide_for_mot
     #--------------------
     def guide_for_mot(self):
-        mot_config = self.board.dir_config("mot")
+        mot_config = self.board().dir_config("mot")
         cpld_cmd = self.ttm_array(mot_config, "cpld_cmd")
 
         # power on
@@ -149,7 +147,7 @@ class rom_write_guide(base.guide):
         # indicate meesage
         # and send mot file
         self.expect("please send !")
-        self.send_file(self.board.mot_file())
+        self.send_file(self.board().mot_file())
         self.expect(">")
 
         # speed up
@@ -190,7 +188,7 @@ class rom_write_guide(base.guide):
         self.msg("Confirm serial connection.\n"\
                  "Please don't use USB hub between [PC] and [board].\n"\
                  "       ^^^^^^^^^^^^^^^^^\n\n" +\
-                 self.board.tty_connection())
+                 self.board().tty_connection())
         self.ask_yn()
 
         # power off
@@ -198,7 +196,7 @@ class rom_write_guide(base.guide):
         self.ask_yn()
 
         # normal/mot mode init
-        if (self.board.mode() == "mot"):
+        if (self.board().mode() == "mot"):
             self.guide_for_mot()
         else:
             self.guide_for_normal()
@@ -214,10 +212,7 @@ class fastboot_uboot_guide(base.guide):
     # __init__
     #--------------------
     def __init__(self, board):
-        super().__init__(board.tty(), 115200)
-
-        # possible to use from child-class
-        self.board = board
+        super().__init__(board)
 
     #--------------------
     # erase_bootloader
@@ -261,7 +256,7 @@ class fastboot_uboot_guide(base.guide):
         self.send("env default -a")
         self.expect("=>")
 
-        self.send("setenv ethaddr {}".format(self.board.mac()))
+        self.send("setenv ethaddr {}".format(self.board().mac()))
         self.expect("=>")
 
         # use vague number for serialno :)
@@ -296,7 +291,7 @@ class fastboot_uboot_guide(base.guide):
         self.msg("Confirm serial connection.\n"\
                  "Please don't use USB hub between [PC] and [board].\n"\
                  "       ^^^^^^^^^^^^^^^^^\n\n" +\
-                 self.board.tty_connection())
+                 self.board().tty_connection())
         self.ask_yn()
 
         # power off

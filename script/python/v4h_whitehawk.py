@@ -44,7 +44,7 @@ class board(base.board):
 
         arg = board.split("_") # v4h_whitehawk
 
-        super().__init__(soc=arg[0], rom="sdk", board=board, ver=ver, tty=tty)
+        super().__init__(soc=arg[0], rom="sdk", board=board, ver=ver, tty=tty, baudrate=921600)
 
         self.confirm_location()
         self.config_load()
@@ -65,19 +65,17 @@ class rom_write_guide(base.guide):
     # __init__
     #--------------------
     def __init__(self, board):
-        super().__init__(board.tty(), 921600)
-        # possible to use from child-class
-        self.board = board
+        super().__init__(board)
 
     #--------------------
     # guide_start
     #--------------------
     def guide_start(self):
-        sw = base.switch(self.board.dir_config("sw"))
+        sw = base.switch(self.board().dir_config("sw"))
 
         # chech mot file
-        mot_file = self.board.mot_file()
-        self.board.check_mot(mot_file)
+        mot_file = self.board().mot_file()
+        self.board().check_mot(mot_file)
 
         # power off
         self.power("OFF")
@@ -94,8 +92,8 @@ class rom_write_guide(base.guide):
 
         # main loop
         ask = self.ask_loop()
-        self.sk_type_main_loop(self.board.addr_map(), "1", 2, ask)
-        self.wh_type_emmc_loop(self.board.emmc_map(), "1", 1, ask)
+        self.sk_type_main_loop(self.board().addr_map(), "1", 2, ask)
+        self.wh_type_emmc_loop(self.board().emmc_map(), "1", 1, ask)
 
         # power off
         self.power("OFF")
