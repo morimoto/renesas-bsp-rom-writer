@@ -5,6 +5,6 @@
 strdim list_version 1
 strdim list_map     1
 
-list_version[0] = "3.19.0"
+list_version[0] = "v3.19.0 - v3.24.0"
 
 list_map[0] = "map01"
