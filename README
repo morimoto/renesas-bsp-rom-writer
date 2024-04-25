@@ -79,3 +79,9 @@
 	| config file indicates ignore icumx_loader.srec |
 	+------------------------------------------------+
 	...
+
+-------------------------------
+* Can I see the log ?
+-------------------------------
+
+	You can find /tmp/renesas-bps-rom-writer.log

@@ -688,6 +688,12 @@ class board(base):
 class guide(base):
 
     #--------------------
+    # __del__
+    #--------------------
+    def __del__(self):
+        close(self.__log)
+
+    #--------------------
     # __init__
     #--------------------
     def __init__(self, board):
@@ -696,6 +702,7 @@ class guide(base):
         self.__line_array	= []
         self.__remain_lines	= ""
         self.__board		= board
+        self.__log		= open("/tmp/renesas-bps-rom-writer.log", mode='w')
 
         self.__serial = serial.Serial(
             port	= board.tty(),
@@ -703,6 +710,12 @@ class guide(base):
             bytesize	= serial.EIGHTBITS,
             parity	= serial.PARITY_NONE,
             stopbits	= serial.STOPBITS_ONE)
+
+    #--------------------
+    # log
+    #--------------------
+    def log(sef, msg):
+            self.__log.write(msg)
 
     #--------------------
     # __load_input
@@ -779,6 +792,7 @@ class guide(base):
         #
         while len(self.__line_array) > 0:
             line = self.__line_array.pop(0)
+            self.log(line)
             if (pattern in line):
                 return True
         #
@@ -795,7 +809,9 @@ class guide(base):
             # before __remain_lines : xxxABCDyyyyy
             # after  __remain_lines : yyyyy
             #
-            self.__remain_lines = self.__remain_lines[idx + len(pattern):]
+            idx += len(pattern)
+            self.log(self.__remain_lines[:idx])
+            self.__remain_lines = self.__remain_lines[idx:]
             return True
 
         return False
@@ -850,6 +866,7 @@ class guide(base):
     def send(self, cmd="", end="\r"):
         return self.__serial.write("{}{}".format(cmd, end).encode())
     def send_file(self, file):
+        self.log("\n[send {}]\n".format(file))
         self.msg("Now it is sending below file to board.\n"\
                  "Please wait.\n"\
                  "[{}]".format(os.path.basename(file)))
