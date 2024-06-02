@@ -702,7 +702,7 @@ class guide(base):
         self.__line_array	= []
         self.__remain_lines	= ""
         self.__board		= board
-        self.__log		= open("/tmp/renesas-bps-rom-writer.log", mode='w')
+        self.__log		= open("/tmp/renesas-bsp-rom-writer.log", mode='w')
 
         self.__serial = serial.Serial(
             port	= board.tty(),
@@ -714,7 +714,7 @@ class guide(base):
     #--------------------
     # log
     #--------------------
-    def log(sef, msg):
+    def log(self, msg):
             self.__log.write(msg)
 
     #--------------------
