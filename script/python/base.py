@@ -691,7 +691,7 @@ class guide(base):
     # __del__
     #--------------------
     def __del__(self):
-        close(self.__log)
+        self.__log.close()
 
     #--------------------
     # __init__
