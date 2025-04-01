@@ -24,6 +24,10 @@
 	Please Contact to [Renesas Sales team] or
 	[Renesas appointed store Sales team]
 
+	If you get the SDK, you can find the image at
+
+		rcar-xos/v{version}/os/bootloader/v4h2
+
 -------------------------------
 * Serial connection
 -------------------------------
