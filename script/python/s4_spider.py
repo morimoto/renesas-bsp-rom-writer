@@ -32,12 +32,6 @@ class board(base.board):
                    "Please re-check current dir")
 
     #--------------------
-    # select_soc
-    #--------------------
-    def __select_soc(self):
-        self.__select_soc_noselect()
-
-    #--------------------
     # __init__
     #--------------------
     def __init__(self, baudrate, rom, board, ver="", tty=""):

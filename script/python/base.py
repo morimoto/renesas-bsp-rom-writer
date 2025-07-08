@@ -446,34 +446,26 @@ class board(base):
     # select_soc (default)
     #--------------------
     def __select_soc(self):
-        list_soc     = self.ttm_array(self.dir_config("soc"), "list_soc")
         list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
         list_map     = self.ttm_array(self.dir_config_rom("config"), "list_map")
 
-        if (not self.__ver in list_version):
-            self.error("select version first")
+        if (os.path.exists(self.dir_config("soc"))):
+            list_soc = self.ttm_array(self.dir_config("soc"), "list_soc")
 
-        dir_map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
-        text = "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation")) + \
-               "\n\nSelect SoC/WS ROM\n"
+            if (not self.__ver in list_version):
+                self.error("select version first")
 
-        while (not os.path.isfile("{}/{}".format(dir_map, self.__soc))):
-            self.__soc = self.select(text, list_soc)
+            dir_map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
+            text = "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation")) + \
+                   "\n\nSelect SoC/WS ROM\n"
 
-        self.__map = "{}/{}".format(dir_map, self.__soc)
-        self.__addr_map = addr_map(self.__map)
-        self.__emmc_map = emmc_map(self.__map)
+            while (not os.path.isfile("{}/{}".format(dir_map, self.__soc))):
+                self.__soc = self.select(text, list_soc)
 
-    #--------------------
-    # select_soc_noselect
-    #--------------------
-    def __select_soc_noselect(self):
-        list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
-        list_map     = self.ttm_array(self.dir_config_rom("config"), "list_map")
+            self.__map = "{}/{}".format(dir_map, self.__soc)
+        else:
+            self.__map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
 
-        map = list_map[list_version.index(self.__ver)]
-
-        self.__map = self.dir_config_rom(map)
         self.__addr_map = addr_map(self.__map)
         self.__emmc_map = emmc_map(self.__map)
 

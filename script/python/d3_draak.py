@@ -16,12 +16,6 @@ import base
 #====================================
 class board(base.board):
     #--------------------
-    # select_soc
-    #--------------------
-    def __select_soc(self):
-        self.__select_soc_noselect()
-
-    #--------------------
     # __init__
     #--------------------
     def __init__(self, ver="", tty=""):
