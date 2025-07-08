@@ -14,59 +14,7 @@ import gen3_starterkit
 # board
 #
 #====================================
-class board(base.board):
-    #--------------------
-    # mot_file
-    # mot_error
-    #--------------------
-    def mot_init(self):
-        # mot setting file for dir_config()
-        # ${renesas-bsp-rom-writer}/board/gen3_starterkit/config/mot
-        mot_config = self.dir_config("mot")
-
-        # because Windws path is not same as Linux,
-        # we need to call replace() to exchange \ to /
-        self.__mot = "{}/{}".format(
-            self.ttm_array(mot_config, "dir_mot")[0].replace("\\", "/"),
-            self.ttm_array(mot_config, "mot")[0])
-
-    def mot_file(self):
-        return "{}/{}".format(self.top(), self.__mot)
-
-    def mot_error(self):
-        self.error("You selected mot mode to write ROM.\n"\
-                   "It needs mot file, but you didn't create it yet.\n"\
-                   "Please run make and create mot file.\n\n"\
-                   "   > cd ${renesas-bsp-rom-writer}\n"\
-                   "   > make\n\n"\
-                   "You need is\n" + self.mot_file())
-
-    #--------------------
-    # __init__
-    #--------------------
-    def __init__(self, confirm, soc="", rom="", ver="", tty="", mac=None):
-
-        # mac is needed if Android
-        if (rom == "android"):
-            mac = ""
-
-        super().__init__(soc=soc, rom=rom, ver=ver, tty=tty, mac=mac, mode="")
-
-        self.mot_init()
-
-        self.confirm_location()
-        self.config_load()
-        self.setup()
-
-        # confirm to user
-        if (confirm):
-            self.confirm_info()
-        self.config_save()
-        self.check_files()
-
-    #--------------------
-    # mode_explanation
-    #--------------------
+class board(gen3_starterkit.board):
     def mode_explanation(self):
         # We can't share mode explanation message on config file
         # because Linux vs Windows explanation are different
