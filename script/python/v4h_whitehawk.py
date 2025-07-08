@@ -38,7 +38,7 @@ class board(base.board):
 
         arg = board.split("_") # v4h_whitehawk
 
-        super().__init__(soc=arg[0], rom="sdk", board=board, ver=ver, tty=tty, baudrate=921600)
+        self.init(soc=arg[0], rom="sdk", board=board, ver=ver, tty=tty, baudrate=921600)
 
         self.confirm_location()
         self.config_load()

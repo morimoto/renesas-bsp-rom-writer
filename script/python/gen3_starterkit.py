@@ -50,7 +50,7 @@ class board(base.board):
         if (rom == "android"):
             mac = ""
 
-        super().__init__(soc=soc, rom=rom, ver=ver, tty=tty, mac=mac, baudrate=115200, mode="")
+        self.init(soc=soc, rom=rom, ver=ver, tty=tty, mac=mac, mode="")
 
         self.mot_init()
 

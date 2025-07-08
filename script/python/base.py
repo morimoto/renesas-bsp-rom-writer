@@ -294,9 +294,9 @@ class emmc_map(map):
 class board(base):
 
     #--------------------
-    # __init__
+    # init
     #--------------------
-    def __init__(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, mac=None):
+    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, mac=None):
 
         # None   : not use
         # ""     : be used, but not yet selected

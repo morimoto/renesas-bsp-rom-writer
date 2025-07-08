@@ -36,7 +36,7 @@ class board(base.board):
     #--------------------
     def __init__(self, baudrate, rom, board, ver="", tty=""):
 
-        super().__init__(soc="s4", rom=rom, board=board, ver=ver, tty=tty, baudrate=baudrate)
+        self.init(soc="s4", rom=rom, board=board, ver=ver, tty=tty, baudrate=baudrate)
 
         self.confirm_location()
         self.config_load()

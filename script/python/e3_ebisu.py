@@ -20,7 +20,7 @@ class board(base.board):
     #--------------------
     def __init__(self, soc="", ver="", tty=""):
 
-        super().__init__(soc=soc, rom="yocto", ver=ver, tty=tty, baudrate=115200)
+        self.init(soc=soc, rom="yocto", ver=ver, tty=tty)
 
         self.confirm_location()
         self.config_load()
