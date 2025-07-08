@@ -445,9 +445,6 @@ class board(base):
     #--------------------
     # select_soc (default)
     #--------------------
-    def soc_explanation(self):
-        return "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation"))
-
     def __select_soc(self):
         list_soc     = self.ttm_array(self.dir_config("soc"), "list_soc")
         list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
@@ -457,7 +454,8 @@ class board(base):
             self.error("select version first")
 
         dir_map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
-        text = self.soc_explanation() + "\n\nSelect SoC/WS ROM\n"
+        text = "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation")) + \
+               "\n\nSelect SoC/WS ROM\n"
 
         while (not os.path.isfile("{}/{}".format(dir_map, self.__soc))):
             self.__soc = self.select(text, list_soc)
