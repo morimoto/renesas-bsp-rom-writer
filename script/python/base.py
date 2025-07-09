@@ -383,12 +383,12 @@ class board(base):
         return "{}/{}".format(self.cwd(), self.__config)
 
     def config_read(self, tag):
-        return self.run('grep "^[{}]:" {} 2>/dev/null | cut -d : -f 2-'.format(tag, self.config_file()))
+        return self.run(r'grep "^\[{}\]:" {} 2>/dev/null | cut -d : -f 2-'.format(tag, self.config_file()))
 
     def config_write(self, tag, data):
         tmp = "/tmp/renesas-bsp-rom-writer-config-{}".format(os.getpid())
         if (os.path.exists(self.config_file())):
-            self.run('grep -v "^[{}]:" {} > {}'.format(tag, self.config_file(), tmp))
+            self.run(r'grep -v "^\[{}\]:" {} > {}'.format(tag, self.config_file(), tmp))
         self.run("echo \"[{}]:{}\" >> {}".format(tag, data, tmp))
         self.run("mv -f {} {}".format(tmp, self.config_file()))
         if (not os.path.exists(self.config_file())):
