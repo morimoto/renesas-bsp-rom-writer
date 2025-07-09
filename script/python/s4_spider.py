@@ -29,52 +29,15 @@ class board(v3h_condor.board):
 # rom_write_guide
 #
 #====================================
-class rom_write_guide(base.guide):
+class rom_write_guide(v3h_condor.rom_write_guide):
 
     #--------------------
-    # __init__
+    # main_loop
     #--------------------
-    def __init__(self, board):
-        super().__init__(board)
-
-    #--------------------
-    # guide_start
-    #--------------------
-    def guide_start(self):
-        sw = base.switch(self.board().dir_config("sw"))
-
-        # chech mot file
-        mot_file = self.board().mot_file()
-        self.board().check_mot(mot_file)
-
-        # power off
-        self.power("OFF")
-        self.ask_yn()
-
-        # indicate dip-switch update mode
-        sw.print_msg_update()
-        self.ask_yn()
-
-        self.power("ON")
-        self.expect("please send !")
-        self.send_file(mot_file)
-        self.expect(">")
-
-        # main loop
+    def main_loop(self):
         ask = self.ask_loop()
         self.sk_type_main_loop(self.board().addr_map(), "1", 2, ask)
         self.wh_type_emmc_loop(self.board().emmc_map(), "1", 1, ask)
-
-        # power off
-        self.power("OFF")
-        self.ask_yn()
-
-        # indicate dip-switch normal mode
-        sw.print_msg_normal()
-        self.ask_yn()
-
-        # baudrate settings
-        self.msg("finished !!")
 
 #====================================
 #

@@ -67,6 +67,12 @@ class rom_write_guide(base.guide):
         super().__init__(board)
 
     #--------------------
+    # main_loop
+    #--------------------
+    def main_loop(self):
+        self.sk_type_main_loop(self.board().addr_map(), "3", 2, self.ask_loop())
+
+    #--------------------
     # guide_start
     #--------------------
     def guide_start(self):
@@ -90,7 +96,7 @@ class rom_write_guide(base.guide):
         self.expect(">")
 
         # main loop
-        self.sk_type_main_loop(self.board().addr_map(), "3", 2, self.ask_loop())
+        self.main_loop()
 
         # power off
         self.power("OFF")
