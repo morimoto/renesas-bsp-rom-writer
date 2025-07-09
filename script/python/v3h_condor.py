@@ -32,11 +32,11 @@ class board(base.board):
                    "Please re-check current dir")
 
     #--------------------
-    # __init__
+    # gen3_init
     #--------------------
-    def __init__(self, ver="", tty=""):
+    def gen3_init(self, soc, rom, ver, tty, baudrate=115200, board=None):
 
-        self.init(soc="v4h2", rom="sdk", ver=ver, tty=tty)
+        self.init(soc=soc, rom=rom, ver=ver, tty=tty, baudrate=baudrate, board=board)
 
         self.confirm_location()
         self.config_load()
@@ -45,6 +45,13 @@ class board(base.board):
         self.confirm_info()
         self.config_save()
         self.check_files()
+
+    #--------------------
+    # __init__
+    #--------------------
+    def __init__(self, ver="", tty=""):
+
+        self.gen3_init("v4h2", "sdk", ver, tty)
 
 #====================================
 #

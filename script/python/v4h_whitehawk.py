@@ -10,43 +10,21 @@ import sys
 import time
 
 import base
+import v3h_condor
 #====================================
 #
 # board
 #
 #====================================
-class board(base.board):
-    #--------------------
-    # mot_file
-    # mot_error
-    #--------------------
-    def mot_file_raw(self):
-            return self.ttm_array(self.map(), "mot_file")[0]
-
-    def mot_file(self):
-        return "{}/{}".format(self.cwd(), self.mot_file_raw())
-
-    def mot_error(self):
-        self.error("It seems you don't have necessary mot file\n" +\
-                   "({})\n".format(self.mot_file_raw()) +\
-                   "Please re-check current dir")
-
+class board(v3h_condor.board):
     #--------------------
     # __init__
     #--------------------
     def __init__(self, board, ver="", tty=""):
 
-        arg = board.split("_") # v4h_whitehawk
+        soc = board.split("_")[0] # v4h_whitehawk
 
-        self.init(soc=arg[0], rom="sdk", board=board, ver=ver, tty=tty, baudrate=921600)
-
-        self.confirm_location()
-        self.config_load()
-        self.setup()
-
-        self.confirm_info()
-        self.config_save()
-        self.check_files()
+        self.gen3_init(soc, "sdk", ver, tty, 921600, board)
 
 #====================================
 #
