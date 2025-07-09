@@ -580,7 +580,7 @@ class board(base):
         if (self.__rom  is not None): text += "  [OS]:      {}\n".format(self.__rom)
         if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
         if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
-        if (self.__tty  is not None): text += "* [TTY]:     {}\n".format(self.__tty); deep = 1
+        if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
         if (self.__mac  is not None): text += "* [MAC]:     {}\n".format(self.__mac); deep = 1
 
         if (deep):
