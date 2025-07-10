@@ -21,7 +21,7 @@ import getpass
 #
 #====================================
 class base:
-    __top = os.path.abspath(__file__ + "/../../../");
+    __top = os.path.abspath(__file__ + "/../../");
     __cwd = os.getcwd()
 
     #--------------------

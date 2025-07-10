@@ -5,6 +5,6 @@
 #
 # 2023/11/15 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script/python
+SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script
 
 ${SCRIPT}/v4h_whitehawk.py sdk v4m_grayhawk

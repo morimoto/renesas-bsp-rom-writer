@@ -5,6 +5,6 @@
 #
 # 2022/03/28 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script/python
+SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script
 
 ${SCRIPT}/d3_draak.py yocto
