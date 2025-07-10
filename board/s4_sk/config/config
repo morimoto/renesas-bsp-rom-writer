@@ -1,3 +1,5 @@
+tty_connection:"[Host PC] <--> [board CN13] (/dev/ttyUSBx)"
+
 sw_head:"1 : ON"
 sw_head:"0 : OFF"
 sw_head:""

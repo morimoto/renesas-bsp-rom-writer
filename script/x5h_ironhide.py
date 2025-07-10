@@ -39,7 +39,7 @@ class rom_write_guide(base.guide):
     #--------------------
     def guide_start(self):
         map = self.board().addr_map()
-        sw = base.switch(self.board().dir_config("sw"))
+        sw = base.switch(self.board().dir_config("config"))
 
         # chech mot file
         mot_file = self.board().mot_file()

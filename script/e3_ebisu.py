@@ -38,7 +38,7 @@ class rom_write_guide(base.guide):
     # guide_start
     #--------------------
     def guide_start(self):
-        sw = base.switch(self.board().dir_config("sw"))
+        sw = base.switch(self.board().dir_config("config"))
 
         # power off
         self.power("OFF")
