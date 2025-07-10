@@ -316,6 +316,14 @@ class board(base):
         self.__emmc_map	= None
         self.__map	= None
 
+        self.confirm_location()
+        self.config_load()
+        self.setup()
+
+        self.confirm_info()
+        self.config_save()
+        self.check_files()
+
     #--------------------
     # mot_file
     #--------------------

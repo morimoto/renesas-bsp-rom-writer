@@ -38,14 +38,6 @@ class board(base.board):
 
         self.init(soc=soc, rom=rom, ver=ver, tty=tty, mode="mot", baudrate=baudrate, board=board)
 
-        self.confirm_location()
-        self.config_load()
-        self.setup()
-
-        self.confirm_info()
-        self.config_save()
-        self.check_files()
-
     #--------------------
     # __init__
     #--------------------

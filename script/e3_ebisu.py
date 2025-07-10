@@ -22,14 +22,6 @@ class board(base.board):
 
         self.init(soc=soc, rom="yocto", ver=ver, tty=tty)
 
-        self.confirm_location()
-        self.config_load()
-        self.setup()
-
-        self.confirm_info()
-        self.config_save()
-        self.check_files()
-
 #====================================
 #
 # rom_write_guide
