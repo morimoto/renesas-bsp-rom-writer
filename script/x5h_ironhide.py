@@ -29,20 +29,15 @@ class board(v3h_condor.board):
 #====================================
 class rom_write_guide(base.guide):
     #--------------------
-    # __init__
-    #--------------------
-    def __init__(self, board):
-        super().__init__(board)
-
-    #--------------------
     # guide_start
     #--------------------
-    def guide_start(self):
-        map = self.board().addr_map()
-        sw = base.switch(self.board().dir_config("config"))
+    def guide_start(self, board):
+        self.init(board)
+
+        sw = base.switch(board.dir_config("config"))
 
         # chech mot file
-        mot_file = self.board().mot_file()
+        mot_file = board.mot_file()
 
         # power off
         self.power("OFF")
@@ -78,4 +73,4 @@ class rom_write_guide(base.guide):
 #
 #====================================
 if __name__=='__main__':
-    rom_write_guide(board()).guide_start()
+    rom_write_guide().guide_start(board())

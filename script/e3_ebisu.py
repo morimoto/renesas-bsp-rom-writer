@@ -29,16 +29,12 @@ class board(base.board):
 #====================================
 class rom_write_guide(base.guide):
     #--------------------
-    # __init__
-    #--------------------
-    def __init__(self, board):
-        super().__init__(board)
-
-    #--------------------
     # guide_start
     #--------------------
-    def guide_start(self):
-        sw = base.switch(self.board().dir_config("config"))
+    def guide_start(self, board):
+        self.init(board)
+
+        sw = base.switch(board.dir_config("config"))
 
         # power off
         self.power("OFF")
@@ -76,6 +72,6 @@ if __name__=='__main__':
         board(soc="ebisu_4d", ver="5.9.0", tty="/dev/ttyUSB0")
         sys.exit(0)
     if (sys.argv[1] == "yocto"):
-        rom_write_guide(board()).guide_start()
+        rom_write_guide().guide_start(board())
     else:
         print("unknown command")

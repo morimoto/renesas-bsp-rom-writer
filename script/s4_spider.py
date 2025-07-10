@@ -52,7 +52,7 @@ if __name__=='__main__':
         # test
         board(1843200, ver="Pre-Alpha4.0", tty="/dev/ttyUSB0")
     elif (sys.argv[2] == "s4_sk"):
-        rom_write_guide(board(921600, sys.argv[1], sys.argv[2])).guide_start()
+        rom_write_guide().guide_start(board(921600, sys.argv[1], sys.argv[2]))
     elif (sys.argv[2] == "s4_spider"):
         board = board(1843200, sys.argv[1], sys.argv[2])
         board.msg("*NOTE1*\n\n"\
@@ -69,7 +69,7 @@ if __name__=='__main__':
                  "if it doesn't finish sending file in 5 min.")
         board.ask_yn()
 
-        rom_write_guide(board).guide_start()
+        rom_write_guide().guide_start(board)
 
         board.msg("\n"\
                  "One note is that IPL is using 1843200 baudrate,\n"\

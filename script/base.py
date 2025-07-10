@@ -688,13 +688,18 @@ class guide(base):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, board):
+    def __init__(self):
+        self.__log = open("/tmp/renesas-bsp-rom-writer.log", mode='w')
+
+    #--------------------
+    # init
+    #--------------------
+    def init(self, board):
         # for guide
         self.__serial		= None
         self.__line_array	= []
         self.__remain_lines	= ""
         self.__board		= board
-        self.__log		= open("/tmp/renesas-bsp-rom-writer.log", mode='w')
 
         self.__serial = serial.Serial(
             port	= board.tty(),
