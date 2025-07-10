@@ -36,8 +36,8 @@ class rom_write_guide(v3h_condor.rom_write_guide):
     #--------------------
     def main_loop(self):
         ask = self.ask_loop()
-        self.sk_type_main_loop(self.board().addr_map(), "1", 2, ask)
-        self.wh_type_emmc_loop(self.board().emmc_map(), "1", 1, ask)
+        self.sk_type_main_loop("1", 2, ask)
+        self.wh_type_emmc_loop("1", 1, ask)
 
 #====================================
 #

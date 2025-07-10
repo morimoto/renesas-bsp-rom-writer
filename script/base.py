@@ -885,9 +885,9 @@ class guide(base):
     #--------------------
     # sk_type_send
     #--------------------
-    def sk_type_main_loop(self, addr_map, select, yes_loop, ask):
+    def sk_type_main_loop(self, select, yes_loop, ask):
 
-        for map in addr_map:
+        for map in self.board().addr_map():
             if ("ignore" == self.board().config_read(map["srec"])):
                 self.msg("config file indicates ignore {}".format(map["srec"]))
                 continue
@@ -927,8 +927,9 @@ class guide(base):
     #--------------------
     # wh_type_emmc_main_loop
     #--------------------
-    def wh_type_emmc_loop(self, emmc_map, select, yes_loop, ask):
-        for map in emmc_map:
+    def wh_type_emmc_loop(self, select, yes_loop, ask):
+
+        for map in self.board().emmc_map():
             if ("ignore" == self.board().config_read(map["srec"])):
                 self.msg("config file indicates ignore {}".format(map["srec"]))
                 continue

@@ -59,7 +59,7 @@ class rom_write_guide(base.guide):
         self.speed_up("921.6Kbps", 921600)
 
         # main loop
-        self.sk_type_main_loop(self.board().addr_map(), "3", 3, self.ask_loop())
+        self.sk_type_main_loop("3", 3, self.ask_loop())
         self.msg("finished !!")
 
 #====================================

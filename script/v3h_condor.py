@@ -62,7 +62,7 @@ class rom_write_guide(base.guide):
     # main_loop
     #--------------------
     def main_loop(self):
-        self.sk_type_main_loop(self.board().addr_map(), "3", 2, self.ask_loop())
+        self.sk_type_main_loop("3", 2, self.ask_loop())
 
     #--------------------
     # guide_start
