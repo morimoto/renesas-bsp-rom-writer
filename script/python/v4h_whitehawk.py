@@ -25,7 +25,7 @@ class board(v3h_condor.board):
 
         soc = board.split("_")[0] # v4h_whitehawk
 
-        self.gen3_init(soc, "sdk", ver, tty, 921600, board)
+        self.init_with_mot(soc, "sdk", ver, tty, 921600, board)
 
 #====================================
 #

@@ -32,9 +32,9 @@ class board(base.board):
                    "Please re-check current dir")
 
     #--------------------
-    # gen3_init
+    # init_with_mot
     #--------------------
-    def gen3_init(self, soc, rom, ver, tty, baudrate=115200, board=None):
+    def init_with_mot(self, soc, rom, ver, tty, baudrate=115200, board=None):
 
         self.init(soc=soc, rom=rom, ver=ver, tty=tty, baudrate=baudrate, board=board)
 
@@ -51,7 +51,7 @@ class board(base.board):
     #--------------------
     def __init__(self, ver="", tty=""):
 
-        self.gen3_init("v4h2", "sdk", ver, tty)
+        self.gen4_init("v4h2", "sdk", ver, tty)
 
 #====================================
 #
