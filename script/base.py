@@ -217,8 +217,8 @@ class map:
         #
         # read addr_map file
         #
-        # addr_map:"E6320000,000000,bootparam_sa0.srec"
-        # addr_map:"E6304000,040000,bl2-salvator-x.srec"
+        # addr_map:"000000,bootparam_sa0.srec"
+        # addr_map:"040000,bl2-salvator-x.srec"
         # addr_map:...
         #
         self.__map = []
@@ -226,9 +226,10 @@ class map:
         map = b.ttm_array(file, map_name)
         for m in map:
             am = m.split(',')
-            self.__map.append({"addr":am[0],
-                               "save":am[1],
-                               "srec":am[2]})
+            addr = b.run("head -n 2 {}/{} | tail -n 1 | cut -c5-12".format(b.cwd(), am[1]))
+            self.__map.append({"addr":addr,
+                               "save":am[0],
+                               "srec":am[1]})
 
     #--------------------
     # __iter__
