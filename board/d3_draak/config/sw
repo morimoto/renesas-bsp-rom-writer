@@ -1,24 +1,17 @@
-num_sw_head = 4
-strdim sw_head num_sw_head
-sw_head[0]   = "1 : ON"
-sw_head[1]   = "0 : OFF"
-sw_head[2]   = ""
-sw_head[3]   = "              1 2 3 4 5 6"
+sw_head:"1 : ON"
+sw_head:"0 : OFF"
+sw_head:""
+sw_head:  "              1 2 3 4 5 6"
+sw_update:"Back /SW1  : [1 1 1 1 1 1]"
+sw_update:"Back /SW2  : [1 1 1 1 1 1]"
+sw_update:"Front/SW3  : [0]"
+sw_update:"Front/SW13 : dot side"
+sw_update:"Front/SW31 : [0]"
+sw_update:"Front/SW10 : [1 1 1 0 1 1]"
 
-num_sw_update = 6
-strdim sw_update num_sw_update
-sw_update[0] = "Back /SW1  : [1 1 1 1 1 1]"
-sw_update[1] = "Back /SW2  : [1 1 1 1 1 1]"
-sw_update[2] = "Front/SW3  : [0]"
-sw_update[3] = "Front/SW13 : dot side"
-sw_update[4] = "Front/SW31 : [0]"
-sw_update[5] = "Front/SW10 : [1 1 1 0 1 1]"
-
-num_sw_normal = 6
-strdim sw_normal num_sw_normal
-sw_normal[0] = "Back /SW1  : [0 0 0 0 0 0]"
-sw_normal[1] = "Back /SW2  : [0 0 0 0 0 0]"
-sw_normal[2] = "Front/SW3  : [1]"
-sw_normal[3] = "Front/SW13 : dot side"
-sw_normal[4] = "Front/SW31 : [1]"
-sw_normal[5] = "Front/SW10 : [1 1 1 1 0 1]"
+sw_normal:"Back /SW1  : [0 0 0 0 0 0]"
+sw_normal:"Back /SW2  : [0 0 0 0 0 0]"
+sw_normal:"Front/SW3  : [1]"
+sw_normal:"Front/SW13 : dot side"
+sw_normal:"Front/SW31 : [1]"
+sw_normal:"Front/SW10 : [1 1 1 1 0 1]"

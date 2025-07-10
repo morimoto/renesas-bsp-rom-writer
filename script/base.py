@@ -77,7 +77,7 @@ class base:
     # read TeraTerm array
     #--------------------
     def ttm_array(self, file, tag):
-        return self.runl('grep -w "^{}" {} | cut -d = -f 2 | sed -e "s/^ *\\"//g" | sed -e "s/\\"$//g"'.format(tag, file))
+        return self.runl('grep -w "^{}" {} | sed -e "s/^{}: *\\"//g" | sed -e "s/\\"$//g"'.format(tag, file, tag))
 
     #--------------------
     # input
@@ -181,12 +181,6 @@ class switch(base):
         #
         # read dipswitch config from file
         #
-        # dipswitch_update[..] = "....."
-        # dipswitch_update[..] = "....."
-        #
-        # dipswitch_normal[..] = "....."
-        # dipswitch_normal[..] = "....."
-        #
         b = base()
         self.__head   = b.ttm_array(file, "sw_head")
         self.__update = b.ttm_array(file, "sw_update")
@@ -223,9 +217,9 @@ class map:
         #
         # read addr_map file
         #
-        # addr_map[0] = "E6320000,000000,bootparam_sa0.srec"
-        # addr_map[1] = "E6304000,040000,bl2-salvator-x.srec"
-        # addr_map[2] = ...
+        # addr_map:"E6320000,000000,bootparam_sa0.srec"
+        # addr_map:"E6304000,040000,bl2-salvator-x.srec"
+        # addr_map:...
         #
         self.__map = []
         b = base()

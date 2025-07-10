@@ -1,15 +1,7 @@
-num_sw_head = 5
-strdim sw_head num_sw_head
-sw_head[0]   = "1 : ON"
-sw_head[1]   = "0 : OFF"
-sw_head[2]   = "- : no change"
-sw_head[3]   = ""
-sw_head[4]   = "        1 2 3 4 5 6 7 8"
-
-num_sw_update = 1
-strdim sw_update num_sw_update
-sw_update[0] = "SW43 : [1 - 1 - - - - -]"
-
-num_sw_normal = 1
-strdim sw_normal num_sw_normal
-sw_normal[0] = "SW43 : [0 - 0 - - - - -]"
+sw_head:"1 : ON"
+sw_head:"0 : OFF"
+sw_head:"- : no change"
+sw_head:""
+sw_head:  "        1 2 3 4 5 6 7 8"
+sw_update:"SW43 : [1 - 1 - - - - -]"
+sw_normal:"SW43 : [0 - 0 - - - - -]"

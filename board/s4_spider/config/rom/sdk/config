@@ -1,16 +1,9 @@
-;
-; TeraTerm Macro has many limitation
-; We need to adjust to it here
-;
-strdim list_version 4
-strdim list_map     4
+list_version:"v3.6.0 - v3.16.2"
+list_version:"Beta3.0"
+list_version:"Alpha3.0"
+list_version:"Pre-Alpha4.0"
 
-list_version[0] = "Pre-Alpha4.0"
-list_version[1] = "Alpha3.0"
-list_version[2] = "Beta3.0"
-list_version[3] = "v3.6.0 - v3.16.2"
-
-list_map[0] = "map01"
-list_map[1] = "map02"
-list_map[2] = "map03"
-list_map[3] = "map04"
+list_map:"map04"
+list_map:"map03"
+list_map:"map02"
+list_map:"map01"
