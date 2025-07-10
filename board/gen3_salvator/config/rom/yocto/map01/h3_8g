@@ -1,8 +1,0 @@
-num_addr_map = 6
-strdim addr_map num_addr_map
-addr_map[0] = "E6320000,000000,bootparam_sa0-4x2g.srec"
-addr_map[1] = "E6304000,040000,bl2-salvator-x-4x2g.srec"
-addr_map[2] = "E6320000,180000,cert_header_sa6-4x2g.srec"
-addr_map[3] = "44000000,1C0000,bl31-salvator-x-4x2g.srec"
-addr_map[4] = "44100000,200000,tee-salvator-x.srec"
-addr_map[5] = "50000000,640000,u-boot-elf-salvator-xs-4x2g.srec"

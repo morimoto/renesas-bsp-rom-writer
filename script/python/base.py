@@ -839,17 +839,6 @@ class guide(base):
             self.error("expect timeout")
 
     #--------------------
-    # stop_autorun
-    #--------------------
-    def stop_autorun(self, timeout=60):
-        timeout += int(time.time()) + 10
-        while int(time.time()) < timeout:
-            self.send()
-            if (self.___expect("=>", 0.5)):
-                return True
-        self.error("couldn't stop autorun")
-
-    #--------------------
     # send
     # send_file
     #--------------------
@@ -1008,43 +997,3 @@ class guide(base):
             self.send_file("{}/{}".format(self.cwd(), map["srec"]))
 
             self.expect("W N:Command success.")
-
-#====================================
-#
-# As command
-#
-# test
-#	base.py base
-#	base.py switch
-#	base.py map
-#
-#====================================
-if __name__=='__main__':
-    b = base()
-    if (sys.argv[1] == "base"):
-        #
-        # base
-        #
-        print(b.top())
-        print(b.run("ls"))
-        print(b.runl("ls"))
-    elif (sys.argv[1] == "switch"):
-        #
-        # switch
-        #
-        sw = switch(b.top() + "/board/gen3_starterkit/config/sw/h3")
-        sw.print_msg_update()
-        sw.print_msg_normal()
-    elif (sys.argv[1] == "map"):
-        #
-        # addr_map
-        #
-        map = addr_map(b.top() + "board/gen3_starterkit/config/rom/yocto/map01/h3_4g")
-
-        print("addr      save    srec")
-        for i in range(map.len()):
-            print("{}  {}  {}".format(map[i]["addr"], map[i]["save"], map[i]["srec"]))
-
-        print("addr      save    srec")
-        for m in map:
-            print("{}  {}  {}".format(m["addr"], m["save"], m["srec"]))

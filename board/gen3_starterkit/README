@@ -2,75 +2,15 @@
 
    Renesas StarterKit (H3/M3/M3N) BSP ROM Writer
 
-2021/09/02	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+2025/07/10	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 =============================================
 
--------------------------------
-* What is Renesas StarterKit ?
--------------------------------
+R-Car Gen3 support was removed.
+You can use it by using 1.0.0.
 
-	See here, and search "R-Car Starter Kit"
+	> git checkout 1.0.0
+or
+	Download ZIP from
 
-		https://elinux.org/R-Car
-
--------------------------------
-* How to get ROM ?
--------------------------------
-
-	You have some informations / helpers
-
-**  elinux
-
-	https://elinux.org/R-Car/Boards/H3SK#Quick_Start_How_To
-	https://elinux.org/R-Car/Boards/M3SK#Quick_Start_How_To
-	https://elinux.org/R-Car/Boards/M3NSK#Quick_Start_How_To
-
-**  Yocto Maker
-
-	https://github.com/morimoto/renesas-yocto-maker
-	https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
-
-**  Android Maker
-	https://github.com/morimoto/renesas-android-maker
-	https://gitlab.com/morimoto.kuninori/renesas-android-maker
-
--------------------------------
-* R-Car H3 WS1.x Boards is not supported
--------------------------------
-
-	Please check your board at
-
-		https://elinux.org/R-Car/Boards/H3SK#Hardware
-
--------------------------------
-* Known Issue
--------------------------------
-
-	renesas-bsp-rom-writer doesn't work correctly
-	if USB cable is connected through USB Hub.
-
-		NG: Host PC <--> USB Hub <--> StarterKit
-		OK: Host PC <---------------> StarterKit
-
--------------------------------
-* Serial connection
--------------------------------
-
-**  for Yocto BSP
-
-	[Host PC] <--> [StarterKit CN12] (/dev/ttyUSBx)
-
-**  for Android
-
-	[Host PC] <--> [StarterKit CN12] (/dev/ttyUSBx)
-	[Host PC] <--> [Kingfisher CN13] (ADB)
-
--------------------------------
-* How to use ?
--------------------------------
-
-	linux/README
-	windows/README
-
-	It needs Mot file if you want use mot mode.
-	See more detail on each README
+		https://github.com/morimoto/renesas-bsp-rom-writer
+		https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer

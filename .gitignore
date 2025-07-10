@@ -1,5 +1,1 @@
 /script/python/__pycache__
-/script/flash_writer
-/script/gcc-*
-/board/gen3_starterkit/*.mot
-/board/gen3_salvator/*.mot

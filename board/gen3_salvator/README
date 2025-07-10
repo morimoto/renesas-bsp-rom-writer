@@ -2,79 +2,15 @@
 
    Renesas Salvator-XS (H3/M3/M3N) BSP ROM Writer
 
-2021/10/19	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+2025/07/10	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 =============================================
 
--------------------------------
-* What is Renesas Salvator-XS ?
--------------------------------
+R-Car Gen3 support was removed.
+You can use it by using 1.0.0.
 
-	See here
-		https://elinux.org/R-Car/Boards/Salvator-XS
+	> git checkout 1.0.0
+or
+	Download ZIP from
 
-	[Note]
-	Salvator-X is not supported
-	        ^^^
-
--------------------------------
-* How to get ROM ?
--------------------------------
-
-	You have some informations / helpers
-
-**  Quick Start Guide
-
-	see "RENESAS_RCHxxx_YoctoStartupGuide_UME_vxxx.pdf"
-	3. Building Instructions
-
-**  Yocto Maker
-
-	https://github.com/morimoto/renesas-yocto-maker
-	https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
-
-**  Android Maker
-	https://github.com/morimoto/renesas-android-maker
-	https://gitlab.com/morimoto.kuninori/renesas-android-maker
-
--------------------------------
-* Known Issue
--------------------------------
-
-	renesas-bsp-rom-writer doesn't work correctly
-	if USB cable is connected through USB Hub.
-
-		NG: Host PC <--> USB Hub <--> Salvator-XS
-		OK: Host PC <---------------> Salvator-XS
-
--------------------------------
-* Serial connection
--------------------------------
-
-**  for Yocto BSP
-
-	[Host PC] <--> [Salvator-XS CN25] (/dev/ttyUSBx)
-
-**  for Android
-
-	[Host PC] <--> [Salvator-XS CN25] (/dev/ttyUSBx)
-	[Host PC] <--> [Salvator-XS CN9]  (ADB)
-
--------------------------------
-* How to know my board is 4Gbyte or 8Gbyte ?
--------------------------------
-
-	Unfortunately, the only way to know your board is 4Gbyte or 8Gbyte
-	is that depends on how you got it.
-
-	Alternatively, write 4Gbyte bootloader (small one) fist,
-	run and check Memory Size.
-
--------------------------------
-* How to use ?
--------------------------------
-
-	linux/README
-	windows/README
-
-	It needs Mot file if you want use mot mode.
-	See more detail on each README
+		https://github.com/morimoto/renesas-bsp-rom-writer
+		https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer

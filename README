@@ -17,10 +17,20 @@
 * Note
 -------------------------------
 
+** Un Official Tool
+
 	This is *Un Official* Tool.
 	        ^^^^^^^^^^^^^^^^^^^
 	Contributor never take responsibility even though some issue happen.
 	            ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+** Un-Supported
+
+	R-Car Gen3 Salvator
+	R-Car StarterKit
+
+		These are no longer supported.
+		Go back to v1.0.0 to use it.
 
 -------------------------------
 * How to use ?
