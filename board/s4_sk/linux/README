@@ -21,9 +21,7 @@
 -------------------------------
 **  [step1] connect Serial between PC and S4SK
 
-	see
-		[Serial connection]
-		${renesas-bsp-rom-writer}/board/s4_sk/README
+	[Host PC] <--> [board CN13] (/dev/ttyUSBx)
 
 **  [step2] prepare ROM
 

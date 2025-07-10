@@ -33,9 +33,7 @@
 -------------------------------
 **  [step1] connect Serial between PC and Draak
 
-	see
-		[Serial connection]
-		${renesas-bsp-rom-writer}/board/d3_draak/README
+	[Host PC] <--> [board CN25] (/dev/ttyUSBx)
 
 **  [step2] prepare ROM
 

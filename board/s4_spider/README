@@ -57,17 +57,11 @@
 	 - R-Car_S4_SDK_start_up_guide_content_v3.11.0/R-CarS4_SDK_StartupGuide_3_11_0/teratermmacro/Flash_Bootloader_S4.ttl
 
 -------------------------------
-* Serial connection
--------------------------------
-
-	[Host PC] <--> [board CN21] (/dev/ttyUSBx)
-
--------------------------------
 * How to use ?
 -------------------------------
 
 	linux/README
-	windows/README
+	windows/How_to_update.txt
 
 -------------------------------
 * It will be hung up :(

@@ -29,16 +29,8 @@
 	https://gitlab.com/morimoto.kuninori/renesas-yocto-maker
 
 -------------------------------
-* Serial connection
--------------------------------
-
-**  for Yocto BSP
-
-	[Host PC] <--> [board CN25] (/dev/ttyUSBx)
-
--------------------------------
 * How to use ?
 -------------------------------
 
 	linux/README
-	windows/README
+	windows/How_to_update.txt

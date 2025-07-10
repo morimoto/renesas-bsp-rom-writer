@@ -19,14 +19,8 @@
 	[Renesas appointed store Sales team]
 
 -------------------------------
-* Serial connection
--------------------------------
-
-	[Host PC] <--> [board CN10] (/dev/ttyUSBx)
-
--------------------------------
 * How to use ?
 -------------------------------
 
 	linux/README
-	windows/README
+	windows/How_to_update.txt

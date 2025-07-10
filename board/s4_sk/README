@@ -44,12 +44,6 @@
 	 - xOS3_SDK1_Linux_ReferenceSDK1_v3.16.0_release/rcar-xos/v3.16.0/os/bootloader/s4/s4sk/
 
 -------------------------------
-* Serial connection
--------------------------------
-
-	[Host PC] <--> [board CN13] (/dev/ttyUSBx)
-
--------------------------------
 * How to know the Ether Mac address
 -------------------------------
 
@@ -68,4 +62,4 @@
 -------------------------------
 
 	linux/README
-	windows/README
+	windows/How_to_update.txt

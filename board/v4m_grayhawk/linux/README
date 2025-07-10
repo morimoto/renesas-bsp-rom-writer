@@ -21,9 +21,7 @@
 -------------------------------
 **  [step1] connect Serial between PC and Board
 
-	see
-		[Serial connection]
-		${renesas-bsp-rom-writer}/board/v4m_grayhawk/README
+	[Host PC] <--> [board CN10] (/dev/ttyUSBx)
 
 **  [step2] prepare ROM
 

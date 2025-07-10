@@ -21,9 +21,7 @@
 -------------------------------
 **  [step1] connect Serial between PC and Condor
 
-	see
-		[Serial connection]
-		${renesas-bsp-rom-writer}/board/v3h_condor/README
+	[Host PC] <--> [board CN11] (/dev/ttyUSBx)
 
 **  [step2] prepare ROM
 

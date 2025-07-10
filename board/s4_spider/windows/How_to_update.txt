@@ -1,0 +1,92 @@
+============== -*- outline -*- ==============
+
+   Renesas S4 Spider BSP ROM Writer
+   for Windows/TeraTerm
+
+2025/07/10	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+**  TeraTerm
+
+	You need "TeraTerm". See here and get it
+
+		https://ttssh2.osdn.jp/index.html.ja
+		https://ttssh2.osdn.jp/index.html.en
+
+-------------------------------
+* How to update ?
+-------------------------------
+**  Prepare ROM
+
+	see
+		[How to get ROM]
+		${renesas-bsp-rom-writer}/board/${BOARD}/README
+
+**  Connect Serial between PC and Board
+
+	[Host PC] <--> [board CN21]
+
+**  Setup Board Switch
+
+	1 : ON
+	0 : OFF
+
+	       1 2 3 4 5 6 7 8
+	SW1 : [1]
+	SW2 : [Center]
+	SW8 : [0 0 0 0 0 1 0 0]
+
+**  Start TeraTerm
+
+	+---------------------------------------+
+	|                                      X|
+	| ( ) TCP/IP ...                        |
+	| ...                                   |
+	| (o) Serial(E)  Port(R): [COMx: xxxx]  |
+	+---------------------------------------+
+
+**  Setup Serial Baudrate
+
+	[Menu] -> [Setting] -> [Serial Port]
+
+	+------------------------+
+	|                       X|
+	| ...                    |
+	| Speed(E) [1843200]     |
+	| ...                    |
+	+------------------------+
+
+**  Board Power ON
+
+	Board Power ON
+	It will indicate below and waiting
+
+		>
+
+**  Start Macro
+
+	[Menu] -> [Control] -> [Macro]
+
+	Select .ttl file on SDK folder
+
+**  Wait finish
+
+	It takes long time.
+	When it finish, it will indicate below, and no more working.
+
+		>
+
+**  Board Power OFF
+
+	Board Power OFF
+
+**  Setup Board Switch
+
+	1 : ON
+	0 : OFF
+
+	       1 2 3 4 5 6 7 8
+	SW8 : [1 1 0 1 0 1 0 0]
+

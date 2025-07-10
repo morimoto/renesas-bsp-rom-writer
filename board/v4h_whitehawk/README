@@ -29,14 +29,8 @@
 		rcar-xos/v{version}/os/bootloader/v4h2
 
 -------------------------------
-* Serial connection
--------------------------------
-
-	[Host PC] <--> [board CN10] (/dev/ttyUSBx)
-
--------------------------------
 * How to use ?
 -------------------------------
 
 	linux/README
-	windows/README
+	windows/How_to_update.txt

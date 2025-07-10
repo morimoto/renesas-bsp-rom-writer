@@ -21,9 +21,7 @@
 -------------------------------
 **  [step1] connect Serial between PC and Spider
 
-	see
-		[Serial connection]
-		${renesas-bsp-rom-writer}/board/s4_spider/README
+	[Host PC] <--> [board CN21] (/dev/ttyUSBx)
 
 **  [step2] prepare ROM
 
