@@ -1,0 +1,37 @@
+============== -*- outline -*- ==============
+
+   Renesas X5H Ironhide BSP ROM Writer
+
+2025/07/08	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+
+-------------------------------
+* Where is Renesas X5H Ironhide official page ?
+-------------------------------
+
+	R-Car X5H Ironhide Board
+
+	English
+		TBD
+
+	Japanese
+		TBD
+
+-------------------------------
+* How to get ROM ?
+-------------------------------
+
+** Download SDK
+
+	Japanese
+		TBD
+
+	English
+		TBD
+
+-------------------------------
+* How to use ?
+-------------------------------
+
+	linux/README
+	windows/How_to_update.txt

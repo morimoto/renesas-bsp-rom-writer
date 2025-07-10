@@ -1,0 +1,91 @@
+============== -*- outline -*- ==============
+
+   Renesas X5H Ironhide ROM Writer
+   for Windows/TeraTerm
+
+2025/07/10	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+**  TeraTerm
+
+	You need "TeraTerm". See here and get it
+
+		https://ttssh2.osdn.jp/index.html.ja
+		https://ttssh2.osdn.jp/index.html.en
+
+-------------------------------
+* How to update ?
+-------------------------------
+**  Prepare ROM
+
+	see
+		[How to get ROM]
+		${renesas-bsp-rom-writer}/board/${BOARD}/README
+
+**  Connect Serial between PC and Board
+
+	[Host PC] <--> [board CN44]
+
+**  Setup Board Switch
+
+	1 : ON
+	0 : OFF
+	- : no change
+
+	        1 2 3 4 5 6 7 8
+	SW43 : [1 - 1 - - - - -]
+
+**  Start TeraTerm
+
+	+---------------------------------------+
+	|                                      X|
+	| ( ) TCP/IP ...                        |
+	| ...                                   |
+	| (o) Serial(E)  Port(R): [COMx: xxxx]  |
+	+---------------------------------------+
+
+**  Setup Serial Baudrate
+
+	[Menu] -> [Setting] -> [Serial Port]
+
+	+------------------------+
+	|                       X|
+	| ...                    |
+	| Speed(E) [1843200]     |
+	| ...                    |
+	+------------------------+
+
+**  Board Power ON
+
+	Board Power ON
+	It will indicate below and waiting
+
+		> please send !
+
+**  Start Macro
+
+	[Menu] -> [Control] -> [Macro]
+
+	Select .ttl file on SDK folder
+
+**  Wait finish
+
+	It takes long time.
+	When it finish, it will indicate below, and no more working.
+
+		> W N:>
+
+**  Board Power OFF
+
+	Board Power OFF
+
+**  Setup Board Switch
+
+	1 : ON
+	0 : OFF
+	- : no change
+
+	        1 2 3 4 5 6 7 8
+	SW43 : [0 - 0 - - - - -]

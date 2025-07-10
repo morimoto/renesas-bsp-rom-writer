@@ -970,6 +970,45 @@ class guide(base):
 
             self.expect("EM_W Complete!")
 
+    #--------------------
+    # iron_type_main_loop
+    #--------------------
+    def iron_type_main_loop(self):
+
+        ask = self.ask_loop()
+
+        for map in self.board().addr_map():
+            if ("ignore" == self.board().config_read(map["srec"])):
+                self.msg("config file indicates ignore {}".format(map["srec"]))
+                continue
+
+            if (ask):
+                self.msg("Do you update this ?\n" +\
+                          map["srec"] + " (" + map["addr"] + " : " + map["save"] + ")")
+                if (not self.ask_yn()):
+                    continue
+
+            time.sleep(0.2)
+            self.send()
+
+            self.expect("W N:>")
+            time.sleep(0.2)
+            self.send("hyper_write_srec")
+
+            self.expect("W N:  Input data : 0x")
+            time.sleep(0.4)
+            self.send(map["addr"])
+
+            self.expect("W N:  Input data : 0x")
+            time.sleep(0.4)
+            self.send(map["save"])
+
+            self.expect("please send ! (Motorola S-record)")
+            time.sleep(0.4)
+            self.send_file("{}/{}".format(self.cwd(), map["srec"]))
+
+            self.expect("W N:Command success.")
+
 #====================================
 #
 # As command

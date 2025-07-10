@@ -1,0 +1,58 @@
+============== -*- outline -*- ==============
+
+   Renesas X5H Ironhide ROM Writer
+   for Linux
+
+2025/07/09	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+
+**  Necessary Tools
+
+	You can install necessary tools by tool_install.xxx.
+	If you are using Ubuntu, you can run.
+
+		> ${renesas-bsp-rom-writer}/script/tool_install.ubuntu
+
+-------------------------------
+* How to use ?
+-------------------------------
+**  Prepare ROM
+
+	see
+		[How to get ROM]
+		${renesas-bsp-rom-writer}/board/${BOARD}/README
+
+**  Connect Serial between PC and Board
+
+	[Host PC] <--> [board CN44] (/dev/ttyUSBx)
+
+**  cd ${ROM_dir}
+
+	You need to go to ${ROM_dir} first.
+
+		> cd ${ROM_dir}
+		> ls
+			/* Linux BSP ROMs */
+
+**  Call ROM_writer
+
+	You can call ROM_writer from ${ROM_dir}.
+
+		> pwd
+			/* ${ROM_dir} */
+		> ls
+			/* Linux BSP ROMs */
+		> ${renesas-bsp-rom-writer}/board/${BOARD}/linux/sdk_writer
+
+	It will ask you many things, and try to write ROM to board.
+
+**  [option] Edit config
+
+	It will create config file (.renesas_bsp_rom_writer.${BOARD}) on ${ROM_dir}
+	(if you have answered questions, and confirmed the settings).
+	It will load this config file if you re-try to use ROM writer again.
+	You can edit it and skip interactive setup if you want (optional).
+	see ${renesas-bsp-rom-writer}/README for detail.
