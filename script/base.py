@@ -377,7 +377,6 @@ class board(base):
         return "{}board/{}/{}".format(dir, self.__board, path)
     def dir_config(self, path="", full=1):	return self.dir_board("config/" + path, full)
     def dir_config_rom(self, path="", full=1):	return self.dir_config("rom/{}/{}".format(self.__rom, path), full)
-    def dir_config_sw(self, path="", full=1):	return self.dir_config("sw/" + path, full)
 
     #--------------------
     # config_xxx
