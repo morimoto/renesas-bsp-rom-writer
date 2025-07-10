@@ -7,4 +7,4 @@
 #===============================
 SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script
 
-${SCRIPT}/e3_ebisu.py yocto
+${SCRIPT}/e3_ebisu.py e3_ebisu yocto

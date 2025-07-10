@@ -18,9 +18,9 @@ class board(base.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, soc="", ver="", tty=""):
+    def __init__(self, board, soc="", ver="", tty=""):
 
-        self.init(soc=soc, rom="yocto", ver=ver, tty=tty)
+        self.init(soc=soc, rom="yocto", ver=ver, tty=tty, board=board)
 
 #====================================
 #
@@ -67,11 +67,12 @@ class rom_write_guide(base.guide):
 #
 #====================================
 if __name__=='__main__':
+    board_name = sys.argv[1]
     if (len(sys.argv) < 2):
         # test
         board(soc="ebisu_4d", ver="5.9.0", tty="/dev/ttyUSB0")
         sys.exit(0)
-    if (sys.argv[1] == "yocto"):
-        rom_write_guide().guide_start(board())
+    if (sys.argv[2] == "yocto"):
+        rom_write_guide().guide_start(board(board_name))
     else:
         print("unknown command")

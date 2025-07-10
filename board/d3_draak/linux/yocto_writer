@@ -7,4 +7,5 @@
 #===============================
 SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script
 
-${SCRIPT}/d3_draak.py yocto
+# reuse ebisu
+${SCRIPT}/e3_ebisu.py d3_draak yocto
