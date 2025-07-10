@@ -36,7 +36,7 @@ class board(base.board):
     #--------------------
     def init_with_mot(self, soc, rom, ver, tty, baudrate=115200, board=None):
 
-        self.init(soc=soc, rom=rom, ver=ver, tty=tty, baudrate=baudrate, board=board)
+        self.init(soc=soc, rom=rom, ver=ver, tty=tty, mode="mot", baudrate=baudrate, board=board)
 
         self.confirm_location()
         self.config_load()
@@ -80,7 +80,6 @@ class rom_write_guide(base.guide):
 
         # chech mot file
         mot_file = self.board().mot_file()
-        self.board().check_mot(mot_file)
 
         # power off
         self.power("OFF")

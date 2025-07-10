@@ -65,7 +65,6 @@ class rom_write_guide(base.guide):
 
         # chech mot file
         mot_file = self.board().mot_file()
-        self.board().check_mot(mot_file)
 
         # power off
         self.power("OFF")
