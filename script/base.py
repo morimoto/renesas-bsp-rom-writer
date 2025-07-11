@@ -221,12 +221,18 @@ class map:
         # addr_map:"040000,bl2-salvator-x.srec"
         # addr_map:...
         #
+
+        #
+        # srec file not exist if ["addr"] was None
+        #
         self.__map = []
         b = base()
         map = b.ttm_array(file, map_name)
         for m in map:
             am = m.split(',')
-            addr = b.run("head -n 2 {}/{} | tail -n 1 | cut -c5-12".format(b.cwd(), am[1]))
+            addr = None
+            if (os.path.exists("{}/{}".format(b.cwd(), am[1]))):
+                addr = b.run("head -n 2 {}/{} | tail -n 1 | cut -c5-12".format(b.cwd(), am[1]))
             self.__map.append({"addr":addr,
                                "save":am[0],
                                "srec":am[1]})
@@ -322,7 +328,6 @@ class board(base):
 
         self.confirm_info()
         self.config_save()
-        self.check_files()
 
     #--------------------
     # mot_file
@@ -471,6 +476,17 @@ class board(base):
         self.__addr_map = addr_map(self.__map)
         self.__emmc_map = emmc_map(self.__map)
 
+        err = ""
+        for m in self.addr_map():
+            if (not m["addr"]):
+                err += "  {}\n".format(m["srec"])
+        for m in self.emmc_map():
+            if (not m["addr"]):
+                err += "  {}\n".format(m["srec"])
+
+        if (len(err)):
+            self.error("These files are required, but not found.\n\n" + err)
+
     #--------------------
     # select_tty (default)
     #--------------------
@@ -560,15 +576,19 @@ class board(base):
         # add more mode here
         if (self.mot_file()): mode_list.append("mot")
 
-        if (self.__mode in mode_list):
-            return
+        if (not self.__mode in mode_list):
+            if (len(mode_list) <= 1):
+                self.__mode = mode_list[0]
+            else:
+                self.__mode = self.select("You can select ROM writer mode.\n\n" +\
+                                          self.mode_explanation(), mode_list)
+                print()
 
-        if (len(mode_list) <= 1):
-            self.__mode = mode_list[0]
-        else:
-            self.__mode = self.select("You can select ROM writer mode.\n\n" +\
-                                      self.mode_explanation(), mode_list)
-            print()
+        if (self.mode() == "mot"):
+            mot_file = self.mot_file()
+            if (not mot_file or
+                not os.path.exists(mot_file)):
+                self.mot_error()
 
     #--------------------
     # print_info
@@ -630,47 +650,6 @@ class board(base):
             if (self.__mac  is not None): self.__mac  = ""
             if (self.__mode is not None): self.__mode = ""
             self.setup()
-
-    #--------------------
-    # check_srec
-    #--------------------
-    def __check_srec(self):
-        if (not self.addr_map()): return
-
-        err = ""
-        for m in self.addr_map():
-            if (not os.path.exists("{}/{}".format(self.cwd(), m["srec"]))):
-                err += "  {}\n".format(m["srec"])
-        for m in self.emmc_map():
-            if (not os.path.exists("{}/{}".format(self.cwd(), m["srec"]))):
-                err += "  {}\n".format(m["srec"])
-
-        if (len(err)):
-            self.error("These files are required, but not found.\n\n" +
-                       err + "\n" +
-                       "Please goto binary dir and retry this command.\n" +
-                       "You can reuse setting if you want.\n\n" +
-                       "	> mv ./{} ${{binary_dir}}\n".format(self.__config) +
-                       "	> cd ${binary_dir}\n"
-                       "	> ${renesas-bsp-rom-writer}/xxx # retry\n")
-
-    #--------------------
-    # check_mot
-    #--------------------
-    def check_mot(self, mot_file):
-        if (not mot_file): return
-
-        if (not os.path.exists(mot_file)):
-            self.mot_error()
-
-    #--------------------
-    # check_files
-    #--------------------
-    def check_files(self):
-        self.__check_srec()
-
-        if (self.mode() == "mot"):
-            self.check_mot(self.mot_file())
 
 #====================================
 #
