@@ -866,20 +866,27 @@ class guide(base):
         return list.index(self.select("You can select update style", list))
 
     #--------------------
+    # skip_run
+    #--------------------
+    def skip_run(self, map, ask):
+        if ("ignore" == self.board().config_read(map["srec"])):
+            self.msg("config file indicates ignore {}".format(map["srec"]))
+            return True
+
+        if (ask):
+            self.msg("Do you update this ?\n" +\
+                     map["srec"] + " (" + map["addr"] + " : " + map["save"] + ")")
+            if (not self.ask_yn()):
+                return True
+
+    #--------------------
     # sk_type_send
     #--------------------
     def sk_type_main_loop(self, select, yes_loop, ask):
 
         for map in self.board().addr_map():
-            if ("ignore" == self.board().config_read(map["srec"])):
-                self.msg("config file indicates ignore {}".format(map["srec"]))
+            if (self.skip_run(map, ask)):
                 continue
-
-            if (ask):
-                self.msg("Do you update this ?\n" +\
-                          map["srec"] + " (" + map["addr"] + " : " + map["save"] + ")")
-                if (not self.ask_yn()):
-                    continue
 
             self.send()
             self.expect(">")
@@ -913,15 +920,8 @@ class guide(base):
     def wh_type_emmc_loop(self, select, yes_loop, ask):
 
         for map in self.board().emmc_map():
-            if ("ignore" == self.board().config_read(map["srec"])):
-                self.msg("config file indicates ignore {}".format(map["srec"]))
+            if (self.skip_run(map, ask)):
                 continue
-
-            if (ask):
-                self.msg("Do you update this ?\n" +\
-                          map["srec"] + " (" + map["addr"] + " : " + map["save"] + ")")
-                if (not self.ask_yn()):
-                    continue
 
             self.send()
             self.expect(">")
@@ -954,15 +954,8 @@ class guide(base):
         ask = self.ask_loop()
 
         for map in self.board().addr_map():
-            if ("ignore" == self.board().config_read(map["srec"])):
-                self.msg("config file indicates ignore {}".format(map["srec"]))
+            if (self.skip_run(map, ask)):
                 continue
-
-            if (ask):
-                self.msg("Do you update this ?\n" +\
-                          map["srec"] + " (" + map["addr"] + " : " + map["save"] + ")")
-                if (not self.ask_yn()):
-                    continue
 
             time.sleep(0.2)
             self.send()
