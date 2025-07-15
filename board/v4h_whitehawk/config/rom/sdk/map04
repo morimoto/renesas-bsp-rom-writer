@@ -1,0 +1,12 @@
+addr_map:"0000000,bootparam_sa0.srec"
+addr_map:"0040000,icumx_loader_tee.srec"
+addr_map:"0240000,cert_header_sa9.srec"
+addr_map:"0280000,dummy_fw.srec"
+addr_map:"0480000,cr52_loader_ecc_off_tee.srec"
+
+emmc_map:"0000000,dummy_rtos.srec"
+emmc_map:"000a000,bl31-whitehawk.srec"
+emmc_map:"000ac00,u-boot-elf-whitehawk.srec"
+emmc_map:"000a400,tee-whitehawk.srec"
+
+mot_file:"ICUMX_Flash_writer_SCIF_DUMMY_CERT_EB203000_V4H.mot"
