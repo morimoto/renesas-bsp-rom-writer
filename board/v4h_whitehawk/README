@@ -24,9 +24,28 @@
 	Please Contact to [Renesas Sales team] or
 	[Renesas appointed store Sales team]
 
-	If you get the SDK, you can find the image at
+-------------------------------
+* Where is ROM / TeraTerm macro ?
+-------------------------------
 
-		rcar-xos/v{version}/os/bootloader/v4h2
+** ROM
+	You need to get "sdk1" package for ROM
+
+		rcar-xos_platform-sdk1_v3.37.0_release.tar.gz
+
+	You can find ROM at
+
+		rcar-xos/${VERSION}/os/bootloader/${BOARD}
+
+** TeraTerm macro
+
+	You need to get "StartupGuide" package for TeraTerm macro
+
+		R-CarV4H_V4M_V3H_V3M_SDK_StartupGuide_${VERSION}.zip
+
+	You can find TeraTerm macro at
+
+		R-CarV4H_V4M_V3H_V3M_SDK_StartupGuide_${VERSION}/teratermmacro/
 
 -------------------------------
 * How to use ?
