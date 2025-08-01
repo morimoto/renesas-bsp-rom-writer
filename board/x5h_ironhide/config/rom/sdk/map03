@@ -1,0 +1,12 @@
+addr_map:"00000000,dummy_cert_for_flash.srec"
+addr_map:"00040000,1st_ipl_rsip_m.srec"
+addr_map:"004C0000,App_SCP_X5H_Sample.srec"
+addr_map:"007C0000,2nd_ipl_rt_core_cluster2_core0.srec"
+
+ufs_map:"02800000,test_bare_metal_rt_core_cluster0_core0.srec"
+ufs_map:"01A00000,test_bare_metal_rt_core_cluster1_core0.srec"
+ufs_map:"02680000,u-boot-elf-ironhide.srec"
+ufs_map:"02400000,bl31-ironhide.srec"
+ufs_map:"02480000,tee-ironhide.srec"
+
+mot_file:"flash_writer_rsip_m_scif_download.srec"

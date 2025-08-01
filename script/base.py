@@ -467,7 +467,7 @@ class board(base):
         else:
             self.__map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
 
-        for name in ["addr_map", "emmc_map"]:
+        for name in ["addr_map", "emmc_map", "ufs_map"]:
             map = config_map(self.__map, name)
             if (map.len()):
                 self.__addr_map[name] = map
@@ -942,11 +942,9 @@ class guide(base):
     #--------------------
     # iron_type_main_loop
     #--------------------
-    def iron_type_main_loop(self):
+    def iron_type_main_loop(self, ask, map, cmd):
 
-        ask = self.ask_loop()
-
-        for map in self.board().addr_map("addr_map"):
+        for map in self.board().addr_map(map):
             if (self.skip_run(map, ask)):
                 continue
 
@@ -955,7 +953,7 @@ class guide(base):
 
             self.expect("W N:>")
             time.sleep(0.2)
-            self.send("hyper_write_srec")
+            self.send(cmd)
 
             self.expect("W N:  Input data : 0x")
             time.sleep(0.4)
