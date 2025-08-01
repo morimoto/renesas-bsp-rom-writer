@@ -53,12 +53,6 @@ class board(base.board):
 class rom_write_guide(base.guide):
 
     #--------------------
-    # __init__
-    #--------------------
-    def __init__(self, board):
-        super().__init__(board)
-
-    #--------------------
     # main_loop
     #--------------------
     def main_loop(self):
@@ -67,7 +61,9 @@ class rom_write_guide(base.guide):
     #--------------------
     # guide_start
     #--------------------
-    def guide_start(self):
+    def guide_start(self, board):
+        self.init(board)
+
         sw = base.switch(self.board().dir_config("config"))
 
         # chech mot file
@@ -113,6 +109,6 @@ if __name__=='__main__':
         # test
         board(ver="3.3.0", tty="/dev/ttyUSB0")
     elif (sys.argv[1] == "sdk"):
-        rom_write_guide(board()).guide_start()
+        rom_write_guide().guide_start(board())
     else:
         print("unknown command")
