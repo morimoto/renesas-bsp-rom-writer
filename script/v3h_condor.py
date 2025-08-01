@@ -43,7 +43,7 @@ class board(base.board):
     #--------------------
     def __init__(self, ver="", tty=""):
 
-        self.gen4_init("v4h2", "sdk", ver, tty)
+        self.init_with_mot("v4h2", "sdk", ver, tty)
 
 #====================================
 #
