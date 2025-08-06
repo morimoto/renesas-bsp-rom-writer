@@ -611,7 +611,7 @@ class board(base):
         text += "\nYou can manually setup if you want\n" +\
                 "   > vi ./{}\n".format(self.__config)
 
-        text += "\nAddr      Save    Srec\n"
+        text += "\nAddr      Save      Srec\n"
         for m in self.addr_map():
             text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
 
