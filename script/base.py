@@ -915,7 +915,7 @@ class guide(base):
             self.expect(">")
 
     #--------------------
-    # wh_type_emmc_main_loop
+    # wh_type_emmc_loop
     #--------------------
     def wh_type_emmc_loop(self, select, yes_loop, ask):
 
