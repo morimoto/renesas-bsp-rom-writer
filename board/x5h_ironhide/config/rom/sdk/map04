@@ -1,0 +1,16 @@
+addr_map:"00000000,1st_ipl_normal_boot_certificate_a_b.srec"
+addr_map:"00040000,1st_ipl_rsip_m.srec"
+addr_map:"00440000,images_normal_boot_certificate_a.srec"
+addr_map:"004C0000,App_SCP_X5H_Sample.srec"
+addr_map:"007C0000,2nd_ipl_rt_core_cluster2_core0.srec"
+
+ufs_map:"00E00000,test_bare_metal_rt_core_cluster0_core0.srec"
+ufs_map:"01D00000,test_bare_metal_rt_core_cluster0_core1.srec"
+ufs_map:"02E00000,test_bare_metal_rt_core_cluster1_core0.srec"
+ufs_map:"07200000,u-boot-elf-ironhide.srec"
+ufs_map:"05200000,tee-ironhide.srec"
+ufs_map:"05000000,bl31-ironhide.srec"
+ufs_map:"07300000,X5H_NPU0_FW.srec"
+ufs_map:"08000000,X5H_NPU1_FW.srec"
+
+mot_file:"flash_writer_rsip_m_scif_download.srec"
