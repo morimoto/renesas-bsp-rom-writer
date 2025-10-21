@@ -205,10 +205,10 @@ class switch(base):
 
 #====================================
 #
-# map
+# config_map
 #
 #====================================
-class map:
+class config_map:
 
     #--------------------
     # __init__
@@ -268,26 +268,6 @@ class map:
         return len(self.__map)
 
 #====================================
-# addr_map
-#====================================
-class addr_map(map):
-    #--------------------
-    # __init__
-    #--------------------
-    def __init__(self, file):
-        super().__init__(file, "addr_map")
-
-#====================================
-# emmc_map
-#====================================
-class emmc_map(map):
-    #--------------------
-    # __init__
-    #--------------------
-    def __init__(self, file):
-        super().__init__(file, "emmc_map")
-
-#====================================
 #
 # board
 #
@@ -318,8 +298,7 @@ class board(base):
 
         # for inside
         self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board)
-        self.__addr_map	= None
-        self.__emmc_map	= None
+        self.__addr_map	= {}
         self.__map	= None
 
         self.confirm_location()
@@ -344,8 +323,6 @@ class board(base):
     # board
     # tty
     # soc
-    # addr_map
-    # emmc_map
     # mac
     # baudrate
     #--------------------
@@ -355,10 +332,27 @@ class board(base):
     def soc(self):	return self.__soc
     def rom(self):	return self.__rom
     def map(self):	return self.__map
-    def addr_map(self):	return self.__addr_map
-    def emmc_map(self):	return self.__emmc_map
     def mac(self):	return self.__mac
     def baudrate(self):	return self.__baudrate
+
+    #--------------------
+    # addr_map
+    #
+    # addr_map()
+    #	= "addr_map":{["addr": ..., "save":..., "srec":...],...}
+    #	  "emmc_map":{["addr": ..., "save":..., "srec":...],...}
+    #
+    # addr_map("addr_map")
+    #	= {["addr": ..., "save":..., "srec":...],...}
+    #--------------------
+    def addr_map(self, name=None):
+        if (name):
+            if (name in self.__addr_map):
+                return self.__addr_map[name]
+            else:
+                return {}
+        else:
+            return self.__addr_map
 
     #--------------------
     # soc_ws : h3_4g
@@ -473,16 +467,16 @@ class board(base):
         else:
             self.__map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
 
-        self.__addr_map = addr_map(self.__map)
-        self.__emmc_map = emmc_map(self.__map)
+        for name in ["addr_map", "emmc_map"]:
+            map = config_map(self.__map, name)
+            if (map.len()):
+                self.__addr_map[name] = map
 
         err = ""
-        for m in self.addr_map():
-            if (not m["addr"]):
-                err += "  {}\n".format(m["srec"])
-        for m in self.emmc_map():
-            if (not m["addr"]):
-                err += "  {}\n".format(m["srec"])
+        for key, map in self.addr_map().items():
+            for m in map:
+                if (not m["addr"]):
+                    err += "  {}\n".format(m["srec"])
 
         if (len(err)):
             self.error("These files are required, but not found.\n\n" + err)
@@ -611,12 +605,11 @@ class board(base):
         text += "\nYou can manually setup if you want\n" +\
                 "   > vi ./{}\n".format(self.__config)
 
-        text += "\nAddr      Save      Srec\n"
-        for m in self.addr_map():
-            text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
-
-        for m in self.emmc_map():
-            text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
+        for name in self.addr_map().keys():
+            text += "\n[{}]\n".format(name)
+            text += "Addr      Save    Srec\n"
+            for m in self.addr_map(name):
+                text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
 
         self.msg(text)
 
@@ -884,7 +877,7 @@ class guide(base):
     #--------------------
     def sk_type_main_loop(self, select, yes_loop, ask):
 
-        for map in self.board().addr_map():
+        for map in self.board().addr_map("addr_map"):
             if (self.skip_run(map, ask)):
                 continue
 
@@ -919,7 +912,7 @@ class guide(base):
     #--------------------
     def wh_type_emmc_loop(self, select, yes_loop, ask):
 
-        for map in self.board().emmc_map():
+        for map in self.board().addr_map("emmc_map"):
             if (self.skip_run(map, ask)):
                 continue
 
@@ -953,7 +946,7 @@ class guide(base):
 
         ask = self.ask_loop()
 
-        for map in self.board().addr_map():
+        for map in self.board().addr_map("addr_map"):
             if (self.skip_run(map, ask)):
                 continue
 
