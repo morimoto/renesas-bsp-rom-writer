@@ -50,7 +50,7 @@ class rom_write_guide(base.guide):
         self.power("ON")
         self.expect("please send !")
         self.send_file(mot_file)
-        self.expect("W N:>")
+        self.expect(" N:>")
 
         ask = self.ask_loop()
         self.iron_type_main_loop(ask, "addr_map", "hyper_write_srec")
