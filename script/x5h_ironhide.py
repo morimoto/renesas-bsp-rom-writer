@@ -41,13 +41,16 @@ class rom_write_guide(base.guide):
 
         # power off
         self.power("OFF")
-        self.ask_yn()
+        if not self.auto_power_off():
+            self.ask_yn()
 
         # indicate dip-switch update mode
         sw.print_msg_update()
-        self.ask_yn()
+        if not self.auto_config_flash():
+            self.ask_yn()
 
         self.power("ON")
+        self.auto_power_on()
         self.expect("please send !")
         self.send_file(mot_file)
         self.expect(" N:>")
@@ -58,11 +61,13 @@ class rom_write_guide(base.guide):
 
         # power off
         self.power("OFF")
-        self.ask_yn()
+        if not self.auto_power_off():
+            self.ask_yn()
 
         # indicate dip-switch normal mode
         sw.print_msg_normal()
-        self.ask_yn()
+        if not self.auto_config_boot():
+            self.ask_yn()
 
         self.msg("finished !!")
 
