@@ -40,14 +40,25 @@ class rom_write_guide(base.guide):
         mot_file = board.mot_file()
 
         # make sure board is power off
-        self.print_msg_power("OFF")
-        self.ask_yn()
+        if (board.auto_cmd_is_supported()):
+            board.auto_cmd("off")
+        else:
+            self.print_msg_power("OFF")
+            self.ask_yn()
 
         # indicate dip-switch update mode
-        sw.print_msg_update()
-        self.ask_yn()
+        if (board.auto_cmd_is_supported()):
+            board.auto_cmd("flash")
+        else:
+            sw.print_msg_update()
+            self.ask_yn()
 
-        self.print_msg_power("ON")
+        # turn the board on
+        if (board.auto_cmd_is_supported()):
+            board.auto_cmd("on")
+        else:
+            self.print_msg_power("ON")
+
         self.expect("please send !")
         self.send_file(mot_file)
         self.expect(" N:>")
@@ -57,12 +68,18 @@ class rom_write_guide(base.guide):
         self.iron_type_main_loop(ask, "ufs_map",  "ufs_write_srec")
 
         # power off
-        self.print_msg_power("OFF")
-        self.ask_yn()
+        if (board.auto_cmd_is_supported()):
+            board.auto_cmd("off")
+        else:
+            self.print_msg_power("OFF")
+            self.ask_yn()
 
         # indicate dip-switch normal mode
-        sw.print_msg_normal()
-        self.ask_yn()
+        if (board.auto_cmd_is_supported()):
+            board.auto_cmd("boot")
+        else:
+            sw.print_msg_normal()
+            self.ask_yn()
 
         self.msg("finished !!")
 
