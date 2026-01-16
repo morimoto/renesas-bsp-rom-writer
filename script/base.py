@@ -300,6 +300,10 @@ class board(base):
         self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board)
         self.__addr_map	= {}
         self.__map	= None
+        self.__cmd_pwr_off = ""
+        self.__cmd_pwr_on = ""
+        self.__cmd_cfg_flash = ""
+        self.__cmd_cfg_boot = ""
 
         self.confirm_location()
         self.config_load()
@@ -334,6 +338,10 @@ class board(base):
     def map(self):	return self.__map
     def mac(self):	return self.__mac
     def baudrate(self):	return self.__baudrate
+    def cmd_pwr_off(self):	return self.__cmd_pwr_off
+    def cmd_pwr_on(self):	return self.__cmd_pwr_on
+    def cmd_cfg_flash(self):	return self.__cmd_cfg_flash
+    def cmd_cfg_boot(self):	return self.__cmd_cfg_boot
 
     #--------------------
     # addr_map
@@ -397,13 +405,17 @@ class board(base):
 
     def config_load(self):
         # __init__() set default value
-        # lood config if value was ""
+        # load config if value was ""
         if (self.__soc  == ""): self.__soc  = self.config_read("soc")
         if (self.__rom  == ""): self.__rom  = self.config_read("rom")
         if (self.__ver  == ""): self.__ver  = self.config_read("version")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
         if (self.__mac  == ""): self.__mac  = self.config_read("mac")
         if (self.__mode == ""): self.__mode = self.config_read("mode")
+        if (self.__cmd_pwr_off == ""): self.__cmd_pwr_off = self.config_read("cmd_pwr_off")
+        if (self.__cmd_pwr_on == ""): self.__cmd_pwr_on = self.config_read("cmd_pwr_on")
+        if (self.__cmd_cfg_flash == ""): self.__cmd_cfg_flash = self.config_read("cmd_cfg_flash")
+        if (self.__cmd_cfg_boot == ""): self.__cmd_cfg_boot = self.config_read("cmd_cfg_boot")
 
     def config_save(self):
         if (self.__soc  is not None): self.config_write("soc",     self.__soc)
@@ -412,6 +424,10 @@ class board(base):
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
         if (self.__mac  is not None): self.config_write("mac",     self.__mac)
         if (self.__mode is not None): self.config_write("mode",    self.__mode)
+        if (self.__cmd_pwr_off is not None): self.config_write("cmd_pwr_off", self.__cmd_pwr_off)
+        if (self.__cmd_pwr_on is not None): self.config_write("cmd_pwr_on", self.__cmd_pwr_on)
+        if (self.__cmd_cfg_flash is not None): self.config_write("cmd_cfg_flash", self.__cmd_cfg_flash)
+        if (self.__cmd_cfg_boot is not None): self.config_write("cmd_cfg_boot", self.__cmd_cfg_boot)
 
     #--------------------
     # setup
@@ -598,6 +614,10 @@ class board(base):
         if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
         if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
         if (self.__mac  is not None): text += "* [MAC]:     {}\n".format(self.__mac); deep = 1
+        if (self.__cmd_pwr_off != ""):   text += "  [Command for power off]:    {}\n".format(self.__cmd_pwr_off)
+        if (self.__cmd_pwr_on != ""):    text += "  [Command for power on]:     {}\n".format(self.__cmd_pwr_on)
+        if (self.__cmd_cfg_flash != ""): text += "  [Command for flash config]: {}\n".format(self.__cmd_cfg_flash)
+        if (self.__cmd_cfg_boot != ""):  text += "  [Command for boot config]:  {}\n".format(self.__cmd_cfg_boot)
 
         if (deep):
             text += "\nPlease deeply check at * items\n"
@@ -643,6 +663,40 @@ class board(base):
             if (self.__mac  is not None): self.__mac  = ""
             if (self.__mode is not None): self.__mode = ""
             self.setup()
+
+    #--------------------
+    # execute_cmd
+    #--------------------
+    def execute_cmd(self, cmd):
+        if (cmd is not None) and (cmd != ""):
+            self.run(cmd)
+            return True
+        else:
+            return False
+
+    #--------------------
+    # power_off
+    #--------------------
+    def power_off(self):
+        return self.execute_cmd(self.__cmd_pwr_off)
+
+    #--------------------
+    # power_on
+    #--------------------
+    def power_on(self):
+        return self.execute_cmd(self.__cmd_pwr_on)
+
+    #--------------------
+    # config_flash
+    #--------------------
+    def config_flash(self):
+        return self.execute_cmd(self.__cmd_cfg_flash)
+
+    #--------------------
+    # config_boot
+    #--------------------
+    def config_boot(self):
+        return self.execute_cmd(self.__cmd_cfg_boot)
 
 #====================================
 #
@@ -849,6 +903,30 @@ class guide(base):
     #--------------------
     def power(self, onoff):
         self.msg("Power {}".format(onoff))
+
+    #--------------------
+    # auto_power_off
+    #--------------------
+    def auto_power_off(self):
+        return self.board().power_off()
+
+    #--------------------
+    # auto_power_on
+    #--------------------
+    def auto_power_on(self):
+        return self.board().power_on()
+
+    #--------------------
+    # auto_config_flash
+    #--------------------
+    def auto_config_flash(self):
+        return self.board().config_flash()
+
+    #--------------------
+    # auto_config_boot
+    #--------------------
+    def auto_config_boot(self):
+        return self.board().config_boot()
 
     #--------------------
     # ask_loop
