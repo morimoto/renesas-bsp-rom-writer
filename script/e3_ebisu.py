@@ -36,15 +36,15 @@ class rom_write_guide(base.guide):
 
         sw = base.switch(board.dir_config("config"))
 
-        # power off
-        self.power("OFF")
+        # make sure board is power off
+        self.print_msg_power("OFF")
         self.ask_yn()
 
         # indicate dip-switch update mode
         sw.print_msg_update()
         self.ask_yn()
 
-        self.power("ON")
+        self.print_msg_power("ON")
         self.expect(">")
 
         # indicate dip-switch normal mode

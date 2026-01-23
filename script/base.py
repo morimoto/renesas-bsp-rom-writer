@@ -845,9 +845,9 @@ class guide(base):
         self.__serial.baudrate = baudrate
 
     #--------------------
-    # power
+    # print_msg_power
     #--------------------
-    def power(self, onoff):
+    def print_msg_power(self, onoff):
         self.msg("Power {}".format(onoff))
 
     #--------------------

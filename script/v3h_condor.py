@@ -69,15 +69,15 @@ class rom_write_guide(base.guide):
         # chech mot file
         mot_file = self.board().mot_file()
 
-        # power off
-        self.power("OFF")
+        # make sure board is power off
+        self.print_msg_power("OFF")
         self.ask_yn()
 
         # indicate dip-switch update mode
         sw.print_msg_update()
         self.ask_yn()
 
-        self.power("ON")
+        self.print_msg_power("ON")
         self.expect("please send !")
         self.send_file(mot_file)
         self.expect(">")
@@ -86,7 +86,7 @@ class rom_write_guide(base.guide):
         self.main_loop()
 
         # power off
-        self.power("OFF")
+        self.print_msg_power("OFF")
         self.ask_yn()
 
         # indicate dip-switch normal mode
