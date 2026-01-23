@@ -397,7 +397,7 @@ class board(base):
 
     def config_load(self):
         # __init__() set default value
-        # lood config if value was ""
+        # load config if value was ""
         if (self.__soc  == ""): self.__soc  = self.config_read("soc")
         if (self.__rom  == ""): self.__rom  = self.config_read("rom")
         if (self.__ver  == ""): self.__ver  = self.config_read("version")
