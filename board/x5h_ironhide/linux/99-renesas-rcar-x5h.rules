@@ -1,0 +1,2 @@
+# Match the CP2102 device
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="ttyUSB-x5h-rl78", GROUP="dialout"

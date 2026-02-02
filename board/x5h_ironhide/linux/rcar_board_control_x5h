@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# Setup:
+#   board: SW43_8 should be ON before using this script
+#   udev: SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", ENV{ID_USB_INTERFACE_NUM}=="00", SYMLINK+="ttyUSB-x5h-rl78", GROUP="dialout"
+#
+
+set -e
+
+SERIAL_DEV=/dev/ttyUSB-x5h-rl78
+stty -F $SERIAL_DEV speed 921600 > /dev/null
+
+Usage () {
+    echo "Usage: $0 on|off|flash|boot|debug"
+}
+
+if [[ $# -ne 1 ]]; then
+    Usage; exit -1
+fi
+case $1 in
+    "on"   )  CMD="power#on"  ;;
+    "off"  )  CMD="power#off" ;;
+    "flash")  CMD="md#74149"  ;;
+    "boot" )  CMD="md#24149"  ;;
+    "debug" ) CMD="md#26149"  ;;
+    *) Usage; exit -1;;
+esac
+echo "$CMD" > $SERIAL_DEV
+
+# Give some time to the board to execute the command
+sleep 1

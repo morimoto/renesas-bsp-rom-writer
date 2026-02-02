@@ -35,3 +35,39 @@
 
 	linux/README
 	windows/How_to_update.txt
+
+-------------------------------
+* Automating board flashing
+-------------------------------
+
+	This is working only on Linux.
+
+	A RL78 microcontroller is embedded on the X5H board and controls the SoC
+	boot pins, along with the board power.
+	This RL78 microcontroller can receive external commands through an USB
+	serial port.
+	This setup allows to automatically set the board boot pins and to control
+	the board power, giving the ability to the user to use the board in a
+	fully remote way : invoking the "sdk_writer" tool will be done like before,
+	just without any user intervention on the board itself.
+
+	Setup :
+
+	Power the board off, then set SW43 pin 8 to ON.
+
+	All the following instructions have to be done on the host computer.
+
+	Install the udev rule that gives a unique and known name to the RL78
+	serial port.
+	sudo cp board/x5h_ironhide/linux/99-renesas-rcar-x5h.rules /lib/udev/rules.d
+	sudo udevadm control --reload-rules
+	sudo udevadm trigger
+
+	Copy the board control tool board/x5h_ironhide/linux/rcar_board_control_x5h
+	to an executable path (like /usr/bin).
+
+	Add the line "[auto_cmd]:rcar_board_control_x5h" (without the double quotes)
+	to the ~/Renesas/images/.renesas_bsp_rom_writer.x5h_ironhide file.
+
+	If you want to disable the automatic flashing, just remove the
+	"[auto_cmd]:rcar_board_control_x5h" line from the previous file.
