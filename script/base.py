@@ -384,7 +384,12 @@ class board(base):
         return "{}/{}".format(self.cwd(), self.__config)
 
     def config_read(self, tag):
-        return self.run(r'grep "^\[{}\]:" {} 2>/dev/null | cut -d : -f 2-'.format(tag, self.config_file()))
+        value = self.run(r'grep "^\[{}\]:" {} 2>/dev/null | cut -d : -f 2-'.format(tag, self.config_file()))
+        # Force returning None if the config setting is not defined
+        if (value != ""):
+            return value
+        else:
+            return None
 
     def config_write(self, tag, data):
         tmp = "/tmp/renesas-bsp-rom-writer-config-{}".format(os.getpid())
