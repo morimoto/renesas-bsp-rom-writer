@@ -94,4 +94,5 @@
 * Can I see the log ?
 -------------------------------
 
-	You can find /tmp/renesas-bps-rom-writer.log
+	You can find the log file named "renesas-bps-rom-writer.log" in
+	the ROM directory (the same location than the configuration file).

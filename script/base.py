@@ -687,7 +687,8 @@ class guide(base):
     # __init__
     #--------------------
     def __init__(self):
-        self.__log = open("/tmp/renesas-bsp-rom-writer.log", mode='w')
+        file_name = "{}/renesas-bsp-rom-writer.log".format(self.cwd())
+        self.__log = open(file_name, mode='w')
 
     #--------------------
     # init
