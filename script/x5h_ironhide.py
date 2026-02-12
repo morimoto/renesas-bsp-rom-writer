@@ -87,9 +87,6 @@ class rom_write_guide(base.guide):
 #
 # As command
 #
-#	> condor	# test
-#	> condor sdk	# SDK
-#
 #====================================
 if __name__=='__main__':
     rom_write_guide().guide_start(board())
