@@ -63,7 +63,7 @@ class rom_write_guide(base.guide):
         self.send_file(mot_file)
         self.expect(" N:>")
 
-        ask = self.ask_loop()
+        ask = self.ask_loop(board)
         self.iron_type_main_loop(ask, "addr_map", "hyper_write_srec")
         self.iron_type_main_loop(ask, "ufs_map",  "ufs_write_srec")
 
