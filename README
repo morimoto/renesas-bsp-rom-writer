@@ -101,6 +101,9 @@
 	select_tty:ignore	Skip the board connection check and terminal/software
 	                    (minicom) confirmation.
 
+	tty_owner:ignore	When a TTY is already in use, kill the owner process
+						without asking for confirmation.
+
 	confirm_info:ignore	Skip the confirmation prompt for the selected settings
 	                    before proceeding.
 
@@ -111,6 +114,7 @@
 
 		-----------------
 		select_tty:ignore
+		tty_owner:ignore
 		confirm_info:ignore
 		update_style:all
 		-----------------
