@@ -520,18 +520,50 @@ class board(base):
             sys.exit(1)
             return 1
 
+    def __tty_owner_info(self):
+        fuser = self.run("fuser -u {} 2>&1".format(self.__tty))
+        if not fuser:
+            return None
+        pids  = re.findall(r'(\d+)\(',   fuser)
+        users = re.findall(r'\(([^)]+)\)', fuser)
+        owners = []
+        for pid, user in zip(pids, users):
+            comm = self.run("ps -p {} -o comm= 2>/dev/null".format(pid)) or "unknown"
+            owners.append("{} ({}, pid {})".format(comm, user, pid))
+        return ", ".join(owners) if owners else None
+
+    def __tty_ask_kill_owner(self):
+        owner = self.__tty_owner_info()
+        if not owner:
+            return
+        self.msg("{} is using {}\nDo you want to kill it ?".format(owner, self.__tty))
+        if (self.ask_yn()):
+            self.run("fuser -k {} 2>&1".format(self.__tty))
+            time.sleep(0.5)
+            if (self.__tty_owner_info()):
+                self.error("Failed to kill owner of {}\nPlease free it manually".format(self.__tty), quit=0)
+                self.__tty = ""
+        else:
+            self.__tty = ""
+
     def __select_tty(self):
         if ("ignore" == self.config_read("select_tty")):
             self.msg("config file indicates ignore tty select")
+            owner = self.__tty_owner_info()
+            if owner:
+                self.msg("{} is using {}\nKilling it...".format(owner, self.__tty))
+                self.run("fuser -k {} 2>&1".format(self.__tty))
+                time.sleep(0.5)
+                if (self.__tty_owner_info()):
+                    self.error("Failed to kill owner of {}\nPlease free it manually".format(self.__tty))
             return
+
         text = "Your board and PC need to connect\n" + self.tty_connection()
         self.msg(text)
         self.ask_yn(quit=True)
 
-        text = "You need to stop minicom or other software\n" +\
-               "which is connecting to the board"
-        self.msg(text)
-        self.ask_yn(quit=True)
+        if (not self.__tty_error()):
+            self.__tty_ask_kill_owner()
 
         text = "Which tty is connected to board ?\n" +\
                "  ex) /dev/ttyUSBx\n\n" +\
@@ -547,11 +579,7 @@ class board(base):
                 self.error("{} is not exist or not tty\n".format(self.__tty) +
                            "Please select like /dev/ttyUSBx", quit=0)
             else:
-                fuser = self.run("fuser -u {} 2>&1".format(self.__tty))
-                if (fuser):
-                    m = re.match('.*((.*))', fuser)
-                    self.error("{} is using {}\n".format(m.group(1), self.__tty) +
-                               "Please stop using it first")
+                self.__tty_ask_kill_owner()
 
     #--------------------
     # select_mac (default)
