@@ -385,12 +385,7 @@ class board(base):
         return "{}/{}".format(self.cwd(), self.__config)
 
     def config_read(self, tag):
-        value = self.run(r'grep "^\[{}\]:" {} 2>/dev/null | cut -d : -f 2-'.format(tag, self.config_file()))
-        # Force returning None if the config setting is not defined
-        if (value != ""):
-            return value
-        else:
-            return None
+        return self.run(r'grep "^\[{}\]:" {} 2>/dev/null | cut -d : -f 2-'.format(tag, self.config_file()))
 
     def config_write(self, tag, data):
         tmp = "/tmp/renesas-bsp-rom-writer-config-{}".format(os.getpid())
@@ -410,7 +405,10 @@ class board(base):
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
         if (self.__mac  == ""): self.__mac  = self.config_read("mac")
         if (self.__mode == ""): self.__mode = self.config_read("mode")
+
+        # The auto_cmd is specific to a test bench and not meant to be user selectable
         self.__auto_cmd = self.config_read("auto_cmd")
+        if (self.__auto_cmd == ""): self.__auto_cmd = None
 
     def config_save(self):
         if (self.__soc  is not None): self.config_write("soc",     self.__soc)
