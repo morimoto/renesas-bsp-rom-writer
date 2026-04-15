@@ -1,0 +1,8 @@
+addr_map:"000000,bootparam_sa0.srec"
+addr_map:"040000,bl2-geist.srec"
+addr_map:"180000,cert_header_sa6.srec"
+addr_map:"1C0000,bl31-geist.srec"
+addr_map:"200000,tee-geist.srec"
+addr_map:"640000,u-boot-elf-geist.srec"
+
+mot_file:"AArch64_Flash_writer_SCIF_DUMMY_CERT_E6300400_geist.mot"
