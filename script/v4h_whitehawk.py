@@ -40,6 +40,6 @@ if __name__=='__main__':
         # test
         board(ver="3.0.1", tty="/dev/ttyUSB0")
     elif (sys.argv[1] == "sdk"):
-        s4_spider.rom_write_guide(board(sys.argv[2])).guide_start()
+        s4_spider.rom_write_guide().guide_start(board(sys.argv[2]))
     else:
         print("unknown command")
