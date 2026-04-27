@@ -104,11 +104,15 @@
 	confirm_info:ignore	Skip the confirmation prompt for the selected settings
 	                    before proceeding.
 
+	update_style:all	Automatically update all files without asking.
+	update_style:ask	Always ask one by one whether to update each file.
+
 	ex) .renesas_bsp_rom_writer.xxx
 
 		-----------------
 		select_tty:ignore
 		confirm_info:ignore
+		update_style:all
 		-----------------
 
 -------------------------------
