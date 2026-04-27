@@ -887,6 +887,12 @@ class guide(base):
     def ask_loop(self):
         list = ["Update all files without asking",
                 "Ask one by one whether to update"]
+        if ("all" == self.board().config_read("update_style")):
+            self.msg("config file indicates update all files without asking")
+            return 0
+        elif ("ask" == self.board().config_read("update_style")):
+            self.msg("config file indicates ask one by one whether to update")
+            return 1
         return list.index(self.select("You can select update style", list))
 
     #--------------------
