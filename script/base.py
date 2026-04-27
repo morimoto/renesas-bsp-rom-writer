@@ -642,6 +642,9 @@ class board(base):
     def confirm_info(self):
         while 1:
             self.__print_info()
+            if ("ignore" == self.config_read("confirm_info")):
+                self.msg("config file indicates ignore info confirmation")
+                break
             if (self.ask_yn()): break;
 
             # reset all setting
