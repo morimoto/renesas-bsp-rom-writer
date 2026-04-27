@@ -519,6 +519,9 @@ class board(base):
             return 1
 
     def __select_tty(self):
+        if ("ignore" == self.config_read("select_tty")):
+            self.msg("config file indicates ignore tty select")
+            return
         text = "Your board and PC need to connect\n" + self.tty_connection()
         self.msg(text)
         self.ask_yn(quit=True)

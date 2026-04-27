@@ -91,6 +91,23 @@
 	...
 
 -------------------------------
+* How to skip user confirmation asking (Linux)
+-------------------------------
+	You can find ".renesas_bsp_rom_writer.xxx" file at your ROM dir
+	if you first write ROM by using linux script.
+
+	Several options can be added to skip interactive prompts:
+
+	select_tty:ignore	Skip the board connection check and terminal/software
+	                    (minicom) confirmation.
+
+	ex) .renesas_bsp_rom_writer.xxx
+
+		-----------------
+		select_tty:ignore
+		-----------------
+
+-------------------------------
 * Can I see the log ?
 -------------------------------
 
