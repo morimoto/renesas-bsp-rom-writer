@@ -101,10 +101,14 @@
 	select_tty:ignore	Skip the board connection check and terminal/software
 	                    (minicom) confirmation.
 
+	confirm_info:ignore	Skip the confirmation prompt for the selected settings
+	                    before proceeding.
+
 	ex) .renesas_bsp_rom_writer.xxx
 
 		-----------------
 		select_tty:ignore
+		confirm_info:ignore
 		-----------------
 
 -------------------------------
