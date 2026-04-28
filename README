@@ -57,38 +57,37 @@
 	https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer
 
 -------------------------------
-* How to skip specified srec writing (Linux)
+* Configuration file options (Linux)
 -------------------------------
+	You can find ".renesas_bsp_rom_writer.xxx" in your ROM directory
+	after a first write using the linux script.
 
-	You can find ".renesas_bsp_rom_writer.xxx" file at your ROM dir
-	if you first write ROM by using linux script.
+	The following options can be added to automate script behavior:
 
-	You can indicates the srec files into it which you want to ignore
-	writing.
+	[file.srec]:ignore	Skip writing the specified srec file.
+
+	select_tty:ignore	Skip the board connection check and
+	                    terminal/software (minicom) confirmation.
+
+	tty_owner:ignore	When a TTY is already in use, kill the owner process
+	                    without asking for confirmation.
+
+	confirm_info:ignore	Skip the confirmation prompt for the
+	                    selected settings before proceeding.
+
+	update_style:all	Update all files without asking.
+	update_style:ask	Ask one by one whether to update each file.
 
 	ex) .renesas_bsp_rom_writer.xxx
 
 		-----------------
 		[bootparam_sa0.srec]:ignore
 		[icumx_loader.srec]:ignore
-		...
+		select_tty:ignore
+		tty_owner:ignore
+		confirm_info:ignore
+		update_style:all
 		-----------------
-
-	+---------------------------------------+
-	| You can select update style           |
-	|   1) Update all files without asking  |
-	|   2) Ask one by one whether to update |
-	+---------------------------------------+
-	select number (1-2): 1
-
-	+-------------------------------------------------+
-	| config file indicates ignore bootparam_sa0.srec |
-	+-------------------------------------------------+
-
-	+------------------------------------------------+
-	| config file indicates ignore icumx_loader.srec |
-	+------------------------------------------------+
-	...
 
 -------------------------------
 * Can I see the log ?
