@@ -66,27 +66,27 @@
 
 	[file.srec]:ignore	Skip writing the specified srec file.
 
-	select_tty:ignore	Skip the board connection check and
+	[select_tty]:ignore	Skip the board connection check and
 				terminal/software (minicom) confirmation.
 
-	tty_owner:ignore	When a TTY is already in use, kill the owner process
+	[tty_owner]:ignore	When a TTY is already in use, kill the owner process
 				without asking for confirmation.
 
-	confirm_info:ignore	Skip the confirmation prompt for the
+	[confirm_info]:ignore	Skip the confirmation prompt for the
 				selected settings before proceeding.
 
-	update_style:all	Update all files without asking.
-	update_style:ask	Ask one by one whether to update each file.
+	[update_style]:all	Update all files without asking.
+	[update_style]:ask	Ask one by one whether to update each file.
 
 	ex) .renesas_bsp_rom_writer.xxx
 
 		-----------------
 		[bootparam_sa0.srec]:ignore
 		[icumx_loader.srec]:ignore
-		select_tty:ignore
-		tty_owner:ignore
-		confirm_info:ignore
-		update_style:all
+		[select_tty]:ignore
+		[tty_owner]:ignore
+		[confirm_info]:ignore
+		[update_style]:all
 		-----------------
 
 -------------------------------
