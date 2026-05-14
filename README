@@ -78,6 +78,13 @@
 	[update_style]:all	Update all files without asking.
 	[update_style]:ask	Ask one by one whether to update each file.
 
+
+	Some board supports auto_cmd to handle board. You can check
+	board/xxx/README whether your board supports it or not.
+	If the board is supporting auto_cmd, it needs to specify used serial.
+
+	[auto_cmd_tty]:/dev/ttyUSBx	use specified serial
+
 	ex) .renesas_bsp_rom_writer.xxx
 
 		-----------------

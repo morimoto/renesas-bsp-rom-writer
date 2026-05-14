@@ -34,9 +34,9 @@ class board(base.board):
     #--------------------
     # init_with_mot
     #--------------------
-    def init_with_mot(self, soc, rom, ver, tty, baudrate=115200, board=None):
+    def init_with_mot(self, soc, rom, ver, tty, baudrate=115200, board=None, auto_cmd=None):
 
-        self.init(soc=soc, rom=rom, ver=ver, tty=tty, mode="mot", baudrate=baudrate, board=board)
+        self.init(soc=soc, rom=rom, ver=ver, tty=tty, mode="mot", baudrate=baudrate, board=board, auto_cmd=auto_cmd)
 
     #--------------------
     # __init__

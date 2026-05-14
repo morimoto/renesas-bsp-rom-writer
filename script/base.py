@@ -277,7 +277,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200):
+    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -297,7 +297,12 @@ class board(base):
         self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board)
         self.__addr_map	= {}
         self.__map	= None
-        self.__auto_cmd = None
+
+        # for auto command
+        self.__auto_cmd = auto_cmd	# path from ${TOP}/board/
+        self.__auto_cmd_tty = None	# None:		not used
+                                  	# auto:		use udev
+                                  	# /dev/ttyXX:	use specified serial
 
         self.confirm_location()
         self.config_load()
@@ -400,9 +405,14 @@ class board(base):
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
         if (self.__mode == ""): self.__mode = self.config_read("mode")
 
-        # The auto_cmd is specific to a test bench and not meant to be user selectable
-        self.__auto_cmd = self.config_read("auto_cmd")
-        if (self.__auto_cmd == ""): self.__auto_cmd = None
+        # The auto_cmd is specific to each board
+        if (self.__auto_cmd is not None):
+            self.__auto_cmd_tty = self.config_read("auto_cmd_tty")
+            if (self.__auto_cmd_tty == ""):
+                self.__auto_cmd_tty = None
+            else:
+                if (self.__tty_error(self.__auto_cmd_tty)):
+                    self.error("[auto_cmd_tty](= {}) is not valid tty\n".format(self.__auto_cmd_tty))
 
     def config_save(self):
         if (self.__soc  is not None): self.config_write("soc",     self.__soc)
@@ -606,7 +616,9 @@ class board(base):
         if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
         if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
         if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
-        if (self.__auto_cmd is not None):   text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
+        if (self.__auto_cmd_tty is not None):
+            text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
+            text += "  [Auto command TTY]: {}\n".format(self.__auto_cmd_tty)
 
         if (deep):
             text += "\nPlease deeply check at * items\n"
@@ -659,7 +671,7 @@ class board(base):
     # auto_cmd_is_available
     #--------------------
     def auto_cmd_is_available(self):
-        if (self.__auto_cmd is None):
+        if (self.__auto_cmd_tty is None):
             return False
         else:
             return True
@@ -668,8 +680,8 @@ class board(base):
     # auto_cmd
     #--------------------
     def auto_cmd(self, cmd):
-        if (self.__auto_cmd is not None):
-            return self.run("{} {}".format(self.__auto_cmd, cmd))
+        if (self.__auto_cmd_tty is not None):
+            return self.run("{}/board/{} {} {}".format(self.top(), self.__auto_cmd, self.__auto_cmd_tty, cmd))
         else:
             return False
 

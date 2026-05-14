@@ -20,7 +20,8 @@ class board(v3h_condor.board):
     #--------------------
     def __init__(self):
 
-        self.init_with_mot("x5h", "sdk", "", "", baudrate=1843200)
+        self.init_with_mot("x5h", "sdk", "", "", baudrate=1843200,
+                           auto_cmd="x5h_ironhide/linux/rcar_board_control_x5h")
 
 #====================================
 #
