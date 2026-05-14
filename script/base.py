@@ -484,21 +484,21 @@ class board(base):
     def tty_connection(self):
         return self.ttm_array(self.dir_config("config"), "tty_connection")[0]
 
-    def __tty_error(self):
-        if (not os.path.exists(self.__tty)):
+    def __tty_error(self, tty):
+        if (not os.path.exists(tty)):
             return 1
 
-        m1 = re.match("/dev/tty.*",     self.__tty)
-        m2 = re.match("/dev/serial/.*", self.__tty)
+        m1 = re.match("/dev/tty.*",     tty)
+        m2 = re.match("/dev/serial/.*", tty)
         if (not m1 and not m2):
             return 1
 
-        if (not os.access(self.__tty, os.R_OK) or
-            not os.access(self.__tty, os.W_OK)):
-            self.msg("You don't have permission to access to {}.\n".format(self.__tty) +\
+        if (not os.access(tty, os.R_OK) or
+            not os.access(tty, os.W_OK)):
+            self.msg("You don't have permission to access to {}.\n".format(tty) +\
                      "It requires root or \"dialout group\" permission, maybe ?\n" +\
                      "Check it\n" \
-                     "   > ls -l {}\n\n".format(self.__tty) +\
+                     "   > ls -l {}\n\n".format(tty) +\
                      "Check your joined group\n" \
                      "   > id\n\n" \
                      "Let's join to \"dialout group\"\n" \
@@ -559,12 +559,12 @@ class board(base):
                "You can confirm it by this command maybe ?\n" +\
                "  > dmesg | grep ttyUSB"
 
-        while (self.__tty_error()):
+        while (self.__tty_error(self.__tty)):
             print("\n")
             self.msg(text)
             self.__tty = self.input("ex) /dev/ttyUSBx: ")
             print()
-            if (self.__tty_error()):
+            if (self.__tty_error(self.__tty)):
                 self.error("{} is not exist or not tty\n".format(self.__tty) +
                            "Please select like /dev/ttyUSBx", quit=0)
             else:
