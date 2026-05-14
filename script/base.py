@@ -277,7 +277,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, mac=None):
+    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -292,9 +292,6 @@ class board(base):
         self.__tty	= tty
         self.__mode	= mode		# normal, mot
         self.__baudrate	= baudrate
-
-        # for Android
-        self.__mac	= mac
 
         # for inside
         self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board)
@@ -324,7 +321,6 @@ class board(base):
     # board
     # tty
     # soc
-    # mac
     # baudrate
     #--------------------
     def mode(self):	return self.__mode
@@ -333,7 +329,6 @@ class board(base):
     def soc(self):	return self.__soc
     def rom(self):	return self.__rom
     def map(self):	return self.__map
-    def mac(self):	return self.__mac
     def baudrate(self):	return self.__baudrate
 
     #--------------------
@@ -403,7 +398,6 @@ class board(base):
         if (self.__rom  == ""): self.__rom  = self.config_read("rom")
         if (self.__ver  == ""): self.__ver  = self.config_read("version")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
-        if (self.__mac  == ""): self.__mac  = self.config_read("mac")
         if (self.__mode == ""): self.__mode = self.config_read("mode")
 
         # The auto_cmd is specific to a test bench and not meant to be user selectable
@@ -415,7 +409,6 @@ class board(base):
         if (self.__rom  is not None): self.config_write("rom",     self.__rom)
         if (self.__ver  is not None): self.config_write("version", self.__ver)
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
-        if (self.__mac  is not None): self.config_write("mac",     self.__mac)
         if (self.__mode is not None): self.config_write("mode",    self.__mode)
 
     #--------------------
@@ -429,7 +422,6 @@ class board(base):
         if (self.__ver  is not None): self.__select_ver()
         if (self.__soc  is not None): self.__select_soc()
         if (self.__tty  is not None): self.__select_tty()
-        if (self.__mac  is not None): self.__select_mac()
         if (self.__mode is not None): self.__select_mode()
 
     #--------------------
@@ -579,24 +571,6 @@ class board(base):
                 self.__tty_ask_kill_owner()
 
     #--------------------
-    # select_mac (default)
-    #--------------------
-    def __select_mac(self):
-        macaddr_format = "[0-9a-f]{2}:[0-9a-f]{2}(:[0-9a-f]{2}){4}$"
-
-        while 1:
-            if (re.match(macaddr_format, self.__mac.lower())):
-                self.__mac = self.__mac.lower()
-                return
-            else:
-                self.msg("Please set your board MAC address.\n"\
-                         "You can find it on Ether connecter.\n\n"\
-                         "Require format is\n"\
-                         "    12:34:56:78:9a:bc")
-                print("             xx:xx:xx:xx:xx:xx")
-                self.__mac = self.input("mac address: ")
-
-    #--------------------
     # select_mode (default)
     #--------------------
     def __select_mode(self):
@@ -632,7 +606,6 @@ class board(base):
         if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
         if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
         if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
-        if (self.__mac  is not None): text += "* [MAC]:     {}\n".format(self.__mac); deep = 1
         if (self.__auto_cmd is not None):   text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
 
         if (deep):
@@ -679,7 +652,6 @@ class board(base):
             if (self.__soc  is not None): self.__soc  = ""
             if (self.__ver  is not None): self.__ver  = ""
             if (self.__tty  is not None): self.__tty  = ""
-            if (self.__mac  is not None): self.__mac  = ""
             if (self.__mode is not None): self.__mode = ""
             self.setup()
 
