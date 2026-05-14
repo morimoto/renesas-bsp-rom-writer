@@ -656,9 +656,9 @@ class board(base):
             self.setup()
 
     #--------------------
-    # auto_cmd_is_supported
+    # auto_cmd_is_available
     #--------------------
-    def auto_cmd_is_supported(self):
+    def auto_cmd_is_available(self):
         if (self.__auto_cmd is None):
             return False
         else:
