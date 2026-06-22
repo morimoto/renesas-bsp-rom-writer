@@ -1,0 +1,8 @@
+tty_connection:"[Host PC] <--> [board CN26] (/dev/ttyUSBx)"
+
+sw_head:"Use RL78 serial"
+sw_update:" - SCIF Download mode        MD#7C0400"
+
+sw_normal:" - HyperFlash boot  (80MHz)  MD#640400"
+sw_normal:" - HyperFlash boot (160MHz)  MD#240400"
+sw_normal:" - QSPI boot                 MD#140400"

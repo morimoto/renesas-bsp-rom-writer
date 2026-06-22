@@ -21,7 +21,7 @@ import getpass
 #
 #====================================
 class base:
-    __top = os.path.abspath(__file__ + "/../../");
+    __top = os.path.abspath(os.path.dirname(__file__) + "../../")
     __cwd = os.getcwd()
 
     #--------------------
@@ -277,7 +277,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, mac=None):
+    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -293,14 +293,16 @@ class board(base):
         self.__mode	= mode		# normal, mot
         self.__baudrate	= baudrate
 
-        # for Android
-        self.__mac	= mac
-
         # for inside
         self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board)
         self.__addr_map	= {}
         self.__map	= None
-        self.__auto_cmd = None
+
+        # for auto command
+        self.__auto_cmd = auto_cmd	# path from ${TOP}/board/
+        self.__auto_cmd_tty = None	# None:		not used
+                                  	# auto:		use udev
+                                  	# /dev/ttyXX:	use specified serial
 
         self.confirm_location()
         self.config_load()
@@ -324,7 +326,6 @@ class board(base):
     # board
     # tty
     # soc
-    # mac
     # baudrate
     #--------------------
     def mode(self):	return self.__mode
@@ -333,7 +334,6 @@ class board(base):
     def soc(self):	return self.__soc
     def rom(self):	return self.__rom
     def map(self):	return self.__map
-    def mac(self):	return self.__mac
     def baudrate(self):	return self.__baudrate
 
     #--------------------
@@ -403,19 +403,22 @@ class board(base):
         if (self.__rom  == ""): self.__rom  = self.config_read("rom")
         if (self.__ver  == ""): self.__ver  = self.config_read("version")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
-        if (self.__mac  == ""): self.__mac  = self.config_read("mac")
         if (self.__mode == ""): self.__mode = self.config_read("mode")
 
-        # The auto_cmd is specific to a test bench and not meant to be user selectable
-        self.__auto_cmd = self.config_read("auto_cmd")
-        if (self.__auto_cmd == ""): self.__auto_cmd = None
+        # The auto_cmd is specific to each board
+        if (self.__auto_cmd is not None):
+            self.__auto_cmd_tty = self.config_read("auto_cmd_tty")
+            if (self.__auto_cmd_tty == ""):
+                self.__auto_cmd_tty = None
+            else:
+                if (self.__tty_error(self.__auto_cmd_tty)):
+                    self.error("[auto_cmd_tty](= {}) is not valid tty\n".format(self.__auto_cmd_tty))
 
     def config_save(self):
         if (self.__soc  is not None): self.config_write("soc",     self.__soc)
         if (self.__rom  is not None): self.config_write("rom",     self.__rom)
         if (self.__ver  is not None): self.config_write("version", self.__ver)
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
-        if (self.__mac  is not None): self.config_write("mac",     self.__mac)
         if (self.__mode is not None): self.config_write("mode",    self.__mode)
 
     #--------------------
@@ -429,7 +432,6 @@ class board(base):
         if (self.__ver  is not None): self.__select_ver()
         if (self.__soc  is not None): self.__select_soc()
         if (self.__tty  is not None): self.__select_tty()
-        if (self.__mac  is not None): self.__select_mac()
         if (self.__mode is not None): self.__select_mode()
 
     #--------------------
@@ -492,21 +494,21 @@ class board(base):
     def tty_connection(self):
         return self.ttm_array(self.dir_config("config"), "tty_connection")[0]
 
-    def __tty_error(self):
-        if (not os.path.exists(self.__tty)):
+    def __tty_error(self, tty):
+        if (not os.path.exists(tty)):
             return 1
 
-        m1 = re.match("/dev/tty.*",     self.__tty)
-        m2 = re.match("/dev/serial/.*", self.__tty)
+        m1 = re.match("/dev/tty.*",     tty)
+        m2 = re.match("/dev/serial/.*", tty)
         if (not m1 and not m2):
             return 1
 
-        if (not os.access(self.__tty, os.R_OK) or
-            not os.access(self.__tty, os.W_OK)):
-            self.msg("You don't have permission to access to {}.\n".format(self.__tty) +\
+        if (not os.access(tty, os.R_OK) or
+            not os.access(tty, os.W_OK)):
+            self.msg("You don't have permission to access to {}.\n".format(tty) +\
                      "It requires root or \"dialout group\" permission, maybe ?\n" +\
                      "Check it\n" \
-                     "   > ls -l {}\n\n".format(self.__tty) +\
+                     "   > ls -l {}\n\n".format(tty) +\
                      "Check your joined group\n" \
                      "   > id\n\n" \
                      "Let's join to \"dialout group\"\n" \
@@ -518,53 +520,65 @@ class board(base):
             sys.exit(1)
             return 1
 
+    def __tty_owner_info(self):
+        fuser = self.run("fuser -u {} 2>&1".format(self.__tty))
+        if not fuser:
+            return None
+        pids  = re.findall(r'(\d+)\(',   fuser)
+        users = re.findall(r'\(([^)]+)\)', fuser)
+        owners = []
+        for pid, user in zip(pids, users):
+            comm = self.run("ps -p {} -o comm= 2>/dev/null".format(pid)) or "unknown"
+            owners.append("{} ({}, pid {})".format(comm, user, pid))
+        return ", ".join(owners) if owners else None
+
+    def __tty_kill_owner(self):
+        self.run("fuser -k {} 2>&1".format(self.__tty))
+        time.sleep(0.5)
+        if (self.__tty_owner_info()):
+            self.error("Failed to kill owner of {}\nPlease free it manually".format(self.__tty), quit=0)
+            self.__tty = ""
+
+    def __tty_ask_kill_owner(self):
+        owner = self.__tty_owner_info()
+        if not owner:
+            return
+        if ("ignore" == self.config_read("tty_owner")):
+            self.__tty_kill_owner()
+        else:
+            self.msg("{} is using {}\nDo you want to kill it ?".format(owner, self.__tty))
+            if (self.ask_yn()):
+                self.__tty_kill_owner()
+            else:
+                self.__tty = ""
+
     def __select_tty(self):
+        if ("ignore" == self.config_read("select_tty")):
+            self.msg("config file indicates ignore tty select")
+            self.__tty_ask_kill_owner()
+            return
+
         text = "Your board and PC need to connect\n" + self.tty_connection()
         self.msg(text)
         self.ask_yn(quit=True)
 
-        text = "You need to stop minicom or other software\n" +\
-               "which is connecting to the board"
-        self.msg(text)
-        self.ask_yn(quit=True)
+        self.__tty_ask_kill_owner()
 
         text = "Which tty is connected to board ?\n" +\
                "  ex) /dev/ttyUSBx\n\n" +\
                "You can confirm it by this command maybe ?\n" +\
                "  > dmesg | grep ttyUSB"
 
-        while (self.__tty_error()):
+        while (self.__tty_error(self.__tty)):
             print("\n")
             self.msg(text)
             self.__tty = self.input("ex) /dev/ttyUSBx: ")
             print()
-            if (self.__tty_error()):
+            if (self.__tty_error(self.__tty)):
                 self.error("{} is not exist or not tty\n".format(self.__tty) +
                            "Please select like /dev/ttyUSBx", quit=0)
             else:
-                fuser = self.run("fuser -u {} 2>&1".format(self.__tty))
-                if (fuser):
-                    m = re.match('.*((.*))', fuser)
-                    self.error("{} is using {}\n".format(m.group(1), self.__tty) +
-                               "Please stop using it first")
-
-    #--------------------
-    # select_mac (default)
-    #--------------------
-    def __select_mac(self):
-        macaddr_format = "[0-9a-f]{2}:[0-9a-f]{2}(:[0-9a-f]{2}){4}$"
-
-        while 1:
-            if (re.match(macaddr_format, self.__mac.lower())):
-                self.__mac = self.__mac.lower()
-                return
-            else:
-                self.msg("Please set your board MAC address.\n"\
-                         "You can find it on Ether connecter.\n\n"\
-                         "Require format is\n"\
-                         "    12:34:56:78:9a:bc")
-                print("             xx:xx:xx:xx:xx:xx")
-                self.__mac = self.input("mac address: ")
+                self.__tty_ask_kill_owner()
 
     #--------------------
     # select_mode (default)
@@ -602,8 +616,9 @@ class board(base):
         if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
         if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
         if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
-        if (self.__mac  is not None): text += "* [MAC]:     {}\n".format(self.__mac); deep = 1
-        if (self.__auto_cmd is not None):   text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
+        if (self.__auto_cmd_tty is not None):
+            text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
+            text += "  [Auto command TTY]: {}\n".format(self.__auto_cmd_tty)
 
         if (deep):
             text += "\nPlease deeply check at * items\n"
@@ -639,6 +654,9 @@ class board(base):
     def confirm_info(self):
         while 1:
             self.__print_info()
+            if ("ignore" == self.config_read("confirm_info")):
+                self.msg("config file indicates ignore info confirmation")
+                break
             if (self.ask_yn()): break;
 
             # reset all setting
@@ -646,15 +664,14 @@ class board(base):
             if (self.__soc  is not None): self.__soc  = ""
             if (self.__ver  is not None): self.__ver  = ""
             if (self.__tty  is not None): self.__tty  = ""
-            if (self.__mac  is not None): self.__mac  = ""
             if (self.__mode is not None): self.__mode = ""
             self.setup()
 
     #--------------------
-    # auto_cmd_is_supported
+    # auto_cmd_is_available
     #--------------------
-    def auto_cmd_is_supported(self):
-        if (self.__auto_cmd is None):
+    def auto_cmd_is_available(self):
+        if (self.__auto_cmd_tty is None):
             return False
         else:
             return True
@@ -663,8 +680,8 @@ class board(base):
     # auto_cmd
     #--------------------
     def auto_cmd(self, cmd):
-        if (self.__auto_cmd is not None):
-            return self.run("{} {}".format(self.__auto_cmd, cmd))
+        if (self.__auto_cmd_tty is not None):
+            return self.run("{}/board/{} {} {}".format(self.top(), self.__auto_cmd, self.__auto_cmd_tty, cmd))
         else:
             return False
 
@@ -881,6 +898,12 @@ class guide(base):
     def ask_loop(self):
         list = ["Update all files without asking",
                 "Ask one by one whether to update"]
+        if ("all" == self.board().config_read("update_style")):
+            self.msg("config file indicates update all files without asking")
+            return 0
+        elif ("ask" == self.board().config_read("update_style")):
+            self.msg("config file indicates ask one by one whether to update")
+            return 1
         return list.index(self.select("You can select update style", list))
 
     #--------------------

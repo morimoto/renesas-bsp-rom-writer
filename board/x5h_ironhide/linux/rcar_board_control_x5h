@@ -7,17 +7,18 @@
 
 set -e
 
-SERIAL_DEV=/dev/ttyUSB-x5h-rl78
+SERIAL_DEV=$1
+
 stty -F $SERIAL_DEV speed 921600 > /dev/null
 
 Usage () {
     echo "Usage: $0 on|off|flash|boot|debug"
 }
 
-if [[ $# -ne 1 ]]; then
+if [[ $# -ne 2 ]]; then
     Usage; exit -1
 fi
-case $1 in
+case $2 in
     "on"   )  CMD="power#on"  ;;
     "off"  )  CMD="power#off" ;;
     "flash")  CMD="md#74149"  ;;

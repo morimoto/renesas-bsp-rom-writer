@@ -1,0 +1,38 @@
+============== -*- outline -*- ==============
+
+	Renesas M3Le Geist BSP ROM Writer
+	for Linux
+
+2026/04/14	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+
+**  Necessary Tools
+
+	You can install necessary tools by tool_install.xxx.
+	If you are using Ubuntu, you can run.
+
+		> ${renesas-bsp-rom-writer}/script/tool_install.ubuntu
+
+**  ROM
+
+	You need prepare Yocto ROM.
+	see
+		[How to get ROM ?]
+		${renesas-bsp-rom-writer}/board/e3_ebisu/README
+
+-------------------------------
+* RL78
+-------------------------------
+
+	You can control several things via RL78 serial.
+	It works with "921600 bps" baud-rate.
+
+	- Power ON			"POWER#ON"
+	- Power OFF			"POWER#OFF"
+	- SCIF Download mode		"MD#7C0400"
+	- HyperFlash boot  (80MHz)	"MD#640400"
+	- HyperFlash boot (160MHz)	"MD#240400"
+	- QSPI boot			"MD#140400"
