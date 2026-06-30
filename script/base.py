@@ -999,15 +999,15 @@ class guide(base):
             time.sleep(0.2)
             self.send()
 
-            self.expect(" N:>")
+            self.expect("N:>")
             time.sleep(0.2)
             self.send(cmd)
 
-            self.expect(" N:  Input data : 0x")
+            self.expect("N:  Input data : 0x")
             time.sleep(0.4)
             self.send(map["addr"])
 
-            self.expect(" N:  Input data : 0x")
+            self.expect("N:  Input data : 0x")
             time.sleep(0.4)
             self.send(map["save"])
 
@@ -1015,4 +1015,4 @@ class guide(base):
             time.sleep(0.4)
             self.send_file("{}/{}".format(self.cwd(), map["srec"]))
 
-            self.expect(" N:Command success.")
+            self.expect("N:Command success.")
