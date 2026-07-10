@@ -59,12 +59,21 @@
 -------------------------------
 * Configuration file options (Linux)
 -------------------------------
-	You can find ".renesas_bsp_rom_writer.xxx" in your ROM directory
+	You can find ".renesas_bsp_rom_writer.<board>" (for example
+	".renesas_bsp_rom_writer.x5h_ironhide") in your ROM directory
 	after a first write using the linux script.
+
+	The script saves your selections (soc, rom, version, tty, mode)
+	there automatically and reads them back on the next run. Those
+	entries are managed by the script and are not meant to be edited
+	by hand.
 
 	The following options can be added to automate script behavior:
 
 	[file.srec]:ignore	Skip writing the specified srec file.
+				"file.srec" is the exact srec file name listed
+				for your board/version, e.g.
+				[bootparam_sa0.srec]:ignore
 
 	[select_tty]:ignore	Skip the board connection check and
 				terminal/software (minicom) confirmation.
@@ -85,7 +94,7 @@
 
 	[auto_cmd_tty]:/dev/ttyUSBx	use specified serial
 
-	ex) .renesas_bsp_rom_writer.xxx
+	ex) .renesas_bsp_rom_writer.<board>
 
 		-----------------
 		[bootparam_sa0.srec]:ignore
