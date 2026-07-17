@@ -301,7 +301,6 @@ class board(base):
         # for auto command
         self.__auto_cmd = auto_cmd	# path from ${TOP}/board/
         self.__auto_cmd_tty = None	# None:		not used
-                                  	# auto:		use udev
                                   	# /dev/ttyXX:	use specified serial
 
         self.confirm_location()
