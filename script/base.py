@@ -401,15 +401,15 @@ class board(base):
     # if default select_xx() was not good match
     #--------------------
     def setup(self):
-        if (self.__rom  is not None): self.__select_rom()
-        if (self.__ver  is not None): self.__select_ver()
-        if (self.__map  is     None): self.__select_map()
-        if (self.__tty  is not None): self.__select_tty()
+        if (self.__rom  is not None): self.select_rom()
+        if (self.__ver  is not None): self.select_ver()
+        if (self.__map  is     None): self.select_map()
+        if (self.__tty  is not None): self.select_tty()
 
     #--------------------
     # select_rom (default)
     #--------------------
-    def __select_rom(self):
+    def select_rom(self):
         # check rom/${os}/config file
         while (not os.path.exists(self.dir_config_rom("config"))):
             self.__rom = self.select("Select write OS", self.runl("ls {}".format(self.dir_config("rom"))))
@@ -417,7 +417,7 @@ class board(base):
     #--------------------
     # select_ver (default)
     #--------------------
-    def __select_ver(self):
+    def select_ver(self):
         list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
         while (not self.__ver in list_version):
             self.__ver = self.select("Select [{}] Version".format(self.rom()), list_version)
@@ -425,7 +425,7 @@ class board(base):
     #--------------------
     # select_map (default)
     #--------------------
-    def __select_map(self):
+    def select_map(self):
         list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
         list_map     = self.ttm_array(self.dir_config_rom("config"), "list_map")
 
@@ -509,7 +509,7 @@ class board(base):
             else:
                 self.__tty = ""
 
-    def __select_tty(self):
+    def select_tty(self):
         if ("ignore" == self.config_read("select_tty")):
             self.msg("config file indicates ignore tty select")
             self.__tty_ask_kill_owner()
