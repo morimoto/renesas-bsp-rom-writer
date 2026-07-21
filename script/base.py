@@ -355,7 +355,7 @@ class board(base):
         dir = "{}/".format(self.top()) if (full) else ""
         return "{}board/{}/{}".format(dir, self.__board_name, path)
     def dir_config(self, path="", full=1):	return self.dir_board("config/" + path, full)
-    def dir_config_rom(self, path="", full=1):	return self.dir_config("rom/{}/{}".format(self.__rom, path), full)
+    def dir_rom(self, path="", full=1):	return self.dir_config("rom/{}/{}".format(self.__rom, path), full)
 
     #--------------------
     # config_xxx
@@ -413,14 +413,14 @@ class board(base):
     #--------------------
     def select_rom(self):
         # check rom/${os}/config file
-        while (not os.path.exists(self.dir_config_rom("config"))):
+        while (not os.path.exists(self.dir_rom("config"))):
             self.__rom = self.select("Select write OS", self.runl("ls {}".format(self.dir_config("rom"))))
 
     #--------------------
     # select_ver (default)
     #--------------------
     def select_ver(self):
-        list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
+        list_version = self.ttm_array(self.dir_rom("config"), "list_version")
         while (not self.__ver in list_version):
             self.__ver = self.select("Select [{}] Version".format(self.rom()), list_version)
 
@@ -428,10 +428,10 @@ class board(base):
     # select_map (default)
     #--------------------
     def select_map(self):
-        list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
-        list_map     = self.ttm_array(self.dir_config_rom("config"), "list_map")
+        list_version = self.ttm_array(self.dir_rom("config"), "list_version")
+        list_map     = self.ttm_array(self.dir_rom("config"), "list_map")
 
-        self.__map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
+        self.__map = self.dir_rom(list_map[list_version.index(self.__ver)])
 
         for name in ["addr_map", "emmc_map", "ufs_map"]:
             map = config_map(self.__map, name)
