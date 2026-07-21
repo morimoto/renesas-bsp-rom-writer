@@ -35,8 +35,6 @@ class rom_write_guide(base.guide):
     def guide_start(self, board):
         self.init(board)
 
-        sw = base.switch(board)
-
         # chech mot file
         mot_file = board.mot_file()
 
@@ -51,7 +49,7 @@ class rom_write_guide(base.guide):
         if (board.auto_cmd_is_available()):
             board.auto_cmd("flash")
         else:
-            sw.print_msg_update()
+            self.sw().print_msg_update()
             self.ask_yn()
 
         # turn the board on
@@ -79,7 +77,7 @@ class rom_write_guide(base.guide):
         if (board.auto_cmd_is_available()):
             board.auto_cmd("boot")
         else:
-            sw.print_msg_normal()
+            self.sw().print_msg_normal()
             self.ask_yn()
 
         self.msg("finished !!")

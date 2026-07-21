@@ -54,8 +54,6 @@ class rom_write_guide(base.guide):
     def guide_start(self, board):
         self.init(board)
 
-        sw = base.switch(board)
-
         # chech mot file
         mot_file = self.board().mot_file()
 
@@ -64,7 +62,7 @@ class rom_write_guide(base.guide):
         self.ask_yn()
 
         # indicate dip-switch update mode
-        sw.print_msg_update()
+        self.sw().print_msg_update()
         self.ask_yn()
 
         self.print_msg_power("ON")
@@ -80,7 +78,7 @@ class rom_write_guide(base.guide):
         self.ask_yn()
 
         # indicate dip-switch normal mode
-        sw.print_msg_normal()
+        self.sw().print_msg_normal()
         self.ask_yn()
 
         # baudrate settings

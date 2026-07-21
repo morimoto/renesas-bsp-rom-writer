@@ -649,6 +649,7 @@ class guide(base):
         self.__line_array	= []
         self.__remain_lines	= ""
         self.__board		= board
+        self.__sw		= switch(board)
 
         self.__serial = serial.Serial(
             port	= board.tty(),
@@ -786,6 +787,12 @@ class guide(base):
     #--------------------
     def board(self):
         return self.__board
+
+    #--------------------
+    # sw
+    #--------------------
+    def sw(self):
+        return self.__sw
 
     #--------------------
     # expect
