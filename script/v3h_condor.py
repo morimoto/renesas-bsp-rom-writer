@@ -54,7 +54,7 @@ class rom_write_guide(base.guide):
     def guide_start(self, board):
         self.init(board)
 
-        sw = base.switch(self.board().dir_config("config"))
+        sw = base.switch(board)
 
         # chech mot file
         mot_file = self.board().mot_file()

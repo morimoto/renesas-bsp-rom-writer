@@ -176,7 +176,9 @@ class switch(base):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, file):
+    def __init__(self, board):
+
+        file = board.dir_config("config")
 
         #
         # read dipswitch config from file
