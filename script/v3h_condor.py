@@ -29,18 +29,11 @@ class board(base.board):
         return "{}/{}".format(self.cwd(), self.mot_file_raw())
 
     #--------------------
-    # init_with_mot
-    #--------------------
-    def init_with_mot(self, rom, ver, tty, baudrate=115200, board=None, auto_cmd=None):
-
-        self.init(rom=rom, ver=ver, tty=tty, baudrate=baudrate, board=board, auto_cmd=auto_cmd)
-
-    #--------------------
     # __init__
     #--------------------
     def __init__(self, ver="", tty=""):
 
-        self.init_with_mot("sdk", ver, tty)
+        self.init("sdk", ver, tty)
 
 #====================================
 #

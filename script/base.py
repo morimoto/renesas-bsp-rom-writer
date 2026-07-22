@@ -277,7 +277,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, rom=None, ver=None, tty=None, board=None, baudrate=115200, auto_cmd=None):
+    def init(self, rom=None, ver=None, tty=None, baudrate=115200, board=None, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected

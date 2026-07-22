@@ -23,7 +23,7 @@ class board(v3h_condor.board):
     #--------------------
     def __init__(self, board, ver="", tty=""):
 
-        self.init_with_mot("sdk", ver, tty, 921600, board)
+        self.init("sdk", ver, tty, 921600, board)
 
 #====================================
 #

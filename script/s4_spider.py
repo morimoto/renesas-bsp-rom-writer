@@ -22,7 +22,7 @@ class board(v3h_condor.board):
     #--------------------
     def __init__(self, baudrate, rom, board, ver="", tty=""):
 
-        self.init_with_mot(rom, ver, tty, baudrate, board)
+        self.init(rom, ver, tty, baudrate, board)
 
 #====================================
 #
