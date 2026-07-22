@@ -277,7 +277,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, auto_cmd=None):
+    def init(self, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -286,7 +286,6 @@ class board(base):
             self.__board = board
         else:
             self.__board = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-        self.__soc	= soc
         self.__rom	= rom
         self.__ver	= ver
         self.__tty	= tty
@@ -324,13 +323,11 @@ class board(base):
     # mode
     # board
     # tty
-    # soc
     # baudrate
     #--------------------
     def mode(self):	return self.__mode
     def board(self):	return self.__board
     def tty(self):	return self.__tty
-    def soc(self):	return self.__soc
     def rom(self):	return self.__rom
     def map(self):	return self.__map
     def baudrate(self):	return self.__baudrate
@@ -353,20 +350,6 @@ class board(base):
                 return {}
         else:
             return self.__addr_map
-
-    #--------------------
-    # soc_ws : h3_4g
-    # soc    : h3
-    # ws     : 4g
-    #--------------------
-    def __sw(self):    return re.match("(.*)_(.*)", self.__soc)
-    def soc_ws(self):  return self.__soc
-    def soc(self):
-        m = self.__sw()
-        return m.group(1) if (m) else self.__soc
-    def ws(self):
-        m = self.__sw()
-        return m.group(2) if (m) else ""
 
     #--------------------
     # dir_xxx
@@ -398,7 +381,6 @@ class board(base):
     def config_load(self):
         # __init__() set default value
         # load config if value was ""
-        if (self.__soc  == ""): self.__soc  = self.config_read("soc")
         if (self.__rom  == ""): self.__rom  = self.config_read("rom")
         if (self.__ver  == ""): self.__ver  = self.config_read("version")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
@@ -414,7 +396,6 @@ class board(base):
                     self.error("[auto_cmd_tty](= {}) is not valid tty\n".format(self.__auto_cmd_tty))
 
     def config_save(self):
-        if (self.__soc  is not None): self.config_write("soc",     self.__soc)
         if (self.__rom  is not None): self.config_write("rom",     self.__rom)
         if (self.__ver  is not None): self.config_write("version", self.__ver)
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
@@ -429,7 +410,7 @@ class board(base):
     def setup(self):
         if (self.__rom  is not None): self.__select_rom()
         if (self.__ver  is not None): self.__select_ver()
-        if (self.__soc  is not None): self.__select_soc()
+        if (self.__map  is     None): self.__select_map()
         if (self.__tty  is not None): self.__select_tty()
         if (self.__mode is not None): self.__select_mode()
 
@@ -450,28 +431,13 @@ class board(base):
             self.__ver = self.select("Select [{}] Version".format(self.rom()), list_version)
 
     #--------------------
-    # select_soc (default)
+    # select_map (default)
     #--------------------
-    def __select_soc(self):
+    def __select_map(self):
         list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
         list_map     = self.ttm_array(self.dir_config_rom("config"), "list_map")
 
-        if (os.path.exists(self.dir_config("soc"))):
-            list_soc = self.ttm_array(self.dir_config("soc"), "list_soc")
-
-            if (not self.__ver in list_version):
-                self.error("select version first")
-
-            dir_map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
-            text = "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation")) + \
-                   "\n\nSelect SoC/WS ROM\n"
-
-            while (not os.path.isfile("{}/{}".format(dir_map, self.__soc))):
-                self.__soc = self.select(text, list_soc)
-
-            self.__map = "{}/{}".format(dir_map, self.__soc)
-        else:
-            self.__map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
+        self.__map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
 
         for name in ["addr_map", "emmc_map", "ufs_map"]:
             map = config_map(self.__map, name)
@@ -610,7 +576,6 @@ class board(base):
                "  [Board]:   {}\n".format(self.__board)
 
         deep = 0
-        if (self.__soc  is not None): text += "  [SoC/WS]:  {}\n".format(self.__soc)
         if (self.__rom  is not None): text += "  [OS]:      {}\n".format(self.__rom)
         if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
         if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
@@ -660,10 +625,12 @@ class board(base):
 
             # reset all setting
             # ignore rom here
-            if (self.__soc  is not None): self.__soc  = ""
             if (self.__ver  is not None): self.__ver  = ""
             if (self.__tty  is not None): self.__tty  = ""
             if (self.__mode is not None): self.__mode = ""
+            self.__addr_map	= {}
+            self.__map		= None
+
             self.setup()
 
     #--------------------

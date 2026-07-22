@@ -22,7 +22,7 @@ class board(v3h_condor.board):
     #--------------------
     def __init__(self):
 
-        self.init_with_mot("m3le", "yocto", "", "", 115200, "m3le_geist")
+        self.init_with_mot("yocto", "", "", 115200, "m3le_geist")
 
 #====================================
 #
