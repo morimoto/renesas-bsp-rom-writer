@@ -277,22 +277,22 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, rom=None, ver=None, tty=None, baudrate=115200, board=None, auto_cmd=None):
+    def init(self, rom=None, ver=None, tty=None, baudrate=115200, board_name=None, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
         # "xxx"  : be used, and selected
-        if (board):
-            self.__board = board
+        if (board_name):
+            self.__board_name = board_name
         else:
-            self.__board = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+            self.__board_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
         self.__rom	= rom
         self.__ver	= ver
         self.__tty	= tty
         self.__baudrate	= baudrate
 
         # for inside
-        self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board)
+        self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board_name)
         self.__addr_map	= {}
         self.__map	= None
 
@@ -319,11 +319,9 @@ class board(base):
     def mode_explanation(self): return ""
 
     #--------------------
-    # board
     # tty
     # baudrate
     #--------------------
-    def board(self):	return self.__board
     def tty(self):	return self.__tty
     def rom(self):	return self.__rom
     def map(self):	return self.__map
@@ -353,7 +351,7 @@ class board(base):
     #--------------------
     def dir_board(self, path="", full=1):
         dir = "{}/".format(self.top()) if (full) else ""
-        return "{}board/{}/{}".format(dir, self.__board, path)
+        return "{}board/{}/{}".format(dir, self.__board_name, path)
     def dir_config(self, path="", full=1):	return self.dir_board("config/" + path, full)
     def dir_config_rom(self, path="", full=1):	return self.dir_config("rom/{}/{}".format(self.__rom, path), full)
 
@@ -544,7 +542,7 @@ class board(base):
     #--------------------
     def __print_info(self):
         text = "Your selected settings are...\n\n" + \
-               "  [Board]:   {}\n".format(self.__board)
+               "  [Board]:   {}\n".format(self.__board_name)
 
         deep = 0
         if (self.__rom  is not None): text += "  [OS]:      {}\n".format(self.__rom)
@@ -579,7 +577,7 @@ class board(base):
         self.msg("This script requires be called from {} ROM directory.\n".format(self.rom()) +\
                  "Are you calling this script from there ?\n\n" +\
                  "  > cd ${{{0} ROM dir}}\n".format(self.rom()) +\
-                 "  > ${{renesas-bsp-rom-writer}}/board/{}/linux/{}-writer".format(self.board(), self.rom()))
+                 "  > ${{renesas-bsp-rom-writer}}/board/{}/linux/{}-writer".format(self.__board_name, self.rom()))
         self.ask_yn(quit=True)
 
     #--------------------
