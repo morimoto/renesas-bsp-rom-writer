@@ -178,7 +178,7 @@ class switch(base):
     #--------------------
     def __init__(self, board):
 
-        file = board.dir_config("config")
+        file = board.dir_info("config")
 
         #
         # read dipswitch config from file
@@ -354,8 +354,8 @@ class board(base):
     def dir_board(self, path="", full=1):
         dir = "{}/".format(self.top()) if (full) else ""
         return "{}board/{}/{}".format(dir, self.__board_name, path)
-    def dir_config(self, path="", full=1):	return self.dir_board("config/" + path, full)
-    def dir_rom(self, path="", full=1):	return self.dir_config("rom/{}/{}".format(self.__rom, path), full)
+    def dir_info(self, path="", full=1):	return self.dir_board("info/" + path, full)
+    def dir_rom(self, path="", full=1):	return self.dir_info("rom/{}/{}".format(self.__rom, path), full)
 
     #--------------------
     # config_xxx
@@ -414,7 +414,7 @@ class board(base):
     def select_rom(self):
         # check rom/${os}/config file
         while (not os.path.exists(self.dir_rom("config"))):
-            self.__rom = self.select("Select write OS", self.runl("ls {}".format(self.dir_config("rom"))))
+            self.__rom = self.select("Select write OS", self.runl("ls {}".format(self.dir_info("rom"))))
 
     #--------------------
     # select_ver (default)
@@ -451,7 +451,7 @@ class board(base):
     # select_tty (default)
     #--------------------
     def tty_connection(self):
-        return self.ttm_array(self.dir_config("config"), "tty_connection")[0]
+        return self.ttm_array(self.dir_info("config"), "tty_connection")[0]
 
     def __tty_error(self, tty):
         if (not os.path.exists(tty)):
