@@ -178,7 +178,7 @@ class switch(base):
     #--------------------
     def __init__(self, board):
 
-        file = board.dir_info("config")
+        file = board.dir_info("switch")
 
         #
         # read dipswitch config from file
@@ -451,7 +451,7 @@ class board(base):
     # select_tty (default)
     #--------------------
     def tty_connection(self):
-        return self.ttm_array(self.dir_info("config"), "tty_connection")[0]
+        return self.ttm_array(self.dir_info("switch"), "tty_connection")[0]
 
     def __tty_error(self, tty):
         if (not os.path.exists(tty)):
