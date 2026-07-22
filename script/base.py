@@ -279,7 +279,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, rom=None, ver=None, tty=None, baudrate=115200, board_name=None, auto_cmd=None):
+    def init(self, rom=None, tty=None, baudrate=115200, board_name=None, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -289,7 +289,6 @@ class board(base):
         else:
             self.__board_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
         self.__rom	= rom
-        self.__ver	= ver
         self.__tty	= tty
         self.__baudrate	= baudrate
 
@@ -297,6 +296,7 @@ class board(base):
         self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board_name)
         self.__addr_map	= {}
         self.__map	= None
+        self.__title	= None
 
         # for auto command
         self.__auto_cmd = auto_cmd	# path from ${TOP}/board/
@@ -379,7 +379,6 @@ class board(base):
         # __init__() set default value
         # load config if value was ""
         if (self.__rom  == ""): self.__rom  = self.config_read("rom")
-        if (self.__ver  == ""): self.__ver  = self.config_read("version")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
 
         # The auto_cmd is specific to each board
@@ -393,7 +392,6 @@ class board(base):
 
     def config_save(self):
         if (self.__rom  is not None): self.config_write("rom",     self.__rom)
-        if (self.__ver  is not None): self.config_write("version", self.__ver)
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
 
     #--------------------
@@ -404,8 +402,7 @@ class board(base):
     #--------------------
     def setup(self):
         if (self.__rom  is not None): self.select_rom()
-        if (self.__ver  is not None): self.select_ver()
-        if (self.__map  is     None): self.select_map()
+        self.detect_map()
         if (self.__tty  is not None): self.select_tty()
 
     #--------------------
@@ -417,35 +414,42 @@ class board(base):
             self.__rom = self.select("Select write OS", self.runl("ls {}".format(self.dir_info("rom"))))
 
     #--------------------
-    # select_ver (default)
+    # detect_map
     #--------------------
-    def select_ver(self):
-        list_version = self.ttm_array(self.dir_rom("config"), "list_version")
-        while (not self.__ver in list_version):
-            self.__ver = self.select("Select [{}] Version".format(self.rom()), list_version)
-
-    #--------------------
-    # select_map (default)
-    #--------------------
-    def select_map(self):
+    def detect_map(self):
         list_version = self.ttm_array(self.dir_rom("config"), "list_version")
         list_map     = self.ttm_array(self.dir_rom("config"), "list_map")
 
-        self.__map = self.dir_rom(list_map[list_version.index(self.__ver)])
+        for ver in list_version:
+            map_file  = self.dir_rom(list_map[list_version.index(ver)])
+            mot   = self.ttm_array(map_file, "mot_file")[0]
+            addr_map = {}
 
-        for name in ["addr_map", "emmc_map", "ufs_map"]:
-            map = config_map(self.__map, name)
-            if (map.len()):
-                self.__addr_map[name] = map
+            if (not os.path.exists(mot)):
+                continue
 
-        err = ""
-        for key, map in self.addr_map().items():
-            for m in map:
-                if (not m["addr"]):
-                    err += "  {}\n".format(m["srec"])
+            for key in ["addr_map", "emmc_map", "ufs_map"]:
+                map = config_map(map_file, key)
+                if (not map.len()):
+                    continue
+                addr_map[key] = map
+                for val in map:
+                    if (not os.path.exists(val["srec"])):
+                        addr_map = {}
+                        break
+                if (not len(addr_map)):
+                    break
+            if (len(addr_map)):
+                self.msg("It detected\n" +
+                         "    [{}]    \n".format(ver) +
+                         "Is this your expected ?")
+                if (self.ask_yn()):
+                    self.__map		= map_file
+                    self.__addr_map	= addr_map
+                    self.__title	= ver
+                    return
 
-        if (len(err)):
-            self.error("These files are required, but not found.\n\n" + err)
+        self.error("No ROM map found", 1)
 
     #--------------------
     # select_tty (default)
@@ -544,11 +548,11 @@ class board(base):
     #--------------------
     def __print_info(self):
         text = "Your selected settings are...\n\n" + \
-               "  [Board]:   {}\n".format(self.__board_name)
+               "  [Board]:   {}\n".format(self.__board_name) +\
+               "  [Title]:   {}\n".format(self.__title)
 
         deep = 0
         if (self.__rom  is not None): text += "  [OS]:      {}\n".format(self.__rom)
-        if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
         if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
         if (self.__auto_cmd_tty is not None):
             text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
@@ -595,7 +599,6 @@ class board(base):
 
             # reset all setting
             # ignore rom here
-            if (self.__ver  is not None): self.__ver  = ""
             if (self.__tty  is not None): self.__tty  = ""
             self.__addr_map	= {}
             self.__map		= None

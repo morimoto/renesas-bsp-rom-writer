@@ -21,9 +21,9 @@ class board(v3h_condor.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, board, ver="", tty=""):
+    def __init__(self, board, tty=""):
 
-        self.init("sdk", ver, tty, 921600, board)
+        self.init("sdk", tty, 921600, board)
 
 #====================================
 #
@@ -36,7 +36,7 @@ class board(v3h_condor.board):
 if __name__=='__main__':
     if (len(sys.argv) < 2):
         # test
-        board(ver="3.0.1", tty="/dev/ttyUSB0")
+        board(tty="/dev/ttyUSB0")
     elif (sys.argv[1] == "sdk"):
         s4_spider.rom_write_guide().guide_start(board(sys.argv[2]))
     else:

@@ -20,9 +20,9 @@ class board(v3h_condor.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, baudrate, rom, board, ver="", tty=""):
+    def __init__(self, baudrate, rom, board, tty=""):
 
-        self.init(rom, ver, tty, baudrate, board)
+        self.init(rom, tty, baudrate, board)
 
 #====================================
 #
@@ -50,7 +50,7 @@ class rom_write_guide(v3h_condor.rom_write_guide):
 if __name__=='__main__':
     if (len(sys.argv) < 3):
         # test
-        board(1843200, ver="Pre-Alpha4.0", tty="/dev/ttyUSB0")
+        board(1843200, tty="/dev/ttyUSB0")
     elif (sys.argv[2] == "s4_sk"):
         rom_write_guide().guide_start(board(921600, sys.argv[1], sys.argv[2]))
     elif (sys.argv[2] == "s4_spider"):
