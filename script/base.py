@@ -277,7 +277,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, auto_cmd=None):
+    def init(self, rom=None, ver=None, tty=None, board=None, baudrate=115200, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -289,7 +289,6 @@ class board(base):
         self.__rom	= rom
         self.__ver	= ver
         self.__tty	= tty
-        self.__mode	= mode		# normal, mot
         self.__baudrate	= baudrate
 
         # for inside
@@ -320,12 +319,10 @@ class board(base):
     def mode_explanation(self): return ""
 
     #--------------------
-    # mode
     # board
     # tty
     # baudrate
     #--------------------
-    def mode(self):	return self.__mode
     def board(self):	return self.__board
     def tty(self):	return self.__tty
     def rom(self):	return self.__rom
@@ -384,7 +381,6 @@ class board(base):
         if (self.__rom  == ""): self.__rom  = self.config_read("rom")
         if (self.__ver  == ""): self.__ver  = self.config_read("version")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
-        if (self.__mode == ""): self.__mode = self.config_read("mode")
 
         # The auto_cmd is specific to each board
         if (self.__auto_cmd is not None):
@@ -399,7 +395,6 @@ class board(base):
         if (self.__rom  is not None): self.config_write("rom",     self.__rom)
         if (self.__ver  is not None): self.config_write("version", self.__ver)
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
-        if (self.__mode is not None): self.config_write("mode",    self.__mode)
 
     #--------------------
     # setup
@@ -412,7 +407,6 @@ class board(base):
         if (self.__ver  is not None): self.__select_ver()
         if (self.__map  is     None): self.__select_map()
         if (self.__tty  is not None): self.__select_tty()
-        if (self.__mode is not None): self.__select_mode()
 
     #--------------------
     # select_rom (default)
@@ -546,29 +540,6 @@ class board(base):
                 self.__tty_ask_kill_owner()
 
     #--------------------
-    # select_mode (default)
-    #--------------------
-    def __select_mode(self):
-        mode_list = ["normal"]
-
-        # add more mode here
-        if (self.mot_file()): mode_list.append("mot")
-
-        if (not self.__mode in mode_list):
-            if (len(mode_list) <= 1):
-                self.__mode = mode_list[0]
-            else:
-                self.__mode = self.select("You can select ROM writer mode.\n\n" +\
-                                          self.mode_explanation(), mode_list)
-                print()
-
-        if (self.mode() == "mot"):
-            mot_file = self.mot_file()
-            if (not mot_file or
-                not os.path.exists(mot_file)):
-                self.mot_error()
-
-    #--------------------
     # print_info
     #--------------------
     def __print_info(self):
@@ -578,7 +549,6 @@ class board(base):
         deep = 0
         if (self.__rom  is not None): text += "  [OS]:      {}\n".format(self.__rom)
         if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
-        if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
         if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
         if (self.__auto_cmd_tty is not None):
             text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
@@ -627,7 +597,6 @@ class board(base):
             # ignore rom here
             if (self.__ver  is not None): self.__ver  = ""
             if (self.__tty  is not None): self.__tty  = ""
-            if (self.__mode is not None): self.__mode = ""
             self.__addr_map	= {}
             self.__map		= None
 

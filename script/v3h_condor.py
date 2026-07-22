@@ -18,7 +18,6 @@ import base
 class board(base.board):
     #--------------------
     # mot_file
-    # mot_error
     #--------------------
     def mot_file_raw(self):
             mot = self.ttm_array(self.map(), "mot_file")
@@ -29,17 +28,12 @@ class board(base.board):
     def mot_file(self):
         return "{}/{}".format(self.cwd(), self.mot_file_raw())
 
-    def mot_error(self):
-        self.error("It seems you don't have necessary mot file\n" +\
-                   "({})\n".format(self.mot_file_raw()) +\
-                   "Please re-check current dir")
-
     #--------------------
     # init_with_mot
     #--------------------
     def init_with_mot(self, rom, ver, tty, baudrate=115200, board=None, auto_cmd=None):
 
-        self.init(rom=rom, ver=ver, tty=tty, mode="mot", baudrate=baudrate, board=board, auto_cmd=auto_cmd)
+        self.init(rom=rom, ver=ver, tty=tty, baudrate=baudrate, board=board, auto_cmd=auto_cmd)
 
     #--------------------
     # __init__
