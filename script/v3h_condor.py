@@ -33,7 +33,7 @@ class board(base.board):
     #--------------------
     def __init__(self, tty=""):
 
-        self.init("sdk", tty)
+        self.init(tty)
 
 #====================================
 #
@@ -93,10 +93,4 @@ class rom_write_guide(base.guide):
 #
 #====================================
 if __name__=='__main__':
-    if (len(sys.argv) < 2):
-        # test
-        board(tty="/dev/ttyUSB0")
-    elif (sys.argv[1] == "sdk"):
-        rom_write_guide().guide_start(board())
-    else:
-        print("unknown command")
+    rom_write_guide().guide_start(board())

@@ -20,9 +20,9 @@ class board(v3h_condor.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, baudrate, rom, board, tty=""):
+    def __init__(self, baudrate, board, tty=""):
 
-        self.init(rom, tty, baudrate, board)
+        self.init(tty, baudrate, board)
 
 #====================================
 #
@@ -48,13 +48,10 @@ class rom_write_guide(v3h_condor.rom_write_guide):
 #
 #====================================
 if __name__=='__main__':
-    if (len(sys.argv) < 3):
-        # test
-        board(1843200, tty="/dev/ttyUSB0")
-    elif (sys.argv[2] == "s4_sk"):
-        rom_write_guide().guide_start(board(921600, sys.argv[1], sys.argv[2]))
-    elif (sys.argv[2] == "s4_spider"):
-        board = board(1843200, sys.argv[1], sys.argv[2])
+    if (sys.argv[1] == "s4_sk"):
+        rom_write_guide().guide_start(board(921600, sys.argv[1]))
+    elif (sys.argv[1] == "s4_spider"):
+        board = board(1843200, sys.argv[1])
         board.msg("*NOTE1*\n\n"\
                  "The board which serial number No.2023 - No.2132\n"\
                  "needs CPLD setting to enable SW8.\n"\

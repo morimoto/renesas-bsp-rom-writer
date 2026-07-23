@@ -279,7 +279,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, rom=None, tty=None, baudrate=115200, board_name=None, auto_cmd=None):
+    def init(self, tty=None, baudrate=115200, board_name=None, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -288,7 +288,6 @@ class board(base):
             self.__board_name = board_name
         else:
             self.__board_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-        self.__rom	= rom
         self.__tty	= tty
         self.__baudrate	= baudrate
 
@@ -325,7 +324,6 @@ class board(base):
     # baudrate
     #--------------------
     def tty(self):	return self.__tty
-    def rom(self):	return self.__rom
     def map(self):	return self.__map
     def baudrate(self):	return self.__baudrate
 
@@ -355,7 +353,6 @@ class board(base):
         dir = "{}/".format(self.top()) if (full) else ""
         return "{}board/{}/{}".format(dir, self.__board_name, path)
     def dir_info(self, path="", full=1):	return self.dir_board("info/" + path, full)
-    def dir_rom(self, path="", full=1):	return self.dir_info("rom/{}/{}".format(self.__rom, path), full)
 
     #--------------------
     # config_xxx
@@ -378,7 +375,6 @@ class board(base):
     def config_load(self):
         # __init__() set default value
         # load config if value was ""
-        if (self.__rom  == ""): self.__rom  = self.config_read("rom")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
 
         # The auto_cmd is specific to each board
@@ -391,7 +387,6 @@ class board(base):
                     self.error("[auto_cmd_tty](= {}) is not valid tty\n".format(self.__auto_cmd_tty))
 
     def config_save(self):
-        if (self.__rom  is not None): self.config_write("rom",     self.__rom)
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
 
     #--------------------
@@ -401,27 +396,17 @@ class board(base):
     # if default select_xx() was not good match
     #--------------------
     def setup(self):
-        if (self.__rom  is not None): self.select_rom()
         self.detect_map()
         if (self.__tty  is not None): self.select_tty()
-
-    #--------------------
-    # select_rom (default)
-    #--------------------
-    def select_rom(self):
-        # check rom/${os}/config file
-        while (not os.path.exists(self.dir_rom("config"))):
-            self.__rom = self.select("Select write OS", self.runl("ls {}".format(self.dir_info("rom"))))
 
     #--------------------
     # detect_map
     #--------------------
     def detect_map(self):
-        list_version = self.ttm_array(self.dir_rom("config"), "list_version")
-        list_map     = self.ttm_array(self.dir_rom("config"), "list_map")
+        map_files = self.runl("ls {}map/*.map".format(self.dir_info(full=1)))
 
-        for ver in list_version:
-            map_file  = self.dir_rom(list_map[list_version.index(ver)])
+        for map_file in map_files:
+            title = self.ttm_array(map_file, "title")[0]
             mot   = self.ttm_array(map_file, "mot_file")[0]
             addr_map = {}
 
@@ -441,12 +426,12 @@ class board(base):
                     break
             if (len(addr_map)):
                 self.msg("It detected\n" +
-                         "    [{}]    \n".format(ver) +
+                         "    [{}]    \n".format(title) +
                          "Is this your expected ?")
                 if (self.ask_yn()):
                     self.__map		= map_file
                     self.__addr_map	= addr_map
-                    self.__title	= ver
+                    self.__title	= title
                     return
 
         self.error("No ROM map found", 1)
@@ -552,7 +537,6 @@ class board(base):
                "  [Title]:   {}\n".format(self.__title)
 
         deep = 0
-        if (self.__rom  is not None): text += "  [OS]:      {}\n".format(self.__rom)
         if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
         if (self.__auto_cmd_tty is not None):
             text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
@@ -580,10 +564,10 @@ class board(base):
         # If not exist, confirm_location
         if (os.path.exists(self.config_file())): return
 
-        self.msg("This script requires be called from {} ROM directory.\n".format(self.rom()) +\
+        self.msg("This script requires be called from your ROM directory.\n" +\
                  "Are you calling this script from there ?\n\n" +\
-                 "  > cd ${{{0} ROM dir}}\n".format(self.rom()) +\
-                 "  > ${{renesas-bsp-rom-writer}}/board/{}/linux/{}-writer".format(self.__board_name, self.rom()))
+                 "  > cd ${your ROM dir}\n" +\
+                 "  > ${{renesas-bsp-rom-writer}}/board/{}/linux/rom-writer".format(self.__board_name))
         self.ask_yn(quit=True)
 
     #--------------------
