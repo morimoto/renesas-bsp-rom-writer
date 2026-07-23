@@ -34,9 +34,6 @@ class rom_write_guide(base.guide):
     def guide_start(self, board):
         self.init(board)
 
-        # chech mot file
-        mot_file = board.mot_file()
-
         # make sure board is power off
         if (board.auto_cmd_is_available()):
             board.auto_cmd("off")
@@ -58,7 +55,7 @@ class rom_write_guide(base.guide):
             self.print_msg_power("ON")
 
         self.expect("please send !")
-        self.send_file(mot_file)
+        self.send_mot_file()
         self.expect("N:>")
 
         ask = self.ask_loop()

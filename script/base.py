@@ -791,6 +791,7 @@ class guide(base):
     #--------------------
     # send
     # send_file
+    # send_mot_file
     #--------------------
     def send(self, cmd="", end="\r"):
         return self.__serial.write("{}{}".format(cmd, end).encode())
@@ -802,6 +803,8 @@ class guide(base):
         with open(file, "rb") as f:
             self.__serial.write(f.read())
         self.send("\n", end="")
+    def send_mot_file(self):
+        self.send_file(self.board().mot_file())
 
     #--------------------
     # speed_up
