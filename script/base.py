@@ -349,10 +349,9 @@ class board(base):
     #--------------------
     # dir_xxx
     #--------------------
-    def dir_board(self, path="", full=1):
-        dir = "{}/".format(self.top()) if (full) else ""
-        return "{}board/{}/{}".format(dir, self.__board_name, path)
-    def dir_info(self, path="", full=1):	return self.dir_board("info/" + path, full)
+    def dir_board(self, path=""):
+        return "{}/board/{}/{}".format(self.top(), self.__board_name, path)
+    def dir_info(self, path=""):	return self.dir_board("info/" + path)
 
     #--------------------
     # config_xxx
@@ -404,7 +403,7 @@ class board(base):
     #--------------------
     def detect_map(self):
         map_files = self.runl("ls ./*.map 2>/dev/null")
-        map_files.extend(self.runl("ls {}map/*.map".format(self.dir_info(full=1))))
+        map_files.extend(self.runl("ls {}map/*.map".format(self.dir_info())))
 
         for map_file in map_files:
             title = self.ttm_array(map_file, "title")[0]
