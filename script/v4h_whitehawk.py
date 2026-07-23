@@ -10,14 +10,13 @@ import sys
 import time
 
 import base
-import v3h_condor
 import s4_spider
 #====================================
 #
 # board
 #
 #====================================
-class board(v3h_condor.board):
+class board(base.board):
     #--------------------
     # __init__
     #--------------------

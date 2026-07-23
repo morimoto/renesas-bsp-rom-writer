@@ -8,13 +8,12 @@
 import time
 
 import base
-import v3h_condor
 #====================================
 #
 # board
 #
 #====================================
-class board(v3h_condor.board):
+class board(base.board):
     #--------------------
     # __init__
     #--------------------
