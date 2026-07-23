@@ -21,7 +21,7 @@
 	You need prepare Yocto ROM.
 	see
 		[How to get ROM ?]
-		${renesas-bsp-rom-writer}/board/e3_ebisu/README
+		${renesas-bsp-rom-writer}/board/m3le_geist/README
 
 -------------------------------
 * RL78
