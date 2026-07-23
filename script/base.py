@@ -291,7 +291,7 @@ class board(base):
         self.__baudrate	= baudrate
 
         # for inside
-        self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board_name)
+        self.__config	= "renesas_bsp_rom_writer.{}".format(self.__board_name)
         self.__addr_map	= {}
         self.__map	= None
         self.__tty	= ""
