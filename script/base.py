@@ -403,7 +403,8 @@ class board(base):
     # detect_map
     #--------------------
     def detect_map(self):
-        map_files = self.runl("ls {}map/*.map".format(self.dir_info(full=1)))
+        map_files = self.runl("ls ./*.map 2>/dev/null")
+        map_files.extend(self.runl("ls {}map/*.map".format(self.dir_info(full=1))))
 
         for map_file in map_files:
             title = self.ttm_array(map_file, "title")[0]

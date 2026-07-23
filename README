@@ -112,6 +112,25 @@
 		-----------------
 
 -------------------------------
+* Can I use original map ?
+-------------------------------
+
+	Yes. ROM writer will try to find map file from
+
+		- ./*.map
+		- ${renesas-bsp-rom-writer}/board/${board}/info/map/*.map
+
+	For example, you can copy map file from board, and update it.
+
+		> cp ${renesas-bsp-rom-writer}/board/${board}/info/map/*.map  my.map
+		> vi my.map
+		# fixup at least "title".
+		# ex)
+		# title:"My Map"
+
+	ROM writer will detect it, and ask to you whether use it or not.
+
+-------------------------------
 * Can I see the log ?
 -------------------------------
 
