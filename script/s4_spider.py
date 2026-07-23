@@ -20,9 +20,9 @@ class board(v3h_condor.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, baudrate, board, tty=""):
+    def __init__(self, baudrate, board):
 
-        self.init(tty, baudrate, board)
+        self.init(baudrate, board)
 
 #====================================
 #

@@ -279,7 +279,7 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, tty=None, baudrate=115200, board_name=None, auto_cmd=None):
+    def init(self, baudrate=115200, board_name=None, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
@@ -288,13 +288,13 @@ class board(base):
             self.__board_name = board_name
         else:
             self.__board_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-        self.__tty	= tty
         self.__baudrate	= baudrate
 
         # for inside
         self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board_name)
         self.__addr_map	= {}
         self.__map	= None
+        self.__tty	= ""
         self.__title	= None
 
         # for auto command
@@ -397,7 +397,7 @@ class board(base):
     #--------------------
     def setup(self):
         self.detect_map()
-        if (self.__tty  is not None): self.select_tty()
+        self.select_tty()
 
     #--------------------
     # detect_map
@@ -501,6 +501,8 @@ class board(base):
                 self.__tty = ""
 
     def select_tty(self):
+        if (self.__tty != ""):
+            return
         if ("ignore" == self.config_read("select_tty")):
             self.msg("config file indicates ignore tty select")
             self.__tty_ask_kill_owner()
@@ -534,16 +536,12 @@ class board(base):
     def __print_info(self):
         text = "Your selected settings are...\n\n" + \
                "  [Board]:   {}\n".format(self.__board_name) +\
-               "  [Title]:   {}\n".format(self.__title)
+               "  [Title]:   {}\n".format(self.__title) +\
+               "  [TTY]:     {} ({})\n".format(self.__tty, self.baudrate())
 
-        deep = 0
-        if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
         if (self.__auto_cmd_tty is not None):
             text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
             text += "  [Auto command TTY]: {}\n".format(self.__auto_cmd_tty)
-
-        if (deep):
-            text += "\nPlease deeply check at * items\n"
 
         text += "\nYou can manually setup if you want\n" +\
                 "   > vi ./{}\n".format(self.__config)
@@ -583,7 +581,7 @@ class board(base):
 
             # reset all setting
             # ignore rom here
-            if (self.__tty  is not None): self.__tty  = ""
+            self.__tty		= ""
             self.__addr_map	= {}
             self.__map		= None
 

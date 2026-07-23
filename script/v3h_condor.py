@@ -31,9 +31,9 @@ class board(base.board):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, tty=""):
+    def __init__(self):
 
-        self.init(tty)
+        self.init()
 
 #====================================
 #
