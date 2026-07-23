@@ -427,10 +427,16 @@ class board(base):
                 if (not len(addr_map)):
                     break
             if (len(addr_map)):
-                self.msg("It detected\n" +
-                         "    [{}]    \n".format(title) +
-                         "Is this your expected ?")
-                if (self.ask_yn()):
+                if ("ignore" == self.config_read("confirm_map")):
+                    self.msg("config file indicates ignore map confirmation\n" +
+                             "    [{}]    ".format(title))
+                    accept = True
+                else:
+                    self.msg("It detected\n" +
+                             "    [{}]    \n".format(title) +
+                             "Is this your expected ?")
+                    accept = self.ask_yn()
+                if (accept):
                     self.__map		= map_file
                     self.__addr_map	= addr_map
                     self.__title	= title

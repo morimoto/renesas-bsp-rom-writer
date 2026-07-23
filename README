@@ -90,6 +90,9 @@
 	[confirm_info]:ignore	Skip the confirmation prompt for the
 				selected settings before proceeding.
 
+	[confirm_map]:ignore	Skip the confirmation prompt for the
+				auto-detected map file, and use the first match.
+
 	[update_style]:all	Update all files without asking.
 	[update_style]:ask	Ask one by one whether to update each file.
 
@@ -108,6 +111,7 @@
 		[select_tty]:ignore
 		[tty_owner]:ignore
 		[confirm_info]:ignore
+		[confirm_map]:ignore
 		[update_style]:all
 		-----------------
 
