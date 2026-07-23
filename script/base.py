@@ -312,7 +312,9 @@ class board(base):
     #--------------------
     # mot_file
     #--------------------
-    def mot_file(self): return None
+    def mot_file(self):
+        return "{}/{}".format(self.cwd(),
+                              self.ttm_array(self.map(), "mot_file")[0])
 
     #--------------------
     # mode_explanation

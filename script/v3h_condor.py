@@ -17,18 +17,6 @@ import base
 #====================================
 class board(base.board):
     #--------------------
-    # mot_file
-    #--------------------
-    def mot_file_raw(self):
-            mot = self.ttm_array(self.map(), "mot_file")
-            if (not mot):
-                self.error("this board needs a 'mot_file' entry, but none was found")
-            return mot[0]
-
-    def mot_file(self):
-        return "{}/{}".format(self.cwd(), self.mot_file_raw())
-
-    #--------------------
     # __init__
     #--------------------
     def __init__(self):
