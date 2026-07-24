@@ -5,12 +5,12 @@
 #
 # 2022/08/23 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-import os
 import sys
-import time
 
 import base
 import s4_spider
+
+
 #====================================
 #
 # board
