@@ -152,7 +152,7 @@ class base:
         l = 0
         for txt in text.split("\n"):
             t = len(txt)
-            if (t > l): l = t
+            l = max(l, t)
 
         print()
         print("+-", end="")
