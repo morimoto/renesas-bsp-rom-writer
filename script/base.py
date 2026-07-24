@@ -77,7 +77,7 @@ class base:
     # read TeraTerm array
     #--------------------
     def ttm_array(self, file, tag):
-        return self.runl('grep -w "^{}" {} | sed -e "s/^{}: *\\"//g" | sed -e "s/\\"$//g"'.format(tag, file, tag))
+        return self.runl(f'grep -w "^{tag}" {file} | sed -e "s/^{tag}: *\\"//g" | sed -e "s/\\"$//g"')
 
     #--------------------
     # input
@@ -97,18 +97,18 @@ class base:
             return list[0]
 
         for i in range(max):
-            text += "\n  {}) ".format(i + 1) + list[i]
+            text += f"\n  {i + 1}) " + list[i]
 
         while 1:
             self.msg(text)
             try:
-                ret = int(self.input("select number (1-{}): ".format(max)))
+                ret = int(self.input(f"select number (1-{max}): "))
             except KeyboardInterrupt:
                 sys.exit(1)
             except ValueError:
                 ret = -1
             if (ret <= 0 or ret > max):
-                self.error("select number in 1 - {}".format(max), quit=0)
+                self.error(f"select number in 1 - {max}", quit=0)
             else:
                 return list[ret - 1]
 
@@ -117,7 +117,7 @@ class base:
     #--------------------
     def ask_yn(self, quit=None, default=None):
         while 1:
-            msg = " <default {}>: ".format(default) if (default) else ": "
+            msg = f" <default {default}>: " if (default) else ": "
             ret = self.input("OK? (y/n)" + msg)
             if (default and ret == ""):
                 ret = default
@@ -136,7 +136,7 @@ class base:
         print()
         print("********* [error] *************")
         for txt in text.split("\n"):
-            print("* {}".format(txt))
+            print(f"* {txt}")
         print("*******************************")
         if (quit):
             sys.exit(1)
@@ -159,7 +159,7 @@ class base:
         print("-+")
 
         for txt in text.split("\n"):
-            print("| %-{}s |".format(l) % txt)
+            print(f"| {txt:<{l}} |")
 
         print("+-", end="")
         for i in range(l):
@@ -233,8 +233,8 @@ class config_map:
         for m in map:
             am = m.split(',')
             addr = None
-            if (os.path.exists("{}/{}".format(b.cwd(), am[1]))):
-                addr = b.run("head -n 2 {}/{} | grep S3 | head -n 1 | cut -c5-12".format(b.cwd(), am[1]))
+            if (os.path.exists(f"{b.cwd()}/{am[1]}")):
+                addr = b.run(f"head -n 2 {b.cwd()}/{am[1]} | grep S3 | head -n 1 | cut -c5-12")
             self.__map.append({"addr":addr,
                                "save":am[0],
                                "srec":am[1]})
@@ -291,7 +291,7 @@ class board(base):
         self.__baudrate	= baudrate
 
         # for inside
-        self.__config	= "renesas_bsp_rom_writer.{}".format(self.__board_name)
+        self.__config	= f"renesas_bsp_rom_writer.{self.__board_name}"
         self.__addr_map	= {}
         self.__map	= None
         self.__tty	= ""
@@ -352,24 +352,24 @@ class board(base):
     # dir_xxx
     #--------------------
     def dir_board(self, path=""):
-        return "{}/board/{}/{}".format(self.top(), self.__board_name, path)
+        return f"{self.top()}/board/{self.__board_name}/{path}"
     def dir_info(self, path=""):	return self.dir_board("info/" + path)
 
     #--------------------
     # config_xxx
     #--------------------
     def config_file(self):
-        return "{}/{}".format(self.cwd(), self.__config)
+        return f"{self.cwd()}/{self.__config}"
 
     def config_read(self, tag):
-        return self.run(r'grep "^\[{}\]:" {} 2>/dev/null | cut -d : -f 2-'.format(tag, self.config_file()))
+        return self.run(rf'grep "^\[{tag}\]:" {self.config_file()} 2>/dev/null | cut -d : -f 2-')
 
     def config_write(self, tag, data):
-        tmp = "/tmp/renesas-bsp-rom-writer-config-{}".format(os.getpid())
+        tmp = f"/tmp/renesas-bsp-rom-writer-config-{os.getpid()}"
         if (os.path.exists(self.config_file())):
-            self.run(r'grep -v "^\[{}\]:" {} > {}'.format(tag, self.config_file(), tmp))
-        self.run("echo \"[{}]:{}\" >> {}".format(tag, data, tmp))
-        self.run("mv -f {} {}".format(tmp, self.config_file()))
+            self.run(rf'grep -v "^\[{tag}\]:" {self.config_file()} > {tmp}')
+        self.run(f"echo \"[{tag}]:{data}\" >> {tmp}")
+        self.run(f"mv -f {tmp} {self.config_file()}")
         if (not os.path.exists(self.config_file())):
             self.error("cann't save configs")
 
@@ -385,7 +385,7 @@ class board(base):
                 self.__auto_cmd_tty = None
             else:
                 if (self.__tty_error(self.__auto_cmd_tty)):
-                    self.error("[auto_cmd_tty](= {}) is not valid tty\n".format(self.__auto_cmd_tty))
+                    self.error(f"[auto_cmd_tty](= {self.__auto_cmd_tty}) is not valid tty\n")
 
     def config_save(self):
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
@@ -405,7 +405,7 @@ class board(base):
     #--------------------
     def detect_map(self):
         map_files = self.runl("ls ./*.map 2>/dev/null")
-        map_files.extend(self.runl("ls {}map/*.map".format(self.dir_info())))
+        map_files.extend(self.runl(f"ls {self.dir_info()}map/*.map"))
 
         for map_file in map_files:
             title = self.ttm_array(map_file, "title")[0]
@@ -429,11 +429,11 @@ class board(base):
             if (len(addr_map)):
                 if ("ignore" == self.config_read("confirm_map")):
                     self.msg("config file indicates ignore map confirmation\n" +
-                             "    [{}]    ".format(title))
+                            f"    [{title}]    ")
                     accept = True
                 else:
                     self.msg("It detected\n" +
-                             "    [{}]    \n".format(title) +
+                            f"    [{title}]    \n" +
                              "Is this your expected ?")
                     accept = self.ask_yn()
                 if (accept):
@@ -461,14 +461,14 @@ class board(base):
 
         if (not os.access(tty, os.R_OK) or
             not os.access(tty, os.W_OK)):
-            self.msg("You don't have permission to access to {}.\n".format(tty) +\
+            self.msg(f"You don't have permission to access to {tty}.\n" +\
                      "It requires root or \"dialout group\" permission, maybe ?\n" +\
                      "Check it\n" \
-                     "   > ls -l {}\n\n".format(tty) +\
+                    f"   > ls -l {tty}\n\n" +\
                      "Check your joined group\n" \
                      "   > id\n\n" \
                      "Let's join to \"dialout group\"\n" \
-                     "   > sudo gpasswd -a {} dialout\n\n".format(getpass.getuser()) +\
+                    f"   > sudo gpasswd -a {getpass.getuser()} dialout\n\n" +\
                      "Maybe you need to logout and login again.\n" \
                      "Then, check your joined group.\n" \
                      "   > id\n\n" \
@@ -477,22 +477,22 @@ class board(base):
             return 1
 
     def __tty_owner_info(self):
-        fuser = self.run("fuser -u {} 2>&1".format(self.__tty))
+        fuser = self.run(f"fuser -u {self.__tty} 2>&1")
         if not fuser:
             return None
         pids  = re.findall(r'(\d+)\(',   fuser)
         users = re.findall(r'\(([^)]+)\)', fuser)
         owners = []
         for pid, user in zip(pids, users):
-            comm = self.run("ps -p {} -o comm= 2>/dev/null".format(pid)) or "unknown"
-            owners.append("{} ({}, pid {})".format(comm, user, pid))
+            comm = self.run(f"ps -p {pid} -o comm= 2>/dev/null") or "unknown"
+            owners.append(f"{comm} ({user}, pid {pid})")
         return ", ".join(owners) if owners else None
 
     def __tty_kill_owner(self):
-        self.run("fuser -k {} 2>&1".format(self.__tty))
+        self.run(f"fuser -k {self.__tty} 2>&1")
         time.sleep(0.5)
         if (self.__tty_owner_info()):
-            self.error("Failed to kill owner of {}\nPlease free it manually".format(self.__tty), quit=0)
+            self.error(f"Failed to kill owner of {self.__tty}\nPlease free it manually", quit=0)
             self.__tty = ""
 
     def __tty_ask_kill_owner(self):
@@ -502,7 +502,7 @@ class board(base):
         if ("ignore" == self.config_read("tty_owner")):
             self.__tty_kill_owner()
         else:
-            self.msg("{} is using {}\nDo you want to kill it ?".format(owner, self.__tty))
+            self.msg(f"{owner} is using {self.__tty}\nDo you want to kill it ?")
             if (self.ask_yn()):
                 self.__tty_kill_owner()
             else:
@@ -533,7 +533,7 @@ class board(base):
             self.__tty = self.input("ex) /dev/ttyUSBx: ")
             print()
             if (self.__tty_error(self.__tty)):
-                self.error("{} is not exist or not tty\n".format(self.__tty) +
+                self.error(f"{self.__tty} is not exist or not tty\n" +
                            "Please select like /dev/ttyUSBx", quit=0)
             else:
                 self.__tty_ask_kill_owner()
@@ -543,19 +543,19 @@ class board(base):
     #--------------------
     def __print_info(self):
         text = "Your selected settings are...\n\n" + \
-               "  [Board]:   {}\n".format(self.__board_name) +\
-               "  [Title]:   {}\n".format(self.__title) +\
-               "  [TTY]:     {} ({})\n".format(self.__tty, self.baudrate())
+              f"  [Board]:   {self.__board_name}\n" +\
+              f"  [Title]:   {self.__title}\n" +\
+              f"  [TTY]:     {self.__tty} ({self.baudrate()})\n"
 
         if (self.__auto_cmd_tty is not None):
-            text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
-            text += "  [Auto command TTY]: {}\n".format(self.__auto_cmd_tty)
+            text += f"  [Auto command]:     {self.__auto_cmd}\n"
+            text += f"  [Auto command TTY]: {self.__auto_cmd_tty}\n"
 
         text += "\nYou can manually setup if you want\n" +\
-                "   > vi ./{}\n".format(self.__config)
+               f"   > vi ./{self.__config}\n"
 
         for name in self.addr_map().keys():
-            text += "\n[{}]\n".format(name)
+            text += f"\n[{name}]\n"
             text += "Addr      Save    Srec\n"
             for m in self.addr_map(name):
                 text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
@@ -573,7 +573,8 @@ class board(base):
         self.msg("This script requires be called from your ROM directory.\n" +\
                  "Are you calling this script from there ?\n\n" +\
                  "  > cd ${your ROM dir}\n" +\
-                 "  > ${{renesas-bsp-rom-writer}}/board/{}/linux/rom-writer".format(self.__board_name))
+                f"  > ${{renesas-bsp-rom-writer}}/board/{self.__board_name}/linux/rom-writer")
+
         self.ask_yn(quit=True)
 
     #--------------------
@@ -609,7 +610,7 @@ class board(base):
     #--------------------
     def auto_cmd(self, cmd):
         if (self.__auto_cmd_tty is not None):
-            return self.run("{}/board/{} {} {}".format(self.top(), self.__auto_cmd, self.__auto_cmd_tty, cmd))
+            return self.run(f"{self.top()}/board/{self.__auto_cmd} {self.__auto_cmd_tty} {cmd}")
         else:
             return False
 
@@ -630,7 +631,7 @@ class guide(base):
     # __init__
     #--------------------
     def __init__(self):
-        file_name = "{}/renesas-bsp-rom-writer.log".format(self.cwd())
+        file_name = f"{self.cwd()}/renesas-bsp-rom-writer.log"
         self.__log = open(file_name, mode='w')
 
     #--------------------
@@ -800,12 +801,12 @@ class guide(base):
     # send_mot_file
     #--------------------
     def send(self, cmd="", end="\r"):
-        return self.__serial.write("{}{}".format(cmd, end).encode())
+        return self.__serial.write(f"{cmd}{end}".encode())
     def send_file(self, file):
-        self.log("\n[send {}]\n".format(file))
+        self.log(f"\n[send {file}]\n")
         self.msg("Now it is sending below file to board.\n"\
                  "Please wait.\n"\
-                 "[{}]".format(os.path.basename(file)))
+                f"[{os.path.basename(file)}]")
         with open(file, "rb") as f:
             self.__serial.write(f.read())
         self.send("\n", end="")
@@ -828,7 +829,7 @@ class guide(base):
     # print_msg_power
     #--------------------
     def print_msg_power(self, onoff):
-        self.msg("Power {}".format(onoff))
+        self.msg(f"Power {onoff}")
 
     #--------------------
     # ask_loop
