@@ -23,6 +23,8 @@ import serial
 #
 #====================================
 class base:
+    version = "v3.0.0"
+
     __top = os.path.abspath(os.path.dirname(__file__) + "../../")
     __cwd = os.getcwd()
 
@@ -628,6 +630,9 @@ class guide(base):
             bytesize	= serial.EIGHTBITS,
             parity	= serial.PARITY_NONE,
             stopbits	= serial.STOPBITS_ONE)
+
+        # indicate version
+        print(f"\n\nRenesas ROM Writer: {self.version}\n")
 
     #--------------------
     # __load_input
