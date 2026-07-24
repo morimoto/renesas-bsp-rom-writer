@@ -5,9 +5,9 @@
 #
 # 2025/07/09 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-import time
-
 import base
+
+
 #====================================
 #
 # board
