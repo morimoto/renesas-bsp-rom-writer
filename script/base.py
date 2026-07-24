@@ -928,9 +928,9 @@ class guide(base):
     #--------------------
     # iron_type_main_loop
     #--------------------
-    def iron_type_main_loop(self, ask, map, cmd):
+    def iron_type_main_loop(self, ask, addr_map, cmd):
 
-        for map in self.board().addr_map(map):
+        for map in self.board().addr_map(addr_map):
             if (self.skip_run(map, ask)):
                 continue
 
