@@ -52,7 +52,7 @@ class base:
         # Ughhhh
         # I don't like python external command !!
         # (ノ `Д´)ノ  go away !!
-        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE)
+        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, check=False)
 
         return result.stdout.decode("utf-8").rstrip("\n")
 
