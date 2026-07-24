@@ -5,12 +5,10 @@
 #
 # 2026/04/14 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-import os
-import sys
-import time
-
 import base
 import v3h_condor
+
+
 #====================================
 #
 # board
