@@ -602,10 +602,7 @@ class board(base):
     # auto_cmd_is_available
     #--------------------
     def auto_cmd_is_available(self):
-        if (self.__auto_cmd_tty is None):
-            return False
-        else:
-            return True
+        return self.__auto_cmd_tty is not None
 
     #--------------------
     # auto_cmd
