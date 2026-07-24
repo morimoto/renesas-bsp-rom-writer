@@ -5,11 +5,9 @@
 #
 # 2022/07/27 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-import os
-import sys
-import time
-
 import base
+
+
 #====================================
 #
 # board
