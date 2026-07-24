@@ -556,7 +556,7 @@ class board(base):
         text += "\nYou can manually setup if you want\n" +\
                f"   > vi ./{self.__config}\n"
 
-        for name in self.addr_map().keys():
+        for name in self.addr_map():
             text += f"\n[{name}]\n"
             text += "Addr      Save    Srec\n"
             for m in self.addr_map(name):
