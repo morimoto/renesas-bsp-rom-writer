@@ -5,13 +5,15 @@
 #
 # 2022/01/06 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-import sys
+import getpass
 import os
 import re
 import subprocess
-import serial
+import sys
 import time
-import getpass
+
+import serial
+
 
 #====================================
 #
