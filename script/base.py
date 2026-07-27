@@ -621,19 +621,6 @@ class board(base):
 class guide(base):
 
     #--------------------
-    # __del__
-    #--------------------
-    def __del__(self):
-        self.__log.close()
-
-    #--------------------
-    # __init__
-    #--------------------
-    def __init__(self):
-        file_name = f"{self.cwd()}/renesas-bsp-rom-writer.log"
-        self.__log = open(file_name, mode='w')
-
-    #--------------------
     # init
     #--------------------
     def init(self, board):
@@ -650,12 +637,6 @@ class guide(base):
             bytesize	= serial.EIGHTBITS,
             parity	= serial.PARITY_NONE,
             stopbits	= serial.STOPBITS_ONE)
-
-    #--------------------
-    # log
-    #--------------------
-    def log(self, msg):
-            self.__log.write(msg)
 
     #--------------------
     # __load_input
@@ -732,7 +713,6 @@ class guide(base):
         #
         while len(self.__line_array) > 0:
             line = self.__line_array.pop(0)
-            self.log(line)
             if (pattern in line):
                 return True
         #
@@ -750,7 +730,6 @@ class guide(base):
             # after  __remain_lines : yyyyy
             #
             idx += len(pattern)
-            self.log(self.__remain_lines[:idx])
             self.__remain_lines = self.__remain_lines[idx:]
             return True
 
@@ -802,7 +781,6 @@ class guide(base):
     def send(self, cmd="", end="\r"):
         return self.__serial.write(f"{cmd}{end}".encode())
     def send_file(self, file):
-        self.log(f"\n[send {file}]\n")
         self.msg("Now it is sending below file to board.\n"\
                  "Please wait.\n"\
                 f"[{os.path.basename(file)}]")
