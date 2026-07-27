@@ -117,12 +117,18 @@ class base:
     #--------------------
     # ask_yn
     #--------------------
-    def ask_yn(self, quit=None, default=None):
+    def ask_yn(self, label=None, quit=None):
+        msg=""
+        if (label):
+            msg = f"[{label}] "
+            yn_ans = self.config_read("ans_y")
+            if ("all" in yn_ans or
+                label in yn_ans):
+                print(f"{msg}OK? (y/n) y")
+                return 1
+
         while 1:
-            msg = f" <default {default}>: " if (default) else ": "
-            ret = self.input("OK? (y/n)" + msg)
-            if (default and ret == ""):
-                ret = default
+            ret = self.input(f"{msg}OK? (y/n) ")
             if (ret == "y"):
                 return 1
             if (ret == "n"):
@@ -429,15 +435,10 @@ class board(base):
                 if (not len(addr_map)):
                     break
             if (len(addr_map)):
-                if ("ignore" == self.config_read("confirm_map")):
-                    self.msg("config file indicates ignore map confirmation\n" +
-                            f"    [{title}]    ")
-                    accept = True
-                else:
-                    self.msg("It detected\n" +
-                            f"    [{title}]    \n" +
-                             "Is this your expected ?")
-                    accept = self.ask_yn()
+                self.msg("It detected\n" +
+                         f"    [{title}]    \n" +
+                         "Is this your expected ?")
+                accept = self.ask_yn("map")
                 if (accept):
                     self.__map		= map_file
                     self.__addr_map	= addr_map
@@ -501,26 +502,19 @@ class board(base):
         owner = self.__tty_owner_info()
         if not owner:
             return
-        if ("ignore" == self.config_read("tty_owner")):
+        self.msg(f"{owner} is using {self.__tty}\nDo you want to kill it ?")
+        if (self.ask_yn("tty")):
             self.__tty_kill_owner()
         else:
-            self.msg(f"{owner} is using {self.__tty}\nDo you want to kill it ?")
-            if (self.ask_yn()):
-                self.__tty_kill_owner()
-            else:
-                self.__tty = ""
+            self.__tty = ""
 
     def select_tty(self):
         if (self.__tty != ""):
             return
-        if ("ignore" == self.config_read("select_tty")):
-            self.msg("config file indicates ignore tty select")
-            self.__tty_ask_kill_owner()
-            return
 
         text = "Your board and PC need to connect\n" + self.tty_connection()
         self.msg(text)
-        self.ask_yn(quit=True)
+        self.ask_yn("tty", True)
 
         self.__tty_ask_kill_owner()
 
@@ -577,7 +571,7 @@ class board(base):
                  "  > cd ${your ROM dir}\n" +\
                 f"  > ${{renesas-bsp-rom-writer}}/board/{self.__board_name}/linux/rom-writer")
 
-        self.ask_yn(quit=True)
+        self.ask_yn("location", True)
 
     #--------------------
     # confirm_info
@@ -585,10 +579,7 @@ class board(base):
     def confirm_info(self):
         while 1:
             self.__print_info()
-            if ("ignore" == self.config_read("confirm_info")):
-                self.msg("config file indicates ignore info confirmation")
-                break
-            if (self.ask_yn()): break;
+            if (self.ask_yn("info")): break;
 
             # reset all setting
             # ignore rom here

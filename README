@@ -81,17 +81,15 @@
 				for your board/version, e.g.
 				[bootparam_sa0.srec]:ignore
 
-	[select_tty]:ignore	Skip the board connection check and
-				terminal/software (minicom) confirmation.
+	[ans_y]:label		ROM writer will ask y/n with "lebel", like below
 
-	[tty_owner]:ignore	When a TTY is already in use, kill the owner process
-				without asking for confirmation.
+					[label] OK? (y/n)
 
-	[confirm_info]:ignore	Skip the confirmation prompt for the
-				selected settings before proceeding.
-
-	[confirm_map]:ignore	Skip the confirmation prompt for the
-				auto-detected map file, and use the first match.
+				You can auto answer as y by setting [ans_y]
+				on config. "all" answers as y for all cases
+				e.g.
+				[ans_y]:all
+				[ans_y]:map,tty,info
 
 	[update_style]:all	Update all files without asking.
 	[update_style]:ask	Ask one by one whether to update each file.
@@ -108,10 +106,7 @@
 		-----------------
 		[bootparam_sa0.srec]:ignore
 		[icumx_loader.srec]:ignore
-		[select_tty]:ignore
-		[tty_owner]:ignore
-		[confirm_info]:ignore
-		[confirm_map]:ignore
+		[ans_y]:map,tty
 		[update_style]:all
 		-----------------
 
