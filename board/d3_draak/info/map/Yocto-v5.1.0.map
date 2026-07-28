@@ -1,0 +1,8 @@
+title:"Yocto: v5.1.0 - v5.9.0"
+
+addr_map:"000000,bootparam_sa0.srec"
+addr_map:"040000,bl2-draak.srec"
+addr_map:"180000,cert_header_sa6.srec"
+addr_map:"1C0000,bl31-draak.srec"
+addr_map:"200000,tee-draak.srec"
+addr_map:"640000,u-boot-elf-draak.srec"

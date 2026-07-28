@@ -417,10 +417,10 @@ class board(base):
 
         for map_file in map_files:
             title = self.ttm_array(map_file, "title")[0]
-            mot   = self.ttm_array(map_file, "mot_file")[0]
+            mot   = self.ttm_array(map_file, "mot_file")
             addr_map = {}
 
-            if (not os.path.exists(mot)):
+            if (len(mot) > 0 and not os.path.exists(mot[0])):
                 continue
 
             for key in ["addr_map", "emmc_map", "ufs_map"]:

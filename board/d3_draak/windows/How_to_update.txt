@@ -1,0 +1,100 @@
+============== -*- outline -*- ==============
+
+   Renesas R-Car Draak (D3) BSP ROM Writer
+   for Windows/TeraTerm
+
+2025/07/10	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+=============================================
+-------------------------------
+* Preparation
+-------------------------------
+**  TeraTerm
+
+	You need "TeraTerm". See here and get it
+
+		https://ttssh2.osdn.jp/index.html.ja
+		https://ttssh2.osdn.jp/index.html.en
+
+-------------------------------
+* How to update ?
+-------------------------------
+**  Prepare ROM
+
+	see
+		[How to get ROM]
+		${renesas-bsp-rom-writer}/board/${BOARD}/README
+
+**  Connect Serial between PC and Board
+
+	[Host PC] <--> [board CN25]
+
+**  Setup Board Switch
+
+	1 : ON
+	0 : OFF
+
+	              1 2 3 4 5 6
+	Back /SW1  : [1 1 1 1 1 1]
+	Back /SW2  : [1 1 1 1 1 1]
+	Front/SW3  : [0]
+	Front/SW13 : dot side
+	Front/SW31 : [0]
+	Front/SW10 : [1 1 1 0 1 1]
+
+**  Start TeraTerm
+
+	+---------------------------------------+
+	|                                      X|
+	| ( ) TCP/IP ...                        |
+	| ...                                   |
+	| (o) Serial(E)  Port(R): [COMx: xxxx]  |
+	+---------------------------------------+
+
+**  Setup Serial Baudrate
+
+	[Menu] -> [Setting] -> [Serial Port]
+
+	+------------------------+
+	|                       X|
+	| ...                    |
+	| Speed(E) [115200]      |
+	| ...                    |
+	+------------------------+
+
+**  Board Power ON
+
+	Board Power ON
+	It will indicate below and waiting
+
+		>
+
+**  Start Macro
+
+	[Menu] -> [Control] -> [Macro]
+
+	Select .ttl file on SDK folder
+
+**  Wait finish
+
+	It takes long time.
+	When it finish, it will indicate below, and no more working.
+
+		>
+
+**  Board Power OFF
+
+	Board Power OFF
+
+**  Setup Board Switch
+
+	1 : ON
+	0 : OFF
+
+	              1 2 3 4 5 6
+	Back /SW1  : [0 0 0 0 0 0]
+	Back /SW2  : [0 0 0 0 0 0]
+	Front/SW3  : [1]
+	Front/SW13 : dot side
+	Front/SW31 : [1]
+	Front/SW10 : [1 1 1 1 0 1]
+

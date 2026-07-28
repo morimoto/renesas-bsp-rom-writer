@@ -32,12 +32,5 @@
 * How to use ?
 -------------------------------
 
-Ebisu support was removed.
-You can use it by using v2.4.0.
-
-	> git checkout v2.4.0
-or
-	Download ZIP from
-
-		https://github.com/morimoto/renesas-bsp-rom-writer
-		https://gitlab.com/morimoto.kuninori/renesas-bsp-rom-writer
+	linux/README
+	windows/How_to_update.txt
