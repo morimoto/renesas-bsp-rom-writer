@@ -33,8 +33,7 @@ class rom_write_guide(v3h_condor.rom_write_guide):
     # main_loop
     #--------------------
     def main_loop(self):
-        ask = self.ask_loop()
-        self.sk_type_main_loop("1", 4, ask)
+        self.sk_type_main_loop("1", 4, self.ask_loop())
 
 #====================================
 #
