@@ -5,13 +5,15 @@
 #
 # 2022/01/06 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-import sys
+import getpass
 import os
 import re
 import subprocess
-import serial
+import sys
 import time
-import getpass
+
+import serial
+
 
 #====================================
 #
@@ -50,7 +52,7 @@ class base:
         # Ughhhh
         # I don't like python external command !!
         # (ノ `Д´)ノ  go away !!
-        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE)
+        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, check=False)
 
         return result.stdout.decode("utf-8").rstrip("\n")
 
@@ -77,7 +79,7 @@ class base:
     # read TeraTerm array
     #--------------------
     def ttm_array(self, file, tag):
-        return self.runl('grep -w "^{}" {} | sed -e "s/^{}: *\\"//g" | sed -e "s/\\"$//g"'.format(tag, file, tag))
+        return self.runl(f'grep -w "^{tag}" {file} | sed -e "s/^{tag}: *\\"//g" | sed -e "s/\\"$//g"')
 
     #--------------------
     # input
@@ -97,30 +99,36 @@ class base:
             return list[0]
 
         for i in range(max):
-            text += "\n  {}) ".format(i + 1) + list[i]
+            text += f"\n  {i + 1}) " + list[i]
 
         while 1:
             self.msg(text)
             try:
-                ret = int(self.input("select number (1-{}): ".format(max)))
+                ret = int(self.input(f"select number (1-{max}): "))
             except KeyboardInterrupt:
                 sys.exit(1)
             except ValueError:
                 ret = -1
             if (ret <= 0 or ret > max):
-                self.error("select number in 1 - {}".format(max), quit=0)
+                self.error(f"select number in 1 - {max}", quit=0)
             else:
                 return list[ret - 1]
 
     #--------------------
     # ask_yn
     #--------------------
-    def ask_yn(self, quit=None, default=None):
+    def ask_yn(self, label=None, quit=None):
+        msg=""
+        if (label):
+            msg = f"[{label}] "
+            yn_ans = self.config_read("ans_y")
+            if ("all" in yn_ans or
+                label in yn_ans):
+                print(f"{msg}OK? (y/n) y")
+                return 1
+
         while 1:
-            msg = " <default {}>: ".format(default) if (default) else ": "
-            ret = self.input("OK? (y/n)" + msg)
-            if (default and ret == ""):
-                ret = default
+            ret = self.input(f"{msg}OK? (y/n) ")
             if (ret == "y"):
                 return 1
             if (ret == "n"):
@@ -136,7 +144,7 @@ class base:
         print()
         print("********* [error] *************")
         for txt in text.split("\n"):
-            print("* {}".format(txt))
+            print(f"* {txt}")
         print("*******************************")
         if (quit):
             sys.exit(1)
@@ -150,7 +158,7 @@ class base:
         l = 0
         for txt in text.split("\n"):
             t = len(txt)
-            if (t > l): l = t
+            l = max(l, t)
 
         print()
         print("+-", end="")
@@ -159,7 +167,7 @@ class base:
         print("-+")
 
         for txt in text.split("\n"):
-            print("| %-{}s |".format(l) % txt)
+            print(f"| {txt:<{l}} |")
 
         print("+-", end="")
         for i in range(l):
@@ -176,7 +184,9 @@ class switch(base):
     #--------------------
     # __init__
     #--------------------
-    def __init__(self, file):
+    def __init__(self, board):
+
+        file = board.dir_info("switch")
 
         #
         # read dipswitch config from file
@@ -231,8 +241,8 @@ class config_map:
         for m in map:
             am = m.split(',')
             addr = None
-            if (os.path.exists("{}/{}".format(b.cwd(), am[1]))):
-                addr = b.run("head -n 2 {}/{} | grep S3 | head -n 1 | cut -c5-12".format(b.cwd(), am[1]))
+            if (os.path.exists(f"{b.cwd()}/{am[1]}")):
+                addr = b.run(f"head -n 2 {b.cwd()}/{am[1]} | grep S3 | head -n 1 | cut -c5-12")
             self.__map.append({"addr":addr,
                                "save":am[0],
                                "srec":am[1]})
@@ -277,26 +287,23 @@ class board(base):
     #--------------------
     # init
     #--------------------
-    def init(self, soc=None, rom=None, ver=None, tty=None, board=None, mode="normal", baudrate=115200, auto_cmd=None):
+    def init(self, baudrate=115200, board_name=None, auto_cmd=None):
 
         # None   : not use
         # ""     : be used, but not yet selected
         # "xxx"  : be used, and selected
-        if (board):
-            self.__board = board
+        if (board_name):
+            self.__board_name = board_name
         else:
-            self.__board = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-        self.__soc	= soc
-        self.__rom	= rom
-        self.__ver	= ver
-        self.__tty	= tty
-        self.__mode	= mode		# normal, mot
+            self.__board_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
         self.__baudrate	= baudrate
 
         # for inside
-        self.__config	= ".renesas_bsp_rom_writer.{}".format(self.__board)
+        self.__config	= f"renesas_bsp_rom_writer.{self.__board_name}"
         self.__addr_map	= {}
         self.__map	= None
+        self.__tty	= ""
+        self.__title	= None
 
         # for auto command
         self.__auto_cmd = auto_cmd	# path from ${TOP}/board/
@@ -313,7 +320,9 @@ class board(base):
     #--------------------
     # mot_file
     #--------------------
-    def mot_file(self): return None
+    def mot_file(self):
+        return "{}/{}".format(self.cwd(),
+                              self.ttm_array(self.map(), "mot_file")[0])
 
     #--------------------
     # mode_explanation
@@ -321,17 +330,10 @@ class board(base):
     def mode_explanation(self): return ""
 
     #--------------------
-    # mode
-    # board
     # tty
-    # soc
     # baudrate
     #--------------------
-    def mode(self):	return self.__mode
-    def board(self):	return self.__board
     def tty(self):	return self.__tty
-    def soc(self):	return self.__soc
-    def rom(self):	return self.__rom
     def map(self):	return self.__map
     def baudrate(self):	return self.__baudrate
 
@@ -355,54 +357,34 @@ class board(base):
             return self.__addr_map
 
     #--------------------
-    # soc_ws : h3_4g
-    # soc    : h3
-    # ws     : 4g
-    #--------------------
-    def __sw(self):    return re.match("(.*)_(.*)", self.__soc)
-    def soc_ws(self):  return self.__soc
-    def soc(self):
-        m = self.__sw()
-        return m.group(1) if (m) else self.__soc
-    def ws(self):
-        m = self.__sw()
-        return m.group(2) if (m) else ""
-
-    #--------------------
     # dir_xxx
     #--------------------
-    def dir_board(self, path="", full=1):
-        dir = "{}/".format(self.top()) if (full) else ""
-        return "{}board/{}/{}".format(dir, self.__board, path)
-    def dir_config(self, path="", full=1):	return self.dir_board("config/" + path, full)
-    def dir_config_rom(self, path="", full=1):	return self.dir_config("rom/{}/{}".format(self.__rom, path), full)
+    def dir_board(self, path=""):
+        return f"{self.top()}/board/{self.__board_name}/{path}"
+    def dir_info(self, path=""):	return self.dir_board("info/" + path)
 
     #--------------------
     # config_xxx
     #--------------------
     def config_file(self):
-        return "{}/{}".format(self.cwd(), self.__config)
+        return f"{self.cwd()}/{self.__config}"
 
     def config_read(self, tag):
-        return self.run(r'grep "^\[{}\]:" {} 2>/dev/null | cut -d : -f 2-'.format(tag, self.config_file()))
+        return self.run(rf'grep "^\[{tag}\]:" {self.config_file()} 2>/dev/null | cut -d : -f 2-')
 
     def config_write(self, tag, data):
-        tmp = "/tmp/renesas-bsp-rom-writer-config-{}".format(os.getpid())
+        tmp = f"/tmp/renesas-bsp-rom-writer-config-{os.getpid()}"
         if (os.path.exists(self.config_file())):
-            self.run(r'grep -v "^\[{}\]:" {} > {}'.format(tag, self.config_file(), tmp))
-        self.run("echo \"[{}]:{}\" >> {}".format(tag, data, tmp))
-        self.run("mv -f {} {}".format(tmp, self.config_file()))
+            self.run(rf'grep -v "^\[{tag}\]:" {self.config_file()} > {tmp}')
+        self.run(f"echo \"[{tag}]:{data}\" >> {tmp}")
+        self.run(f"mv -f {tmp} {self.config_file()}")
         if (not os.path.exists(self.config_file())):
             self.error("cann't save configs")
 
     def config_load(self):
         # __init__() set default value
         # load config if value was ""
-        if (self.__soc  == ""): self.__soc  = self.config_read("soc")
-        if (self.__rom  == ""): self.__rom  = self.config_read("rom")
-        if (self.__ver  == ""): self.__ver  = self.config_read("version")
         if (self.__tty  == ""): self.__tty  = self.config_read("tty")
-        if (self.__mode == ""): self.__mode = self.config_read("mode")
 
         # The auto_cmd is specific to each board
         if (self.__auto_cmd is not None):
@@ -411,14 +393,10 @@ class board(base):
                 self.__auto_cmd_tty = None
             else:
                 if (self.__tty_error(self.__auto_cmd_tty)):
-                    self.error("[auto_cmd_tty](= {}) is not valid tty\n".format(self.__auto_cmd_tty))
+                    self.error(f"[auto_cmd_tty](= {self.__auto_cmd_tty}) is not valid tty\n")
 
     def config_save(self):
-        if (self.__soc  is not None): self.config_write("soc",     self.__soc)
-        if (self.__rom  is not None): self.config_write("rom",     self.__rom)
-        if (self.__ver  is not None): self.config_write("version", self.__ver)
         if (self.__tty  is not None): self.config_write("tty",     self.__tty)
-        if (self.__mode is not None): self.config_write("mode",    self.__mode)
 
     #--------------------
     # setup
@@ -427,71 +405,53 @@ class board(base):
     # if default select_xx() was not good match
     #--------------------
     def setup(self):
-        if (self.__rom  is not None): self.__select_rom()
-        if (self.__ver  is not None): self.__select_ver()
-        if (self.__soc  is not None): self.__select_soc()
-        if (self.__tty  is not None): self.__select_tty()
-        if (self.__mode is not None): self.__select_mode()
+        self.detect_map()
+        self.select_tty()
 
     #--------------------
-    # select_rom (default)
+    # detect_map
     #--------------------
-    def __select_rom(self):
-        # check rom/${os}/config file
-        while (not os.path.exists(self.dir_config_rom("config"))):
-            self.__rom = self.select("Select write OS", self.runl("ls {}".format(self.dir_config("rom"))))
+    def detect_map(self):
+        map_files = self.runl("ls ./*.map 2>/dev/null")
+        map_files.extend(self.runl(f"ls {self.dir_info()}map/*.map"))
 
-    #--------------------
-    # select_ver (default)
-    #--------------------
-    def __select_ver(self):
-        list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
-        while (not self.__ver in list_version):
-            self.__ver = self.select("Select [{}] Version".format(self.rom()), list_version)
+        for map_file in map_files:
+            title = self.ttm_array(map_file, "title")[0]
+            mot   = self.ttm_array(map_file, "mot_file")
+            addr_map = {}
 
-    #--------------------
-    # select_soc (default)
-    #--------------------
-    def __select_soc(self):
-        list_version = self.ttm_array(self.dir_config_rom("config"), "list_version")
-        list_map     = self.ttm_array(self.dir_config_rom("config"), "list_map")
+            if (len(mot) > 0 and not os.path.exists(mot[0])):
+                continue
 
-        if (os.path.exists(self.dir_config("soc"))):
-            list_soc = self.ttm_array(self.dir_config("soc"), "list_soc")
+            for key in ["addr_map", "emmc_map", "ufs_map"]:
+                map = config_map(map_file, key)
+                if (not map.len()):
+                    continue
+                addr_map[key] = map
+                for val in map:
+                    if (not os.path.exists(val["srec"])):
+                        addr_map = {}
+                        break
+                if (not len(addr_map)):
+                    break
+            if (len(addr_map)):
+                self.msg("It detected\n" +
+                         f"    [{title}]    \n" +
+                         "Is this your expected ?")
+                accept = self.ask_yn("map")
+                if (accept):
+                    self.__map		= map_file
+                    self.__addr_map	= addr_map
+                    self.__title	= title
+                    return
 
-            if (not self.__ver in list_version):
-                self.error("select version first")
-
-            dir_map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
-            text = "\n".join(self.ttm_array(self.dir_config("soc"), "list_soc_explanation")) + \
-                   "\n\nSelect SoC/WS ROM\n"
-
-            while (not os.path.isfile("{}/{}".format(dir_map, self.__soc))):
-                self.__soc = self.select(text, list_soc)
-
-            self.__map = "{}/{}".format(dir_map, self.__soc)
-        else:
-            self.__map = self.dir_config_rom(list_map[list_version.index(self.__ver)])
-
-        for name in ["addr_map", "emmc_map", "ufs_map"]:
-            map = config_map(self.__map, name)
-            if (map.len()):
-                self.__addr_map[name] = map
-
-        err = ""
-        for key, map in self.addr_map().items():
-            for m in map:
-                if (not m["addr"]):
-                    err += "  {}\n".format(m["srec"])
-
-        if (len(err)):
-            self.error("These files are required, but not found.\n\n" + err)
+        self.error("No ROM map found", 1)
 
     #--------------------
     # select_tty (default)
     #--------------------
     def tty_connection(self):
-        return self.ttm_array(self.dir_config("config"), "tty_connection")[0]
+        return self.ttm_array(self.dir_info("switch"), "tty_connection")[0]
 
     def __tty_error(self, tty):
         if (not os.path.exists(tty)):
@@ -504,14 +464,14 @@ class board(base):
 
         if (not os.access(tty, os.R_OK) or
             not os.access(tty, os.W_OK)):
-            self.msg("You don't have permission to access to {}.\n".format(tty) +\
+            self.msg(f"You don't have permission to access to {tty}.\n" +\
                      "It requires root or \"dialout group\" permission, maybe ?\n" +\
                      "Check it\n" \
-                     "   > ls -l {}\n\n".format(tty) +\
+                    f"   > ls -l {tty}\n\n" +\
                      "Check your joined group\n" \
                      "   > id\n\n" \
                      "Let's join to \"dialout group\"\n" \
-                     "   > sudo gpasswd -a {} dialout\n\n".format(getpass.getuser()) +\
+                    f"   > sudo gpasswd -a {getpass.getuser()} dialout\n\n" +\
                      "Maybe you need to logout and login again.\n" \
                      "Then, check your joined group.\n" \
                      "   > id\n\n" \
@@ -520,46 +480,41 @@ class board(base):
             return 1
 
     def __tty_owner_info(self):
-        fuser = self.run("fuser -u {} 2>&1".format(self.__tty))
+        fuser = self.run(f"fuser -u {self.__tty} 2>&1")
         if not fuser:
             return None
         pids  = re.findall(r'(\d+)\(',   fuser)
         users = re.findall(r'\(([^)]+)\)', fuser)
         owners = []
         for pid, user in zip(pids, users):
-            comm = self.run("ps -p {} -o comm= 2>/dev/null".format(pid)) or "unknown"
-            owners.append("{} ({}, pid {})".format(comm, user, pid))
+            comm = self.run(f"ps -p {pid} -o comm= 2>/dev/null") or "unknown"
+            owners.append(f"{comm} ({user}, pid {pid})")
         return ", ".join(owners) if owners else None
 
     def __tty_kill_owner(self):
-        self.run("fuser -k {} 2>&1".format(self.__tty))
+        self.run(f"fuser -k {self.__tty} 2>&1")
         time.sleep(0.5)
         if (self.__tty_owner_info()):
-            self.error("Failed to kill owner of {}\nPlease free it manually".format(self.__tty), quit=0)
+            self.error(f"Failed to kill owner of {self.__tty}\nPlease free it manually", quit=0)
             self.__tty = ""
 
     def __tty_ask_kill_owner(self):
         owner = self.__tty_owner_info()
         if not owner:
             return
-        if ("ignore" == self.config_read("tty_owner")):
+        self.msg(f"{owner} is using {self.__tty}\nDo you want to kill it ?")
+        if (self.ask_yn("tty")):
             self.__tty_kill_owner()
         else:
-            self.msg("{} is using {}\nDo you want to kill it ?".format(owner, self.__tty))
-            if (self.ask_yn()):
-                self.__tty_kill_owner()
-            else:
-                self.__tty = ""
+            self.__tty = ""
 
-    def __select_tty(self):
-        if ("ignore" == self.config_read("select_tty")):
-            self.msg("config file indicates ignore tty select")
-            self.__tty_ask_kill_owner()
+    def select_tty(self):
+        if (self.__tty != ""):
             return
 
         text = "Your board and PC need to connect\n" + self.tty_connection()
         self.msg(text)
-        self.ask_yn(quit=True)
+        self.ask_yn("tty", True)
 
         self.__tty_ask_kill_owner()
 
@@ -574,59 +529,29 @@ class board(base):
             self.__tty = self.input("ex) /dev/ttyUSBx: ")
             print()
             if (self.__tty_error(self.__tty)):
-                self.error("{} is not exist or not tty\n".format(self.__tty) +
+                self.error(f"{self.__tty} is not exist or not tty\n" +
                            "Please select like /dev/ttyUSBx", quit=0)
             else:
                 self.__tty_ask_kill_owner()
-
-    #--------------------
-    # select_mode (default)
-    #--------------------
-    def __select_mode(self):
-        mode_list = ["normal"]
-
-        # add more mode here
-        if (self.mot_file()): mode_list.append("mot")
-
-        if (not self.__mode in mode_list):
-            if (len(mode_list) <= 1):
-                self.__mode = mode_list[0]
-            else:
-                self.__mode = self.select("You can select ROM writer mode.\n\n" +\
-                                          self.mode_explanation(), mode_list)
-                print()
-
-        if (self.mode() == "mot"):
-            mot_file = self.mot_file()
-            if (not mot_file or
-                not os.path.exists(mot_file)):
-                self.mot_error()
 
     #--------------------
     # print_info
     #--------------------
     def __print_info(self):
         text = "Your selected settings are...\n\n" + \
-               "  [Board]:   {}\n".format(self.__board)
+              f"  [Board]:   {self.__board_name}\n" +\
+              f"  [Title]:   {self.__title}\n" +\
+              f"  [TTY]:     {self.__tty} ({self.baudrate()})\n"
 
-        deep = 0
-        if (self.__soc  is not None): text += "  [SoC/WS]:  {}\n".format(self.__soc)
-        if (self.__rom  is not None): text += "  [OS]:      {}\n".format(self.__rom)
-        if (self.__ver  is not None): text += "  [Version]: {}\n".format(self.__ver)
-        if (self.__mode is not None): text += "  [Mode]:    {}\n".format(self.__mode)
-        if (self.__tty  is not None): text += "* [TTY]:     {} ({})\n".format(self.__tty, self.baudrate()); deep = 1
         if (self.__auto_cmd_tty is not None):
-            text += "  [Auto command]:     {}\n".format(self.__auto_cmd)
-            text += "  [Auto command TTY]: {}\n".format(self.__auto_cmd_tty)
-
-        if (deep):
-            text += "\nPlease deeply check at * items\n"
+            text += f"  [Auto command]:     {self.__auto_cmd}\n"
+            text += f"  [Auto command TTY]: {self.__auto_cmd_tty}\n"
 
         text += "\nYou can manually setup if you want\n" +\
-                "   > vi ./{}\n".format(self.__config)
+               f"   > vi ./{self.__config}\n"
 
-        for name in self.addr_map().keys():
-            text += "\n[{}]\n".format(name)
+        for name in self.addr_map():
+            text += f"\n[{name}]\n"
             text += "Addr      Save    Srec\n"
             for m in self.addr_map(name):
                 text += "{}  {}  {}\n".format(m["addr"], m["save"], m["srec"])
@@ -641,11 +566,12 @@ class board(base):
         # If not exist, confirm_location
         if (os.path.exists(self.config_file())): return
 
-        self.msg("This script requires be called from {} ROM directory.\n".format(self.rom()) +\
+        self.msg("This script requires be called from your ROM directory.\n" +\
                  "Are you calling this script from there ?\n\n" +\
-                 "  > cd ${{{0} ROM dir}}\n".format(self.rom()) +\
-                 "  > ${{renesas-bsp-rom-writer}}/board/{}/linux/{}-writer".format(self.board(), self.rom()))
-        self.ask_yn(quit=True)
+                 "  > cd ${your ROM dir}\n" +\
+                f"  > ${{renesas-bsp-rom-writer}}/board/{self.__board_name}/linux/rom-writer")
+
+        self.ask_yn("location", True)
 
     #--------------------
     # confirm_info
@@ -653,34 +579,28 @@ class board(base):
     def confirm_info(self):
         while 1:
             self.__print_info()
-            if ("ignore" == self.config_read("confirm_info")):
-                self.msg("config file indicates ignore info confirmation")
-                break
-            if (self.ask_yn()): break;
+            if (self.ask_yn("info")): break;
 
             # reset all setting
             # ignore rom here
-            if (self.__soc  is not None): self.__soc  = ""
-            if (self.__ver  is not None): self.__ver  = ""
-            if (self.__tty  is not None): self.__tty  = ""
-            if (self.__mode is not None): self.__mode = ""
+            self.__tty		= ""
+            self.__addr_map	= {}
+            self.__map		= None
+
             self.setup()
 
     #--------------------
     # auto_cmd_is_available
     #--------------------
     def auto_cmd_is_available(self):
-        if (self.__auto_cmd_tty is None):
-            return False
-        else:
-            return True
+        return self.__auto_cmd_tty is not None
 
     #--------------------
     # auto_cmd
     #--------------------
     def auto_cmd(self, cmd):
         if (self.__auto_cmd_tty is not None):
-            return self.run("{}/board/{} {} {}".format(self.top(), self.__auto_cmd, self.__auto_cmd_tty, cmd))
+            return self.run(f"{self.top()}/board/{self.__auto_cmd} {self.__auto_cmd_tty} {cmd}")
         else:
             return False
 
@@ -692,19 +612,6 @@ class board(base):
 class guide(base):
 
     #--------------------
-    # __del__
-    #--------------------
-    def __del__(self):
-        self.__log.close()
-
-    #--------------------
-    # __init__
-    #--------------------
-    def __init__(self):
-        file_name = "{}/renesas-bsp-rom-writer.log".format(self.cwd())
-        self.__log = open(file_name, mode='w')
-
-    #--------------------
     # init
     #--------------------
     def init(self, board):
@@ -713,6 +620,7 @@ class guide(base):
         self.__line_array	= []
         self.__remain_lines	= ""
         self.__board		= board
+        self.__sw		= switch(board)
 
         self.__serial = serial.Serial(
             port	= board.tty(),
@@ -720,12 +628,6 @@ class guide(base):
             bytesize	= serial.EIGHTBITS,
             parity	= serial.PARITY_NONE,
             stopbits	= serial.STOPBITS_ONE)
-
-    #--------------------
-    # log
-    #--------------------
-    def log(self, msg):
-            self.__log.write(msg)
 
     #--------------------
     # __load_input
@@ -802,7 +704,6 @@ class guide(base):
         #
         while len(self.__line_array) > 0:
             line = self.__line_array.pop(0)
-            self.log(line)
             if (pattern in line):
                 return True
         #
@@ -820,7 +721,6 @@ class guide(base):
             # after  __remain_lines : yyyyy
             #
             idx += len(pattern)
-            self.log(self.__remain_lines[:idx])
             self.__remain_lines = self.__remain_lines[idx:]
             return True
 
@@ -852,6 +752,12 @@ class guide(base):
         return self.__board
 
     #--------------------
+    # sw
+    #--------------------
+    def sw(self):
+        return self.__sw
+
+    #--------------------
     # expect
     #--------------------
     def expect(self, pattern, timeout=60):
@@ -861,17 +767,19 @@ class guide(base):
     #--------------------
     # send
     # send_file
+    # send_mot_file
     #--------------------
     def send(self, cmd="", end="\r"):
-        return self.__serial.write("{}{}".format(cmd, end).encode())
+        return self.__serial.write(f"{cmd}{end}".encode())
     def send_file(self, file):
-        self.log("\n[send {}]\n".format(file))
         self.msg("Now it is sending below file to board.\n"\
                  "Please wait.\n"\
-                 "[{}]".format(os.path.basename(file)))
+                f"[{os.path.basename(file)}]")
         with open(file, "rb") as f:
             self.__serial.write(f.read())
         self.send("\n", end="")
+    def send_mot_file(self):
+        self.send_file(self.board().mot_file())
 
     #--------------------
     # speed_up
@@ -889,7 +797,7 @@ class guide(base):
     # print_msg_power
     #--------------------
     def print_msg_power(self, onoff):
-        self.msg("Power {}".format(onoff))
+        self.msg(f"Power {onoff}")
 
     #--------------------
     # ask_loop
@@ -989,9 +897,9 @@ class guide(base):
     #--------------------
     # iron_type_main_loop
     #--------------------
-    def iron_type_main_loop(self, ask, map, cmd):
+    def iron_type_main_loop(self, ask, addr_map, cmd):
 
-        for map in self.board().addr_map(map):
+        for map in self.board().addr_map(addr_map):
             if (self.skip_run(map, ask)):
                 continue
 

@@ -59,8 +59,8 @@
 -------------------------------
 * Configuration file options (Linux)
 -------------------------------
-	You can find ".renesas_bsp_rom_writer.<board>" (for example
-	".renesas_bsp_rom_writer.x5h_ironhide") in your ROM directory
+	You can find "renesas_bsp_rom_writer.<board>" (for example
+	"renesas_bsp_rom_writer.x5h_ironhide") in your ROM directory
 	after a first write using the linux script.
 
 	The script saves your selections (soc, rom, version, tty, mode)
@@ -75,14 +75,15 @@
 				for your board/version, e.g.
 				[bootparam_sa0.srec]:ignore
 
-	[select_tty]:ignore	Skip the board connection check and
-				terminal/software (minicom) confirmation.
+	[ans_y]:label		ROM writer will ask y/n with "lebel", like below
 
-	[tty_owner]:ignore	When a TTY is already in use, kill the owner process
-				without asking for confirmation.
+					[label] OK? (y/n)
 
-	[confirm_info]:ignore	Skip the confirmation prompt for the
-				selected settings before proceeding.
+				You can auto answer as y by setting [ans_y]
+				on config. "all" answers as y for all cases
+				e.g.
+				[ans_y]:all
+				[ans_y]:map,tty,info
 
 	[update_style]:all	Update all files without asking.
 	[update_style]:ask	Ask one by one whether to update each file.
@@ -94,16 +95,33 @@
 
 	[auto_cmd_tty]:/dev/ttyUSBx	use specified serial
 
-	ex) .renesas_bsp_rom_writer.<board>
+	ex) renesas_bsp_rom_writer.<board>
 
 		-----------------
 		[bootparam_sa0.srec]:ignore
 		[icumx_loader.srec]:ignore
-		[select_tty]:ignore
-		[tty_owner]:ignore
-		[confirm_info]:ignore
+		[ans_y]:map,tty
 		[update_style]:all
 		-----------------
+
+-------------------------------
+* Can I use original map ?
+-------------------------------
+
+	Yes. ROM writer will try to find map file from
+
+		- ./*.map
+		- ${renesas-bsp-rom-writer}/board/${board}/info/map/*.map
+
+	For example, you can copy map file from board, and update it.
+
+		> cp ${renesas-bsp-rom-writer}/board/${board}/info/map/*.map  my.map
+		> vi my.map
+		# fixup at least "title".
+		# ex)
+		# title:"My Map"
+
+	ROM writer will detect it, and ask to you whether use it or not.
 
 -------------------------------
 * Can I see the log ?

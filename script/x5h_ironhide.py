@@ -5,23 +5,21 @@
 #
 # 2025/07/09 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 #===============================
-import time
-
 import base
-import v3h_condor
+
+
 #====================================
 #
 # board
 #
 #====================================
-class board(v3h_condor.board):
+class board(base.board):
     #--------------------
     # __init__
     #--------------------
     def __init__(self):
 
-        self.init_with_mot("x5h", "sdk", "", "", baudrate=1843200,
-                           auto_cmd="x5h_ironhide/linux/rcar_board_control_x5h")
+        self.init(1843200, auto_cmd="x5h_ironhide/linux/rcar_board_control_x5h")
 
 #====================================
 #
@@ -35,11 +33,6 @@ class rom_write_guide(base.guide):
     def guide_start(self, board):
         self.init(board)
 
-        sw = base.switch(board.dir_config("config"))
-
-        # chech mot file
-        mot_file = board.mot_file()
-
         # make sure board is power off
         if (board.auto_cmd_is_available()):
             board.auto_cmd("off")
@@ -51,7 +44,7 @@ class rom_write_guide(base.guide):
         if (board.auto_cmd_is_available()):
             board.auto_cmd("flash")
         else:
-            sw.print_msg_update()
+            self.sw().print_msg_update()
             self.ask_yn()
 
         # turn the board on
@@ -61,7 +54,7 @@ class rom_write_guide(base.guide):
             self.print_msg_power("ON")
 
         self.expect("please send !")
-        self.send_file(mot_file)
+        self.send_mot_file()
         self.expect("N:>")
 
         ask = self.ask_loop()
@@ -79,7 +72,7 @@ class rom_write_guide(base.guide):
         if (board.auto_cmd_is_available()):
             board.auto_cmd("boot")
         else:
-            sw.print_msg_normal()
+            self.sw().print_msg_normal()
             self.ask_yn()
 
         self.msg("finished !!")

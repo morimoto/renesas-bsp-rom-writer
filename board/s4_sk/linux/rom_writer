@@ -1,0 +1,10 @@
+#! /bin/bash
+#===============================
+#
+# rom_writer
+#
+# 2023/09/05 Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+#===============================
+SCRIPT=`readlink -f "$0" | xargs dirname | xargs dirname | xargs dirname | xargs dirname`/script
+
+${SCRIPT}/s4_spider.py s4_sk
