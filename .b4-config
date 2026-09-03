@@ -1,0 +1,7 @@
+# Configuration for the `b4` tool
+# See https://b4.docs.kernel.org/en/latest/config.html
+
+[b4]
+    send-series-to = Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+    prep-pre-flight-checks = disable-needs-auto-to-cc, disable-needs-checking
+    send-prefixes = renesas-bsp-rom-writer
