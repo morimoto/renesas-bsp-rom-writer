@@ -512,7 +512,9 @@ class board(base):
 
     def select_tty(self):
         if (self.__tty != ""):
-            return
+            self.__tty_ask_kill_owner()
+            if (self.__tty != ""):
+                return
 
         text = "Your board and PC need to connect\n" + self.tty_connection()
         self.msg(text)
