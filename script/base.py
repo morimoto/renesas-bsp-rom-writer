@@ -244,7 +244,7 @@ class config_map:
             am = m.split(',')
             addr = None
             if (os.path.exists(f"{b.cwd()}/{am[1]}")):
-                addr = b.run(f"head -n 2 {b.cwd()}/{am[1]} | grep S3 | head -n 1 | cut -c5-12")
+                addr = b.run(f"cat {b.cwd()}/{am[1]} | grep S3 | head -n 1 | cut -c5-12")
             self.__map.append({"addr":addr,
                                "save":am[0],
                                "srec":am[1]})
