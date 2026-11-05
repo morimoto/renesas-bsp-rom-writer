@@ -23,7 +23,7 @@ import serial
 #
 #====================================
 class base:
-    version = "v3.0.0"
+    version = "v3.1.0"
 
     __top = os.path.abspath(os.path.dirname(__file__) + "../../")
     __cwd = os.getcwd()
