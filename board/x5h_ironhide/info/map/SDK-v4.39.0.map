@@ -1,0 +1,21 @@
+title:"SDK: v4.39.0"
+
+addr_map:"00000000,rsip-m-bl2_cert-normal-boot-a-b_x5h.srec"
+addr_map:"00040000,rsip-m-bl2.srec"
+addr_map:"00440000,images_normal_boot_certificate_a_x5h.srec"
+addr_map:"004C0000,configuration_table_a_x5h.srec"
+addr_map:"00540000,scp-rt-ironhide_x5h_scp0.srec"
+addr_map:"00840000,rpu-2nd-ipl.srec"
+addr_map:"008E0000,test-rsip-m-rt_rsip-m0.srec"
+addr_map:"00AC0000,si-bl2.srec"
+
+ufs_map:"04000000,test-rpu-rt_cl0.0.srec"
+ufs_map:"05400000,test-rpu-rt_cl0.1.srec"
+ufs_map:"06400000,test-si-rt_cl1.0.srec"
+ufs_map:"06F00000,u-boot-elf-ironhide.srec"
+ufs_map:"06C00000,apu-bl31-ironhide.srec"
+ufs_map:"06D00000,apu-tee-ironhide.srec"
+ufs_map:"07100000,X5H_NPU0_FW.srec"
+ufs_map:"08300000,X5H_NPU1_FW.srec"
+
+mot_file:"rsip-m-flash-writer_scif-download.srec"
