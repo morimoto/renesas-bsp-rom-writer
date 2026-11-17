@@ -129,12 +129,8 @@ class base:
                 print(f"{msg}OK? (y/n) y")
                 return 1
 
-        while 1:
-            ret = self.input(f"{msg}OK? (y/n) ")
-            if (ret == "y"):
-                return 1
-            else:
-                return 0
+        ret = self.input(f"{msg}OK? (y/n) ")
+        return (ret == "y")
 
     #--------------------
     # error
