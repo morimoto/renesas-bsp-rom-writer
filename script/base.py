@@ -119,7 +119,7 @@ class base:
     #--------------------
     # ask_yn
     #--------------------
-    def ask_yn(self, label=None, quit=None):
+    def ask_yn(self, label=None):
         msg=""
         if (label):
             msg = f"[{label}] "
@@ -133,11 +133,8 @@ class base:
             ret = self.input(f"{msg}OK? (y/n) ")
             if (ret == "y"):
                 return 1
-            if (ret == "n"):
-                if (quit):
-                    sys.exit(1)
-                else:
-                    return 0
+            else:
+                return 0
 
     #--------------------
     # error
@@ -518,7 +515,8 @@ class board(base):
 
         text = "Your board and PC need to connect\n" + self.tty_connection()
         self.msg(text)
-        self.ask_yn("tty", True)
+        if (not self.ask_yn("tty")):
+            sys.exit(1)
 
         self.__tty_ask_kill_owner()
 
@@ -575,7 +573,8 @@ class board(base):
                  "  > cd ${your ROM dir}\n" +\
                 f"  > ${{renesas-bsp-rom-writer}}/board/{self.__board_name}/linux/rom-writer")
 
-        self.ask_yn("location", True)
+        if (not self.ask_yn("location")):
+            sys.exit(1)
 
     #--------------------
     # confirm_info
