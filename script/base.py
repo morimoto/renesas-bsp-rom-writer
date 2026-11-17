@@ -133,6 +133,14 @@ class base:
         return (ret == "y")
 
     #--------------------
+    # wait_y
+    #--------------------
+    def wait_y(self, label=None):
+        while (1):
+            if (self.ask_yn(label)):
+                break
+
+    #--------------------
     # error
     #--------------------
     def error(self, text, quit=1):

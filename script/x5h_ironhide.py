@@ -38,7 +38,7 @@ class rom_write_guide(base.guide):
             board.auto_cmd("off")
         else:
             self.print_msg_power("OFF")
-            self.ask_yn()
+            self.wait_y()
 
         # indicate dip-switch update mode
         if (board.auto_cmd_is_available()):
@@ -66,7 +66,7 @@ class rom_write_guide(base.guide):
             board.auto_cmd("off")
         else:
             self.print_msg_power("OFF")
-            self.ask_yn()
+            self.wait_y()
 
         # indicate dip-switch normal mode
         if (board.auto_cmd_is_available()):
